@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TransFusion | fanfer 🥰</title><meta name="author" content="fanfer🇨🇳"><meta name="copyright" content="fanfer🇨🇳"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Author: Bai, Xuyang; Hu, Zeyu; Zhu, Xinge; Huang, Qingqiu; Chen, Yilun; Fu, Hongbo; Tai, Chiew-Lan;Code: https:&#x2F;&#x2F;github.com&#x2F;XuyangBai&#x2F;TransFusionComment: soft calibration , attentionCompleted: Decembe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TransFusion">
+<meta property="og:url" content="http://fanfer.fun/2023/05/06/TransFusion/index.html">
+<meta property="og:site_name" content="fanfer 🥰">
+<meta property="og:description" content="Author: Bai, Xuyang; Hu, Zeyu; Zhu, Xinge; Huang, Qingqiu; Chen, Yilun; Fu, Hongbo; Tai, Chiew-Lan;Code: https:&#x2F;&#x2F;github.com&#x2F;XuyangBai&#x2F;TransFusionComment: soft calibration , attentionCompleted: Decembe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img1.imgtp.com/2023/05/06/ewvQBfVs.png">
+<meta property="article:published_time" content="2023-05-06T12:34:57.000Z">
+<meta property="article:modified_time" content="2023-05-07T06:45:35.686Z">
+<meta property="article:author" content="fanfer🇨🇳">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="论文">
+<meta property="article:tag" content="cvpr">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img1.imgtp.com/2023/05/06/ewvQBfVs.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fanfer.fun/2023/05/06/TransFusion/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'TransFusion',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-07 14:45:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/cat.css"><link rel="stylesheet" href="/css/custom.css"><div id="myscoll"></div><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/head.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 珞珈山</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/assets/background.JPG')"><nav id="nav"><span id="blog-info"><a href="/" title="fanfer 🥰"><span class="site-name">fanfer 🥰</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 珞珈山</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">TransFusion</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-06T12:34:57.000Z" title="发表于 2023-05-06 20:34:57">2023-05-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-05-07T06:45:35.686Z" title="更新于 2023-05-07 14:45:35">2023-05-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/%E8%9E%8D%E5%90%88/">融合</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="TransFusion"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Author: Bai, Xuyang; Hu, Zeyu; Zhu, Xinge; Huang, Qingqiu; Chen, Yilun; Fu, Hongbo; Tai, Chiew-Lan;<br>Code: <a target="_blank" rel="noopener" href="https://github.com/XuyangBai/TransFusion">https://github.com/XuyangBai/TransFusion</a><br>Comment: soft calibration , attention<br>Completed: December 11, 2022<br>Key Words: Fusion, Object Detection<br>Link: arXiv:2203.11496<br>Score: ⭐️⭐️⭐️⭐️⭐️<br>Source: CVPR2022<br>Status: once</p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>针对：Lidar-camera fusion ，劣质图像鲁棒性差这个问题，认为是由当下的hard-association (calibration)导致的。</p>
+<p>We propose TransFusion, a robust solution to LiDAR-camera fusion with a soft-association mechanism to handle inferior image conditions.</p>
+<h2 id="Introduction-amp-Related-work"><a href="#Introduction-amp-Related-work" class="headerlink" title="Introduction&amp;Related work"></a>Introduction&amp;Related work</h2><p>VoxelNet \ PointPillar 仅仅使用Lidar信息就取得了很好的效果。由于点云的稀疏性，要使用Fusion</p>
+<p>融合的方法一般分成三种：1.result-level：PoinNet、RoarNet 2.proposal-level:MV3D 、AVOD</p>
+<ol>
+<li>point-level（更好的效果）：一部分先将点云投射到鸟瞰图（BEV）平面上，然后将图像特征与BEV像素相融合</li>
+</ol>
+<blockquote>
+<p>PI-RCNN: An efficient multi-sensor 3d object detector with point-based attentive<br>cont-conv fusion module. AAAI, 2020.</p>
+<p>3D-CVF: Generating joint camera and lidar features using cross-view spatial feature fusion for 3d object detection. ECCV, 2020</p>
+</blockquote>
+<p><strong>Contributions:</strong></p>
+<ol>
+<li>采用soft-association</li>
+<li>使用了基于transformer的融合方法进行细腻度融合来解决3D检测问题。有很好的鲁棒性</li>
+<li>查询方法上的改进</li>
+<li>nuScenes的SOTA效果</li>
+</ol>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://img1.imgtp.com/2023/05/06/ewvQBfVs.png" alt="Untitled"></p>
+<p>3D and 2D backbones to extract LiDAR BEV feature map and image feature map.有两个layer组成</p>
+<p>（1）第一层使用一组稀疏的object query生成初始 3D 边界框，以<strong>input-dependent</strong>和<strong>category-aware</strong>的方式进行初始化。 （2）第二层将第一阶段的object query（带有初始预测）与图像特征密切关联并融合，产生丰富的纹理和颜色线索，以获得更好的检测结果。引入了空间调制交叉注意 (SMCA) 机制以涉及局部诱导偏差(locality inductive bias)并帮助网络更好地关注相关图像区域。我们还提出了一种图像image-guided query initialization策略，以涉及 LiDAR BEV 上的image guidance。该策略有助于生成在稀疏 LiDAR 点云中难以检测到的object query。</p>
+<h3 id="Preliminary"><a href="#Preliminary" class="headerlink" title="Preliminary"></a>Preliminary</h3><p>第一层解码器：使用一组稀疏的object query从 LIDAR 点云预测初始边界框</p>
+<p>与2D中的 input-dependent object query不同，我们使object queryinput-dependent和category-aware，更好丰富query的位置和类别信息。</p>
+<p>object query：用transformer架构学习一小组嵌入(embeddings)（向量集合）</p>
+<p>在我们的工作中，每个object query都包含一个提供对象定位的query positions和一个编码实例信息的query feature，例如框的大小、方向等。</p>
+<h3 id="Query-Initialization"><a href="#Query-Initialization" class="headerlink" title="Query Initialization"></a>Query Initialization</h3><p> 如果能对object queries 又较好的初始化效果，可以弥补1-layer 和6-layers的效果差距。经过我们的观察，我们提出一个 基于<strong>center-heatmap</strong> 的 <strong>input-dependent</strong> 的初始化策略，仅仅使用一层layer就获得很好的效果。</p>
+<aside>
+💡 heatmap：即热力图，在目标检测的图像处理中，采用二维高斯核来表示关键点。以box的中心点坐标取整作为高斯圆的圆心，以box的大小确定高斯圆的半径，代入高斯公式，填充高斯函数计算值（0-1），圆心的值最大，沿半径向外递减，在图像中，中心点最亮，沿半径向外变暗。热力图中，不是中心点的地方全部设为0，即黑色区域。
+
+</aside>
+
+<aside>
+💡 具体来说，给定一个d维LIDAR BEV特征图 X*Y*D，我们首先预测一个class-specific的heatmap(X*Y*K)，其中 X × Y 描述了 BEV 特征图的大小，K 是类别的数量。然后我们将heatmap视为 X × Y × K 对象候选，并选择所有类别的前 N 个候选对象作为我们的初始object query。
+
+<p>为了避免空间上too closed queries，我们选择局部最大元素作为我们的object query，其值大于或等于它们的8-connected neighbors。否则，需要大量的query来覆盖BEV平面。所选候选者的positions 和features用于初始化 query positions and query features。这样，我们的初始object query将定位在潜在对象中心或附近，从而无需多个解码器层 来完善位置。</p>
+</aside>
+
+<h2 id="Category-aware"><a href="#Category-aware" class="headerlink" title="Category-aware"></a>Category-aware</h2><p>BEV 平面上的物体都是具有绝对比例的，在同一类别中的比例差异很小。因此通过给每一个类别embedding的方式使得object queries 是 category  aware 的。</p>
+<p>具体做法是，通过将类别的one-hot编码线性投影成$R^d$向量，然后利用这个编码和query feature相加，这样的category-aware带来了两个好处：</p>
+<ol>
+<li>一方面在self-attention模块建立object-object relations \ cross-attention 建立object-context relations 时提供了side information</li>
+<li>另一方面，在预测阶段，它可以提供有价值的先验知识，使得网络专注于类别内的差异，从而有利于属性预测</li>
+</ol>
+<h2 id="Transformer-Decoder-and-FFN-前馈神经网络"><a href="#Transformer-Decoder-and-FFN-前馈神经网络" class="headerlink" title="Transformer Decoder and FFN(前馈神经网络)"></a>Transformer Decoder and FFN(前馈神经网络)</h2><h3 id="Transformer-Decoder"><a href="#Transformer-Decoder" class="headerlink" title="Transformer Decoder"></a>Transformer Decoder</h3><p><strong>object query</strong>和<strong>feature maps</strong> (来自点云或图像) 之间的交叉注意力将相关上下文聚集到候选对象上，而<strong>object query之间的self attention</strong>则导致不同候选对象之间的成对关系。</p>
+<p>query positions通过多层感知器 (MLP) 嵌入到d-dimensional positional encoding中，并与query features按element-wisely（list对应元素相加）相加。这使网络能够共同推理上下文和位置。</p>
+<h3 id="前馈网络-feed-forward-network-FFN"><a href="#前馈网络-feed-forward-network-FFN" class="headerlink" title="前馈网络 feed-forward network(FFN)"></a><strong>前馈网络 feed-forward network(FFN)</strong></h3><p>将包含丰富实例信息的 <strong>N</strong>个<strong>object query</strong>独立解码为<strong>框</strong>和<strong>类标签</strong>。<br>根据Center-Point，我们的FFN预测从query position的中心偏移量center offset为δx，δy，边界框高度为z，大小l，w，h为log（l），log（w），log（h），偏航角yaw angle α为sin（α），cos(α)，速度（如果可用）为v_x,v_y。</p>
+<p>我们还预测了 K 个语义类的每类概率p∈[0,1]。每个属性由单独的两层 1×1 卷积计算。通过将每个object query解码为预测，我们得到一组预测 ，其中， $b_t$ 是第i个query的预测边界框。</p>
+<p>我们采用辅助解码机制，在每个解码层之后添加FFN和监督。因此，我们可以从第一个解码器层获得初始边界框预测。 我们利用 LiDAR-camera fusion module中的此类初始预测来限制交叉注意力.</p>
+<h2 id="LiDAR-Camera-Fusion"><a href="#LiDAR-Camera-Fusion" class="headerlink" title="LiDAR-Camera Fusion"></a>LiDAR-Camera Fusion</h2><h3 id="Image-Feature-Fetching"><a href="#Image-Feature-Fetching" class="headerlink" title="Image Feature Fetching."></a>Image Feature Fetching.</h3><p><strong>point-level融合方法</strong>带来改进，但融合质量在很大程度上受到 LiDAR 点的稀疏性的限制。当一个物体只包含少量的激光雷达点时，它只能获取相同数量的图像特征，浪费了高分辨率图像丰富的语义信息。</p>
+<p>因此我们没有使用hard association.保留了所有的图像特征$$F_C ∈ R^{Nv×H×W×d}$$作为memory bank，在transformer 解码器中使用交叉注意力，以sparse-to-dense和自适应方法实现特征融合。</p>
+<h3 id="SMCA-for-Image-Feature-Fusion"><a href="#SMCA-for-Image-Feature-Fusion" class="headerlink" title="SMCA for Image Feature Fusion."></a>SMCA for Image Feature Fusion.</h3><p>Multi-head attention是一种流行的在两组输入之间进行信息交换和建立软关联的机制，它已被广泛用于特征匹配任务。为了减轻硬关联策略带来的对传感器校准和劣质图像特征的敏感性，我们利用交叉注意机制在激光雷达和图像之间建立软关联，使网络能够自适应地确定应该从图像中获取哪些信息。</p>
+<aside>
+💡 首先在使用先前的预测以及校准矩阵定位object query，然后在object query和相应的图像特征图之间执行交叉注意力cross attention。但是，由于 LiDAR 特征和图像特征来自完全不同的空间域，所以object query可能会关注与要预测的边界框无关的视觉区域，导致网络需要很长时间才能准确识别图像上的正确区域。
+
+</aside>
+
+<p>我们设计了一个<strong>空间调制交叉注意力 (SMCA)</strong> 模块 ，它通过围绕每个<strong>query</strong>的投影 2D 中心的 2D 圆形<strong>高斯掩码Gaussian mask</strong>对<strong>交叉注意力</strong>进行<strong>加权</strong>。2D <strong>Gaussian</strong> 权重<strong>mask M</strong>的生成方式与 <strong>CenterNet</strong> 类似。</p>
+<p>$$<br>M_{ij} &#x3D; exp(−\frac{(i−cx)^2+(j−cy)^2}{σr^2} )<br>$$</p>
+<blockquote>
+<p>(i, j) 是权重掩码 M 的空间索引</p>
+<p>(cx, cy) 是通过将query预测投影到图像平面上计算的 2D 中心</p>
+<p>r是三维边界框投影角的最小外切圆的半径</p>
+<p>σ 是调制高斯分布带宽的超参数</p>
+</blockquote>
+<p>然后，这个weight map与所有attention heads之间的cross-attention map按元素相乘。这样，每个object query只关注投影的 2D 框周围的相关区域，这样网络就可以更好更快地根据输入的 LiDAR 特征学习在哪里选择图像特征。注意力图的可视化如图 3 所示。该网络通常倾向于关注靠近对象中心的前景像素而忽略不相关的像素，为对象分类和边界框回归提供有价值的语义信息。 在 SMCA 之后，我们使用另一个 FFN（上面） 使用包含 LiDAR 和图像信息的object query来生成最终的边界框预测。</p>
+<p><img src="https://img1.imgtp.com/2023/05/06/5IKRezV8.png" alt="Untitled"></p>
+<p>图3 第一行显示输入图像和投影在图像上的<strong>object query</strong>的预测，第二行显示交叉注意力图。我们的融合策略能够<strong>动态</strong>选择相关的图像像素，并且不受 LiDAR 点数的限制。</p>
+<h2 id="Label-Assignment-and-Losses"><a href="#Label-Assignment-and-Losses" class="headerlink" title="Label Assignment and Losses"></a>Label Assignment and Losses</h2><p>使用Hungarian Algorithm（匈牙利算法）计算匹配成本。其中匹配成本由分类、回归、和IoU成本的加权和定义。</p>
+<p>$C_{match}&#x3D;\lambda_1L_{cls}(p,\hat{p})+\lambda_2L_{reg}(b,\hat{b})+\lambda_3L_{iou}(b,\hat{b})$</p>
+<p>其中，Lcls是二元交叉熵损失，Lreg是预测的BEV中心和ground truth中心之间的L1损失（都在[0，1]中归一化），Liou是预测的方框和ground truth boxes之间的IoU损失。</p>
+<p>考虑到所有的匹配对，我们为分类计算focal loss。用L1 loss 仅针对positive pairs 计算边界盒回归。对于heatmap prediction,我们采用 penalty reduced focal loss(Center Point采用的方法)</p>
+<p>对于两个解码层采用一样的标签分配策略和损失公式。</p>
+<h2 id="image-guided-query-initialization"><a href="#image-guided-query-initialization" class="headerlink" title="image-guided query initialization"></a>image-guided query initialization</h2><p>为了进一步利用高分辨率图像检测小物体的能力并使我们的算法对稀疏的 LiDAR 点云更加鲁棒，我们提出了一种Image-Guided Query Initialization策略，该策略利用 <strong>LiDAR</strong> 和<strong>camera</strong>信息来选择<strong>object query</strong>。</p>
+<p><img src="https://img1.imgtp.com/2023/05/06/ZeUbu1wt.png" alt="Untitled"></p>
+<p>我们首先沿垂直维度浓缩图像特征，然后利用LiDAR BEV特征的交叉注意将这些特征投射到BEV平面上。每幅图像都由一个单独的多头关注层处理，它捕捉到图像列和BEV位置之间的关系。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fanfer.fun">fanfer🇨🇳</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fanfer.fun/2023/05/06/TransFusion/">http://fanfer.fun/2023/05/06/TransFusion/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fanfer.fun" target="_blank">fanfer 🥰</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87/">论文</a><a class="post-meta__tags" href="/tags/cvpr/">cvpr</a></div><div class="post_share"><div class="social-share" data-image="https://img1.imgtp.com/2023/05/06/ewvQBfVs.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/05/06/Data-Fusion/" title="Data Fusion"><img class="cover" src="https://geomdata.com/wp-content/uploads/2020/09/data_fusion_0.1.1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Data Fusion</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/06/Data-Fusion/" title="Data Fusion"><img class="cover" src="https://geomdata.com/wp-content/uploads/2020/09/data_fusion_0.1.1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-06</div><div class="title">Data Fusion</div></div></a></div><div><a href="/2023/05/05/hello-world/" title="Hello World"><img class="cover" src="https://picture.fanfer.fun/img/helloworld.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-05</div><div class="title">Hello World</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/head.JPG" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fanfer🇨🇳</div><div class="author-info__description">Future is now 🍭🍭🍭</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.chat.fanfer.fun"><i></i><span>🛴前往ChatGPT...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fanfer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:yifanhu@whu.edu.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center><b>--- 主域名 ---<br><a target="_blank" rel="noopener" href="https://www.fanfer.top" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fanfer.top</font></a>&nbsp;|&nbsp;<a target="_blank" rel="noopener" href="https://www.fanfer.fun" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fomal.fun</font></a><br>--- 不用翻墙的GPT ---<br><a target="_blank" rel="noopener" href="https://chat.fanfer.fun" title="不用翻墙的GPT" class="anno_content"><font color="#5ea6e5">ChatBot</font></a><br>--- 没有冷气的空调 ---<br><a href="https://fanfer.fun/air-conditioner" title=“没有冷气的空调” class="anno_content"><font color="#5ea6e5">Air Conditioner</font></a></div></div><div class="card-widget tzy-right-widget" id="card-wechat"><div id="flip-wrapper"><div id="flip-content"><div class="face"></div><div class="back face"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-number">1.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction-amp-Related-work"><span class="toc-number">2.</span> <span class="toc-text">Introduction&amp;Related work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Methodology"><span class="toc-number">3.</span> <span class="toc-text">Methodology</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preliminary"><span class="toc-number">3.1.</span> <span class="toc-text">Preliminary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Query-Initialization"><span class="toc-number">3.2.</span> <span class="toc-text">Query Initialization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category-aware"><span class="toc-number">4.</span> <span class="toc-text">Category-aware</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Transformer-Decoder-and-FFN-%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">5.</span> <span class="toc-text">Transformer Decoder and FFN(前馈神经网络)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Transformer-Decoder"><span class="toc-number">5.1.</span> <span class="toc-text">Transformer Decoder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E9%A6%88%E7%BD%91%E7%BB%9C-feed-forward-network-FFN"><span class="toc-number">5.2.</span> <span class="toc-text">前馈网络 feed-forward network(FFN)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LiDAR-Camera-Fusion"><span class="toc-number">6.</span> <span class="toc-text">LiDAR-Camera Fusion</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Image-Feature-Fetching"><span class="toc-number">6.1.</span> <span class="toc-text">Image Feature Fetching.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SMCA-for-Image-Feature-Fusion"><span class="toc-number">6.2.</span> <span class="toc-text">SMCA for Image Feature Fusion.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Label-Assignment-and-Losses"><span class="toc-number">7.</span> <span class="toc-text">Label Assignment and Losses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#image-guided-query-initialization"><span class="toc-number">8.</span> <span class="toc-text">image-guided query initialization</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/assets/background.JPG')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fanfer🇨🇳</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/cat.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
