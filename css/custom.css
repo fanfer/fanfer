@@ -73,3 +73,7 @@
 
 /* 公众号 End */
 
+.loading-img {
+    background: url(https://fanfer.top/assets/head.JPG) no-repeat center center;
+    background-size: cover;
+  }
