@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>VoxelNet | fanfer 🥰</title><meta name="author" content="fanfer🇨🇳"><meta name="copyright" content="fanfer🇨🇳"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Abstract 本文消除了对3D点云的手动特征工程的需要，提出了VoxelNet，将特征提取和bounding box统一到单个阶段、端到端的可训练深度网络中。 VoxelNet将点云划分为等距的3D体素，通过引入提速特征编码（VFE）层将每个体素内的一组点转化为统一的特征表示。 Introduction 针对现在对于3D点云还需要手动特征工程的需求，我们提出了VoxelNet：这是一个通用的3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VoxelNet">
+<meta property="og:url" content="http://fanfer.fun/2023/08/21/VoxelNet/index.html">
+<meta property="og:site_name" content="fanfer 🥰">
+<meta property="og:description" content="Abstract 本文消除了对3D点云的手动特征工程的需要，提出了VoxelNet，将特征提取和bounding box统一到单个阶段、端到端的可训练深度网络中。 VoxelNet将点云划分为等距的3D体素，通过引入提速特征编码（VFE）层将每个体素内的一组点转化为统一的特征表示。 Introduction 针对现在对于3D点云还需要手动特征工程的需求，我们提出了VoxelNet：这是一个通用的3">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picture.fanfer.fun/img/voxnet1.png">
+<meta property="article:published_time" content="2023-08-21T06:08:21.000Z">
+<meta property="article:modified_time" content="2023-08-21T06:12:49.634Z">
+<meta property="article:author" content="fanfer🇨🇳">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="论文">
+<meta property="article:tag" content="cvpr">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picture.fanfer.fun/img/voxnet1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fanfer.fun/2023/08/21/VoxelNet/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'VoxelNet',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-21 14:12:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/cat.css"><link rel="stylesheet" href="/css/custom.css"><div id="myscoll"></div><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/head.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 珞珈山</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/assets/background.JPG')"><nav id="nav"><span id="blog-info"><a href="/" title="fanfer 🥰"><span class="site-name">fanfer 🥰</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 珞珈山</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">VoxelNet</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-21T06:08:21.000Z" title="发表于 2023-08-21 14:08:21">2023-08-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-21T06:12:49.634Z" title="更新于 2023-08-21 14:12:49">2023-08-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87/">论文</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="VoxelNet"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="abstract">Abstract</h2>
+<p>本文消除了对3D点云的手动特征工程的需要，提出了VoxelNet，将特征提取和bounding box统一到单个阶段、端到端的可训练深度网络中。</p>
+<p>VoxelNet将点云划分为等距的3D体素，通过引入提速特征编码（VFE）层将每个体素内的一组点转化为统一的特征表示。</p>
+<h2 id="introduction">Introduction</h2>
+<p>针对现在对于3D点云还需要手动特征工程的需求，我们提出了VoxelNet：这是一个通用的3D检测框架，它以端到端的方式同时从点云中学习有区别的特征表示，并预测精确的3D边界框</p>
+<p><strong>主要贡献：</strong></p>
+<ol>
+<li>我们提出了一种新的端到端可训练的深度架构，用于基于点云的三维检测VoxelNet，直接在稀疏的三维点上操作，避免了人工特征工程引入的信息瓶颈。</li>
+<li>我们提出了一种有效的方法来实现体素网，它既受益于稀疏点结构，又受益于体素网格上的高效并行处理。</li>
+<li>我们在KITTI benchmark上进行实验，结果表明，在基于激光雷达的汽车、行人和自行车检测基准中，VoxelNet产生了SOTA结果</li>
+</ol>
+<h2 id="methodology">Methodology</h2>
+<p>分为三个功能模块：特征学习网络、卷积神经网络、区域提取网络</p>
+<p><img src="https://picture.fanfer.fun/img/voxnet1.png" alt="Untitled"></p>
+<p>特征学习网络将原始点云作为输入，将空间划分为体素，并将每个体素内的点转换为表征形状信息的矢量表示。这个空间被表示为一个稀疏的4D张量。卷积中间层处理4D张量以聚集空间上下文。最后，RPN生成3D检测</p>
+<aside>
+💡 RPN：Region Proposal Network区域生成网络，用来提取候选框
+</aside>
+<h3 id="feature-learning-network">Feature Learning Network</h3>
+<ol>
+<li>
+<p>划分体素，将整个空间划分成大小相同的Voxel</p>
+</li>
+<li>
+<p>分组，将激光雷达点分配到相应的Voxel中，由于雷达的稀疏和不均匀采样，不同的体素包含数量可变的激光雷达点。</p>
+</li>
+<li>
+<p>随机采样。从包含超过T个点的体素中随机抽取固定数量T的点。这个策略有两个目的：(1)节省计算资源 (2)减少了体素之间点的数量的不均衡，减少了采样偏差，增加了更多的变化。</p>
+</li>
+<li>
+<p><strong>体素特征编码 （stacked Voxel feature encoding）</strong></p>
+<p><img src="https://picture.fanfer.fun/img/voxnet2.png" alt="Untitled"></p>
+<p><img src="https://picture.fanfer.fun/img/voxnet3.png" alt="Untitled"></p>
+<p>上图中Voxel有3个点云数据。作者先用一个FCN层（印象中FCN指的是全卷积层，但这里指的是全连接层）提取这3个点云数据的特征，获得3个Point-wise Feature。</p>
+<p>因为这个操作是<strong>逐点运算</strong>的，并没有引入点与点之间的关系，也就是local feature。作者在此基础上引入Element-wise maxpool，获得<strong>Locally Aggregated Feature。<strong>Locally Aggregated Feature反应了这些点的一个</strong>局部</strong>关系。</p>
+<p>作者将<strong>Point-wise Feature</strong>和<strong>Locally Aggregated Feature</strong>进行了简单的<strong>堆叠融合</strong>，作为下一个VFE层的输入。</p>
+<p>这样连续堆叠几次VFE层后，就获得更丰富的特征表示。最后，使用一个Element-wise maxpool获得最后的一个Voxel-wise Feature。也就是第一张图片中的这个部分</p>
+<p><img src="https://picture.fanfer.fun/img/voxnet4.png" alt="Untitled"></p>
+<p>用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>F</mi><mi>E</mi><mo>−</mo><mi>i</mi><mo stretchy="false">(</mo><msub><mi>c</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo separator="true">,</mo><msub><mi>c</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">VFE-i(c_{in},c_{out})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">i</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>表示第i个VFE层，该层将维度cin的输入特征转换为维度cout的输出特征。线性层学习一个大小为cin *(cout/2)的矩阵，逐点拼接产生维数为cout的输出。</p>
+</li>
+<li>
+<p>Sparse Tensor Representation：仅仅处理非空体素，获得了体素特征列表，是一个4D 的稀疏张量 由于大量的是空体素，因此大大减少了内存使用和计算成本</p>
+</li>
+</ol>
+<p><strong>补充Mask</strong></p>
+<p>由于体素具有数量可变的点，因此通过mask的方式，进行处理后再交给gpu运算。</p>
+<p><img src="https://picture.fanfer.fun/img/voxnet5.png" alt="Untitled"></p>
+<p>首先初始化一个K<em>T</em>7的张量来存储体素输入特征，K是非空体素的最大数量，T是每个体素的最大的点数，7是每个点的输入编码的维度。</p>
+<p>注意再完成VFE的连接后，将空点所对应的特征重置为0.</p>
+<h3 id="convolutional-middle-layers">Convolutional Middle Layers</h3>
+<p>点云数据通过特征学习网络后可以被表示成一个<strong>稀疏的4D张量</strong>，维度记做（C,D′,H′,W′） 。其中， C 为Voxel-wise Feature的向量维度（也就是图3中向量的高度）， D′,H′,W′ 为空间的深度、高度和宽度（单位为Voxel数量）。</p>
+<p>因为张量是4维的，作者就用3D卷积来构建这个中间卷积层。目的显然是为了扩大感受野，增加更多的信息描述。</p>
+<h3 id="region-proposal-network">Region Proposal Network</h3>
+<p><img src="https://picture.fanfer.fun/img/voxnet6.png" alt="Untitled"></p>
+<p>RPN层在2D物体检测中层出不穷，早在Faster-RCNN中就被提出来了。RPN层主要用来根据学习到的特征，并结合Anchor，在原图中找到物体所在<strong>检测框</strong>和<strong>对应的类别</strong>。</p>
+<p>一般而言，RPN层有两个分支，一个用来输出<strong>类别的概率分布</strong>（通常叫做Score Map），一个用来输出<strong>Anchor到真实框的变化过程</strong>（通常叫做 Regression Map）</p>
+<p>作者提出的RPN层的结构如下图所示。该网络以中间卷积层的输出特征图为输入，分别经过三次下采样（每次stride=2）获得三个不同维度的特征图。作者将这个三个特征图缩放至同一维度后进行拼接，有点FPN（特征金字塔网络）的感觉。最后，拼接的特征被映射成两个输出特征图</p>
+<h2 id="损失函数">损失函数</h2>
+<p>作者引入了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>p</mi><mi>o</mi><mi>s</mi></mrow></msub></mrow><annotation encoding="application/x-tex">n_{pos}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">p</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>个正anchor和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mi>n</mi><mi>e</mi><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">N_{neg}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>个负anchor。一个gt-3D 检测框可以用一个7维向量表示，分别是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msubsup><mi>x</mi><mi>c</mi><mi>g</mi></msubsup><mo separator="true">,</mo><msubsup><mi>y</mi><mi>c</mi><mi>g</mi></msubsup><mo separator="true">,</mo><msubsup><mi>z</mi><mi>c</mi><mi>g</mi></msubsup><mo separator="true">,</mo><msup><mi>l</mi><mi>g</mi></msup><mo separator="true">,</mo><msup><mi>w</mi><mi>g</mi></msup><mo separator="true">,</mo><msup><mi>h</mi><mi>g</mi></msup><mo separator="true">,</mo><msup><mi>θ</mi><mi>g</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x_c^g,y_c^g,z_c^g,l^g,w^g,h^g,\theta^g)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.前三项是框的中心坐标点，然后是长宽高，最后是绕Z轴的偏航角</p>
+<p>假设与gt-bbox匹配的positive anchor的参数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msubsup><mi>x</mi><mi>c</mi><mi>a</mi></msubsup><mo separator="true">,</mo><msubsup><mi>y</mi><mi>c</mi><mi>a</mi></msubsup><mo separator="true">,</mo><msubsup><mi>z</mi><mi>c</mi><mi>a</mi></msubsup><mo separator="true">,</mo><msup><mi>l</mi><mi>a</mi></msup><mo separator="true">,</mo><msup><mi>w</mi><mi>a</mi></msup><mo separator="true">,</mo><msup><mi>h</mi><mi>a</mi></msup><mo separator="true">,</mo><msup><mi>θ</mi><mi>a</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x_c^a,y_c^a,z_c^a,l^a,w^a,h^a,\theta^a)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 。那么RPN层中的regression分支要学的东西，就是从positive anchor到gt-bbox的变化过程参数，定义如下：</p>
+<p><img src="https://picture.fanfer.fun/img/voxnet7.png" alt="Untitled"></p>
+<p>那么损失函数的定义主要分为两部分，分别为（1）分类损失（3）上述7个参数的回归损失。</p>
+<p>其中分类损失包括Positive anchor和Negative anchor的损失。</p>
+<p>具体定义如下：<br>
+<img src="https://picture.fanfer.fun/img/voxnet8.png" alt="Untitled"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fanfer.fun">fanfer🇨🇳</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fanfer.fun/2023/08/21/VoxelNet/">http://fanfer.fun/2023/08/21/VoxelNet/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fanfer.fun" target="_blank">fanfer 🥰</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87/">论文</a><a class="post-meta__tags" href="/tags/cvpr/">cvpr</a></div><div class="post_share"><div class="social-share" data-image="https://picture.fanfer.fun/img/voxnet1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/08/21/mac-%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE%E5%A4%9A%E4%B8%AAGithub%E8%B4%A6%E5%8F%B7/" title="mac 连接配置多个Github账号"><img class="cover" src="https://picture.fanfer.fun/img/GitHub.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">mac 连接配置多个Github账号</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/06/TransFusion/" title="TransFusion"><img class="cover" src="https://img1.imgtp.com/2023/05/06/ewvQBfVs.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-06</div><div class="title">TransFusion</div></div></a></div><div><a href="/2023/06/06/BEVFusion/" title="BEVFusion"><img class="cover" src="https://picture.fanfer.fun/img/bevfusion2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-06</div><div class="title">BEVFusion</div></div></a></div><div><a href="/2023/08/12/GameFormer/" title="GameFormer"><img class="cover" src="https://picture.fanfer.fun/img/gameformer1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-12</div><div class="title">GameFormer</div></div></a></div><div><a href="/2023/05/06/Data-Fusion/" title="Data Fusion"><img class="cover" src="https://geomdata.com/wp-content/uploads/2020/09/data_fusion_0.1.1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-06</div><div class="title">Data Fusion</div></div></a></div><div><a href="/2023/05/07/ImageTackle/" title="数字图像处理"><img class="cover" src="https://picture.fanfer.fun/img/Lena.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-07</div><div class="title">数字图像处理</div></div></a></div><div><a href="/2023/05/05/hello-world/" title="Hello World"><img class="cover" src="https://picture.fanfer.fun/img/helloworld.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-05</div><div class="title">Hello World</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/head.JPG" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fanfer🇨🇳</div><div class="author-info__description">Future is now 🍭🍭🍭</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.chat.fanfer.fun"><i></i><span>🛴前往ChatGPT...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fanfer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:yifanhu@whu.edu.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center><b>--- 主域名 ---<br><a target="_blank" rel="noopener" href="https://www.fanfer.top" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fanfer.top</font></a>&nbsp;|&nbsp;<a target="_blank" rel="noopener" href="https://www.fanfer.fun" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fomal.fun</font></a><br>--- 不用翻墙的GPT ---<br><a target="_blank" rel="noopener" href="https://chat.fanfer.fun" title="不用翻墙的GPT" class="anno_content"><font color="#5ea6e5">ChatBot</font></a><br>--- 没有冷气的空调 ---<br><a href="https://fanfer.fun/air-conditioner" title=“没有冷气的空调” class="anno_content"><font color="#5ea6e5">Air Conditioner</font></a></div></div><div class="card-widget tzy-right-widget" id="card-wechat"><div id="flip-wrapper"><div id="flip-content"><div class="face"></div><div class="back face"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#abstract"><span class="toc-number">1.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#introduction"><span class="toc-number">2.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#methodology"><span class="toc-number">3.</span> <span class="toc-text">Methodology</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#feature-learning-network"><span class="toc-number">3.1.</span> <span class="toc-text">Feature Learning Network</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#convolutional-middle-layers"><span class="toc-number">3.2.</span> <span class="toc-text">Convolutional Middle Layers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#region-proposal-network"><span class="toc-number">3.3.</span> <span class="toc-text">Region Proposal Network</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">损失函数</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/assets/background.JPG')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fanfer🇨🇳</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikko.fanfer.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikko.fanfer.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/cat.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://ts1.cn.mm.bing.net/th/id/R-C.30b685e211d09036c0a0a60427469748?rik=V3kNzi9WuWUJVA&amp;riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20190916%2f1f2286619ee14290b29c14ab13077835.jpeg&amp;ehk=0RwXvdox0Avpfwxm%2fN2C%2b6FBOtKN4EnrYfficy3TxUc%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0);"> <a class="categoryBar-list-link" href="categories/笔记/">笔记</a><span class="categoryBar-list-count">6</span><span class="categoryBar-list-descr">笔记记录</span></li><li class="categoryBar-list-item" style="background:url(https://i.hexuexiao.cn/up/84/1c/75/278f474ee9626cc988a69704e6751c84.jpg.source.jpg);"> <a class="categoryBar-list-link" href="categories/笔记/HuggingFace/">HuggingFace</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">Hugging Face入门到入土</span></li><li class="categoryBar-list-item" style="background:url(https://ts1.cn.mm.bing.net/th/id/R-C.2a5cb21e95d37dc74ae142ed6201e92c?rik=n3v82FY0aF70Vg&amp;riu=http%3a%2f%2fpic.bizhi360.com%2fbbpic%2f85%2f9585_7.jpg&amp;ehk=M6esrkq9sRZTGR5iduLvhWjLYTHY2qAu6M02yrPqVdc%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0);"> <a class="categoryBar-list-link" href="categories/教程/">教程</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">教程</span></li><li class="categoryBar-list-item" style="background:url(https://ts1.cn.mm.bing.net/th/id/R-C.e49d9eb6c53595c40698fbd6029513e1?rik=Q0bshgNPIhb5IQ&amp;riu=http%3a%2f%2fimg.mm4000.com%2ffile%2f5%2fd2%2f130c9cc389.jpg&amp;ehk=TXvSgSpKZDNg%2b%2bd8Ag9tnpmHW4MkEKYF53CFt7zmA0g%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0);"> <a class="categoryBar-list-link" href="categories/论文/">论文</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr">论文阅读笔记</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
