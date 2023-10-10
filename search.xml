@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>为Linux新增用户</title>
+      <link href="/2023/10/10/%E4%B8%BALinux%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7/"/>
+      <url>/2023/10/10/%E4%B8%BALinux%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7/</url>
+      
+        <content type="html"><![CDATA[<p>创建新用户所使用的命令是：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd -r -m -s /bin/bash <span class="built_in">test</span></span><br></pre></td></tr></table></figure><p>命令来设置新用户的密码。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd <span class="built_in">test</span></span><br></pre></td></tr></table></figure><p>上面命令的参数意义如下：</p><ul><li>r：建立系统账号</li><li>m：自动建立用户的登入目录</li><li>s：指定用户登入后所使用的shell</li></ul><p>输入ls /home/可以看到用户目录被成功创建了</p><p>然后需要登陆新用户,为新用户创建密钥</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su <span class="built_in">test</span></span><br><span class="line">[<span class="built_in">test</span>@host ~]$ ssh-keyge</span><br></pre></td></tr></table></figure><p>在 当前 用户的家目录中生成了一个 .ssh 的隐藏目录，内含两个密钥文件。id_rsa 为私钥，id_rsa.pub 为公钥。<br>为了确保连接成功，要保证以下文件权限正确：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">test</span>@host ~]$ <span class="built_in">cd</span> .ssh</span><br><span class="line">[<span class="built_in">test</span>@host .ssh]$ <span class="built_in">cat</span> id_rsa.pub &gt;&gt; authorized_keys</span><br></pre></td></tr></table></figure><p>在服务器上安装公钥<br>键入以下命令，在服务器上安装公钥：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br><span class="line">[root@host .ssh]$ <span class="built_in">chmod</span> 600 authorized_keys</span><br><span class="line">[root@host .ssh]$ <span class="built_in">chmod</span> 700 ~/.ssh</span><br></pre></td></tr></table></figure><p>将私钥id_rsa下载到本地，可以通过</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/test/.ssh/id_rsa /home/test/id_rsa</span><br></pre></td></tr></table></figure><p>然后将密钥下载到本地</p><p>为新建的用户添加root权限</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/sudoers</span><br></pre></td></tr></table></figure><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改/etc/sudoers</span></span><br><span class="line"><span class="comment"># 新增：</span></span><br><span class="line"><span class="comment">## Allow root to run any commands anywhere</span></span><br><span class="line">root    <span class="variable constant_">ALL</span>=(<span class="variable constant_">ALL</span>)       <span class="variable constant_">ALL</span></span><br><span class="line">test    <span class="variable constant_">ALL</span>=(<span class="variable constant_">ALL</span>)       <span class="variable constant_">ALL</span></span><br><span class="line"><span class="comment"># 退出时，需要强制保存，因为该文件是只读的</span></span><br><span class="line"><span class="symbol">:wq!</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 教程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Fine Turn BLIP2</title>
       <link href="/2023/08/22/Fine-Turn-BLIP2/"/>
       <url>/2023/08/22/Fine-Turn-BLIP2/</url>
