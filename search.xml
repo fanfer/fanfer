@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>HuggingFace-下载模型</title>
+      <link href="/2023/10/13/HuggingFace-%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9E%8B/"/>
+      <url>/2023/10/13/HuggingFace-%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9E%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="hugging-face保存模型">Hugging Face保存模型</h1><h1 id="cache-setup">Cache setup</h1><p>如果本地和缓存中均没有模型的话，那么运行<code>model.fromPretrained</code>会从huggingface官网中下载模型，保存到本地的默认路径<code>~/.cache/huggingface/hub</code>.下</p><p>因此可以从<code>~/.cache/huggingface/hub</code>下进入删除你不再需要的模型参数</p><h1 id="offline-mode">Offline mode</h1><p>如果在有防火墙或者离线的情况下使用Huggingface在cache file中保存的文件，通过设置环境变量</p><p><code>TRANSFORMERS_OFFLINE=1</code>.如果要使用本地的数据集，设置<code>HF_DATASETS_OFFLINE=1</code>.</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \</span><br><span class="line">python examples/pytorch/translation/run_translation.py --model_name_or_path t5-small --dataset_name wmt16 --dataset_config ro-en ...</span><br></pre></td></tr></table></figure><p>上述指令就不会尝试从huggingface在线的加载模型</p><p>同时也可以选**<a href="https://huggingface.co/docs/transformers/v4.34.0/en/main_classes/model#transformers.PreTrainedModel.from_pretrained">from_pretrained()</a>**在模型加载的时候传递一个参数<code>local_files_only</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from transformers import T5Model</span><br><span class="line"></span><br><span class="line">model = T5Model.from_pretrained(<span class="string">&quot;./path/to/local/directory&quot;</span>, local_files_only=True)</span><br></pre></td></tr></table></figure><h1 id="离线保存模型参数">离线保存模型参数</h1><ul><li>从**<a href="https://huggingface.co/models">Model Hub</a>下载**</li><li>使**<a href="https://huggingface.co/docs/transformers/v4.34.0/en/main_classes/model#transformers.PreTrainedModel.from_pretrained">PreTrainedModel.from_pretrained()</a>** 和**<a href="https://huggingface.co/docs/transformers/v4.34.0/en/main_classes/model#transformers.PreTrainedModel.save_pretrained">PreTrainedModel.save_pretrained()</a>：**</li></ul><p>1.提前下载模型</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**from transformers import AutoTokenizer, AutoModelForSeq2SeqLM</span><br><span class="line"></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&quot;bigscience/T0_3B&quot;</span>)</span><br><span class="line">model = AutoModelForSeq2SeqLM.from_pretrained(<span class="string">&quot;bigscience/T0_3B&quot;</span>)**</span><br></pre></td></tr></table></figure><p>2.将模型保存到指定的文件夹</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tokenizer.save_pretrained(<span class="string">&quot;./your/path/bigscience_t0&quot;</span>)</span><br><span class="line">model.save_pretrained(<span class="string">&quot;./your/path/bigscience_t0&quot;</span>)</span><br></pre></td></tr></table></figure><p>3.之后就可以从本地文件夹中提取模型</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&quot;./your/path/bigscience_t0&quot;</span>)</span><br><span class="line">model = AutoModel.from_pretrained(<span class="string">&quot;./your/path/bigscience_t0&quot;</span>)</span><br></pre></td></tr></table></figure><ul><li>使用**<a href="https://github.com/huggingface/huggingface_hub/tree/main/src/huggingface_hub">huggingface_hub</a>**</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install huggingface_hub</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from huggingface_hub import hf_hub_download</span><br><span class="line"></span><br><span class="line">hf_hub_download(repo_id=<span class="string">&quot;bigscience/T0_3B&quot;</span>, filename=<span class="string">&quot;config.json&quot;</span>, cache_dir=<span class="string">&quot;./your/path/bigscience_t0&quot;</span>)</span><br></pre></td></tr></table></figure><p>以上代码就是从T0模型中下载了config.json文件到了指定文件夹</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+          <category> HuggingFace </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> HuggingFace </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>为Linux新增用户</title>
       <link href="/2023/10/10/%E4%B8%BALinux%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7/"/>
       <url>/2023/10/10/%E4%B8%BALinux%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7/</url>
@@ -182,9 +211,9 @@
       
         <tags>
             
-            <tag> 论文 </tag>
-            
             <tag> 笔记 </tag>
+            
+            <tag> 论文 </tag>
             
             <tag> iccv </tag>
             
@@ -211,11 +240,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> 论文 </tag>
             
             <tag> cvpr </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
@@ -240,11 +269,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> 论文 </tag>
             
             <tag> cvpr </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
@@ -298,11 +327,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> 论文 </tag>
             
             <tag> cvpr </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
