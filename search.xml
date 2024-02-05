@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>连不上一些网站的解决方案</title>
+      <link href="/2024/02/05/%E8%BF%9E%E4%B8%8D%E4%B8%8A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%AB%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+      <url>/2024/02/05/%E8%BF%9E%E4%B8%8D%E4%B8%8A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%AB%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+      
+        <content type="html"><![CDATA[<p>如果是从 <a href="http://huggingface.co/">huggingface.co</a> 下载模型，由于国内不能访问，所以建议先配置一下环境变量，<br>通过访问国内镜像站点 <a href="https://hf-mirror.xn--com-128di84bv9wbmeb04g/">https://hf-mirror.com来下载模型</a>。</p><p>使用<strong>huggingface 官方提供的 <code>[huggingface-cli</code>](<a href="https://hf-mirror.com/docs/huggingface_hub/guides/download#download-from-the-cli">https://hf-mirror.com/docs/huggingface_hub/guides/download#download-from-the-cli</a>) 命令行工具。</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U huggingface_hub</span><br></pre></td></tr></table></figure><p>基本命令示例：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HF_ENDPOINT=https://hf-mirror.com</span><br><span class="line">huggingface-cli download --resume-download --local-dir-use-symlinks False bigscience/bloom-560m --local-dir bloom-560m</span><br></pre></td></tr></table></figure><p>PS：详情参考<a href="https://fanfer.top/2024/01/18/HuggingFace-%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9E%8B/">https://fanfer.top/2024/01/18/HuggingFace-下载模型/</a>和<a href="https://hf-mirror.com/">https://hf-mirror.com</a></p><p>如果是国内想要通过OpenAI API访问GPT</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line">client = OpenAI(</span><br><span class="line">    base_url=<span class="string">&#x27;https://api.openai-proxy.org/v1&#x27;</span>,</span><br><span class="line">    api_key=<span class="string">&#x27;sk-xxxxxxxx&#x27;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">chat_completion = client.chat.completions.create(</span><br><span class="line">    messages=[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>,</span><br><span class="line">            <span class="string">&quot;content&quot;</span>: <span class="string">&quot;Say hi&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    model=<span class="string">&quot;gpt-3.5-turbo&quot;</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure><aside>❗ 注意配置api_base时，应该加上一个/v1的后缀，而不是只有域名，要不然会报404错误</aside><p>如使用LangChain，可以使用closeai提供的代理进行访问</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> OPENAI_API_BASE=https://api.openai-proxy.org/v1</span><br><span class="line"><span class="built_in">export</span> OPENAI_API_KEY=sk-xxxxxxxx</span><br></pre></td></tr></table></figure><aside>❗ 注意配置环境变量时，langchain的`OPENAI_API_BASE`应该加上一个`/v1`的后缀，而不是只有域名，要不然会报404错误。</aside>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LLM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>HuggingFace-下载模型</title>
       <link href="/2024/01/18/HuggingFace-%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9E%8B/"/>
       <url>/2024/01/18/HuggingFace-%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9E%8B/</url>
