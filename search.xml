@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Hello World</title>
+      <link href="/2024/03/28/InternLM2/"/>
+      <url>/2024/03/28/InternLM2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="书生-浦语大模型实战营-一-：书生-浦语大模型全链路开源体系"><strong>书生·浦语大模型实战营（一）：书生·浦语大模型全链路开源体系</strong></h1><p>github：<a href="https://github.com/InternLM/Tutorial/tree/camp2">https://github.com/InternLM/Tutorial/tree/camp2</a></p><p>InternLM2 报告：<a href="https://arxiv.org/pdf/2403.17297.pdf">https://arxiv.org/pdf/2403.17297.pdf</a></p><p>视频地址：<a href="https://www.bilibili.com/video/BV1Vx421X72D/">https://www.bilibili.com/video/BV1Vx421X72D/</a></p><p><img src="https://picture.fanfer.fun/img/Intern1.jpeg" alt="Untitled"></p><p>模型到应用的典型流程：</p><p>对于机器人领域，构建智能体应该更能满足应用场景的要求。</p><p>项目案例：</p><p><a href="https://github.com/BestAnHongjun/InternDog">https://github.com/BestAnHongjun/InternDog</a></p><p>针对水面无人艇而言，在设计的过程中，应该有较好的顶层设计，哪些信息从外界API获取，哪些功能通过调用API执行，同时要注意工具是备选，应该是通过选择工作，完成指令，而不是变成分类任务，机械地调用</p><p>同时，针对特定情境下，应该通过代码生成，从而构建新的内部API</p><p><img src="https://picture.fanfer.fun/img/Intern2.jpeg" alt="Untitled"></p><p><img src="https://picture.fanfer.fun/img/Intern3.jpeg" alt="Untitled"></p><p>Lagent，借助AutoGPT等方式，实现更好的工具选择。</p><p>同时使用更加丰富的多模态智能体工具箱，多模态的信息输入对于机器人而言应该是很重要的信息补充</p><p><img src="https://picture.fanfer.fun/img/Intern4.jpeg" alt="Untitled"></p><p>关于微调：</p><p>增量训练的目的是了解垂类领域的知识</p><p>有监督微调的目的是完成高质量的生成，在计算能力不足的时候，对部分参数进行微调</p><p><img src="https://picture.fanfer.fun/img/Intern5.jpeg" alt="Untitled"></p><p>部署：不太了解，感觉涉及到更多的底层。</p><p>如何将模型轻量化，从而能实现端侧部署，应该是一个可以看的点</p><p><img src="https://picture.fanfer.fun/img/Intern6.jpeg" alt="Untitled"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> InternLM2 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>连不上一些网站的解决方案</title>
       <link href="/2024/02/05/%E8%BF%9E%E4%B8%8D%E4%B8%8A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%AB%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
       <url>/2024/02/05/%E8%BF%9E%E4%B8%8D%E4%B8%8A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%AB%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
