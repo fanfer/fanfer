@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>书生·浦语大模型实战营（三）：InternLM RAG</title>
+      <link href="/2024/04/11/InternLM2RAG/"/>
+      <url>/2024/04/11/InternLM2RAG/</url>
+      
+        <content type="html"><![CDATA[<p>视频：<a href="https://www.bilibili.com/video/BV1QA4m1F7t4/?vd_source=3194af3e77968cb10b1d50711d07106a">https://www.bilibili.com/video/BV1QA4m1F7t4/?vd_source=3194af3e77968cb10b1d50711d07106a</a></p><p>教程：<a href="https://github.com/InternLM/Tutorial/blob/camp2/huixiangdou/readme.md">https://github.com/InternLM/Tutorial/blob/camp2/huixiangdou/readme.md</a></p><p>茴香豆：<a href="https://github.com/InternLM/HuixiangDou">https://github.com/InternLM/HuixiangDou</a></p><p>LLM的局限性：</p><ul><li>知识时效性受限：如何让LLM能够获取最新的知识</li><li>专业能力有限：如何打造垂域大模型</li><li>定制化成本高：如何打造个人专属的LLM应</li></ul><p>两种开发范式：<br>RAG：检索增强生成</p><p>外挂知识库，从知识库中匹配到相应文档，然后和提问一起交给LLM</p><p>低成本、可以实时更新、收到几座影响、单次回答知识有限</p><p>Finetune：微调</p><p>可以个性化微调、知识覆盖面广、成本高昂、无法实时更新</p><h2 id="rag：">RAG：</h2><p>RAG（Retrieval Augmented Generation）技术，通过检索与用户输入相关的信息片段，并结合<em><strong>外部知识库</strong></em>来生成更准确、更丰富的回答。解决 LLMs 在处理知识密集型任务时可能遇到的挑战, 如幻觉、知识过时和缺乏透明、可追溯的推理过程等。提供更准确的回答、降低推理成本、实现外部记忆。</p><p><img src="https://picture.fanfer.fun/img/internLM31.png" alt="Untitled"></p><h2 id="langchain">LangChain</h2><p>LangChain 框架是一个开源工具，通过为各种LLM 提供通用接口来简化应用程序的开发流程，帮助开发者自由构建LLM应用。</p><p>LangChain 的核心组成模块：</p><ul><li><p>链（Chains）：将组件组合实现端到端应用，通过一个对象封装实现一系列<br>LLM 操作</p></li><li><p>Eg. 检索问答链，覆盖实现了 RAG（检索增强生成）的全部流</p><p><img src="https://picture.fanfer.fun/img/internLM32.png" alt="截屏2024-03-29 17.44.19.png"></p></li></ul><h3 id="构建向量数据库">构建向量数据库</h3><h3 id="加载源文件">加载源文件</h3><ul><li>确定源文件类型，针对不同类型的源文件选用不同的加载器<ul><li>核心在于将带格式的文本转化为无格式的字符串</li></ul></li></ul><h3 id="文档分块">文档分块</h3><ul><li>由于单个文档往往超过模型上下文上限，我们需要对加载的文档进行切分<ul><li>一般按字符串长度进行分割</li><li>可以手动控制分割块的长度和重叠区间长度</li></ul></li></ul><h3 id="文档向量化">文档向量化</h3><ul><li>使用向量数据库来支持语义检索，需要将文档向量化存入向量数据库<ul><li>可以使用任意一种 Embedding 模型来进行向量化</li><li>可以使用多种支持语义检索的向量数据库，一般使用轻量级的 Chroma</li></ul></li></ul><h3 id="搭建知识库助手">搭建知识库助手</h3><h3 id="将-internlm-接入-langchain">将 InternLM 接入 LangChain</h3><ul><li>LangChain 支持自定义 LLM，可以直接接入到框架中</li><li>我们只需将 InternLM 部署在本地，并封装一个自定义 LLM 类，调用本地 InternLM 即可</li></ul><h3 id="构建检索问答链">构建检索问答链</h3><ul><li>LangChain 提供了检索问答链模版，可以自动实现知识检索、Prompt 嵌入、LLM 问答的全部流程</li><li>将基于 InternLM 的自定义 LLM 和已构建的向量数据库接入到检索问答链的上游</li><li>调用检索问答链，即可实现知识库助手的核心功能</li></ul><p>!<a href="https://picture.fanfer.fun/img/internLM33.webp">https://picture.fanfer.fun/img/internLM33.webp</a></p><ul><li>基于RAG的问答系统性能核心受限于：<ul><li>检索精度</li><li>Prompt性能</li></ul></li><li>一些可能的优化点：<ul><li>检索方面：<ul><li>基于语义进行分割，保证每一个chunk的语义完整</li><li>给每一个chunk生成概括性索引，检索时匹配索引</li></ul></li></ul></li></ul><p>Prompt方面：迭代优化Prompt策略</p><p><img src="https://picture.fanfer.fun/img/internLM34.png" alt="Untitled"></p><p><a href=""></a></p><p><img src="https://picture.fanfer.fun/img/internLM35.png" alt="Untitled"></p><p><img src="https://picture.fanfer.fun/img/internLM36.png" alt="Untitled"></p><p><img src="https://picture.fanfer.fun/img/internLM37.png" alt="Untitled"></p><p><img src="https://picture.fanfer.fun/img/internLM38.png" alt="Untitled"></p><p><img src="https://picture.fanfer.fun/img/internLM39.png" alt="Untitled"></p><p><img src="https://picture.fanfer.fun/img/internLM310.png" alt="Untitled"></p><p>作业：</p><p><img src="https://picture.fanfer.fun/img/internLM311.png" alt="截屏2024-04-11 19.09.41.png"></p><p><img src="https://picture.fanfer.fun/img/internLM3111.png" alt="截屏2024-04-11 19.09.41.png"></p><p><img src="https://picture.fanfer.fun/img/internLM312.png" alt="截屏2024-04-11 19.09.41.png"></p><p><img src="https://picture.fanfer.fun/img/internLM313.png" alt="截屏2024-04-11 19.09.41.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> InternLM2 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>书生·浦语大模型实战营（二）：InternLM Demo</title>
       <link href="/2024/04/01/InternLM2Demo/"/>
       <url>/2024/04/01/InternLM2Demo/</url>
