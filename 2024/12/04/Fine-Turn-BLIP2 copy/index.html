@@ -1,0 +1,489 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>QGControl | fanfer 🥰</title><meta name="author" content="fanfer🇨🇳"><meta name="copyright" content="fanfer🇨🇳"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Code Docs Documentation Documentation 图像相关  📘 ImageProtocolManager是一个用于处理MAVLink图像传输协议的类，主要用于接收和处理来自光流相机等设备的图像数据。以下是其主要工作流程：  1. 基本组成  两个主要成员变量：  _imageHandshake: 存储图像传输握手信息 _imageBytes: 存储接收到的图像数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QGControl">
+<meta property="og:url" content="http://fanfer.fun/2024/12/04/Fine-Turn-BLIP2%20copy/index.html">
+<meta property="og:site_name" content="fanfer 🥰">
+<meta property="og:description" content="Code Docs Documentation Documentation 图像相关  📘 ImageProtocolManager是一个用于处理MAVLink图像传输协议的类，主要用于接收和处理来自光流相机等设备的图像数据。以下是其主要工作流程：  1. 基本组成  两个主要成员变量：  _imageHandshake: 存储图像传输握手信息 _imageBytes: 存储接收到的图像数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picture.fanfer.top/Test_pics/IMG_5022.JPG">
+<meta property="article:published_time" content="2024-12-04T02:38:16.000Z">
+<meta property="article:modified_time" content="2024-12-05T03:28:01.115Z">
+<meta property="article:author" content="fanfer🇨🇳">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picture.fanfer.top/Test_pics/IMG_5022.JPG"><link rel="shortcut icon" href="/assets/milk2.svg"><link rel="canonical" href="http://fanfer.fun/2024/12/04/Fine-Turn-BLIP2%20copy/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'QGControl',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-05 11:28:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/cat.css"><link rel="stylesheet" href="/css/custom.css"><div id="myscoll"></div><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/head.jpeg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/assets/background.JPG')"><nav id="nav"><span id="blog-info"><a href="/" title="fanfer 🥰"><span class="site-name">fanfer 🥰</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">QGControl</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-04T02:38:16.000Z" title="发表于 2024-12-04 10:38:16">2024-12-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-12-05T03:28:01.115Z" title="更新于 2024-12-05 11:28:01">2024-12-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="QGControl"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://www.notion.so/14bf894c1a27810b8ae6e23c1d668e06?pvs=21">Code Docs</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.notion.so/Documentation-14bf894c1a2780a6a7c6c80eb0ff334a?pvs=21">Documentation</a></p>
+<h1 id="documentation">Documentation</h1>
+<h1 id="图像相关">图像相关</h1>
+<blockquote>
+<p>📘 ImageProtocolManager是一个用于处理MAVLink图像传输协议的类，主要用于接收和处理来自光流相机等设备的图像数据。以下是其主要工作流程：</p>
+</blockquote>
+<h3 id="1-基本组成">1. 基本组成</h3>
+<ul>
+<li>两个主要成员变量：
+<ul>
+<li><code>_imageHandshake</code>: 存储图像传输握手信息</li>
+<li><code>_imageBytes</code>: 存储接收到的图像数据</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-图像接收流程">2. 图像接收流程</h3>
+<ol>
+<li><strong>握手阶段</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE:</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接收<code>DATA_TRANSMISSION_HANDSHAKE</code>消息</li>
+<li>清空之前的图像数据</li>
+<li>记录新图像的基本信息（类型、宽度、高度等）</li>
+</ul>
+<ol>
+<li><strong>数据传输阶段</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> MAVLINK_MSG_ID_ENCAPSULATED_DATA:</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接收<code>ENCAPSULATED_DATA</code>消息</li>
+<li>根据序号(<code>seqnr</code>)将数据放入正确的位置</li>
+<li>通过<code>_imageHandshake.packets</code>计数追踪传输完成情况</li>
+<li>当所有数据包接收完成时，发出<code>imageReady</code>信号</li>
+</ul>
+<ol>
+<li><strong>图像获取</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QImage <span class="title">ImageProtocolManager::getImage</span><span class="params">(<span class="type">void</span>)</span></span></span><br></pre></td></tr></table></figure>
+<p>支持多种图像格式：</p>
+<ul>
+<li>RAW8U/RAW32U：构建PGM格式</li>
+<li>BMP/JPEG/PGM/PNG：直接加载</li>
+<li>返回QImage对象</li>
+</ul>
+<h3 id="3-使用示例">3. 使用示例</h3>
+<p>假设您要在代码中使用这个类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建实例</span></span><br><span class="line">ImageProtocolManager* imageManager = <span class="keyword">new</span> <span class="built_in">ImageProtocolManager</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 连接信号</span></span><br><span class="line"><span class="built_in">connect</span>(imageManager, &amp;ImageProtocolManager::imageReady, <span class="keyword">this</span>, [=]() &#123;</span><br><span class="line">    QImage image = imageManager-&gt;<span class="built_in">getImage</span>();</span><br><span class="line">    <span class="comment">// 处理接收到的图像</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接收MAVLink消息时</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">onMavlinkMessageReceived</span><span class="params">(<span class="type">mavlink_message_t</span> message)</span> </span>&#123;</span><br><span class="line">    imageManager-&gt;<span class="built_in">mavlinkMessageReceived</span>(message);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="4-错误处理">4. 错误处理</h3>
+<p>该类包含多个错误检查：</p>
+<ul>
+<li>检查是否有未完成的前序传输</li>
+<li>验证数据包序号是否有效</li>
+<li>检查图像数据完整性</li>
+<li>支持的图像格式验证</li>
+</ul>
+<h3 id="5-注意事项">5. 注意事项</h3>
+<ul>
+<li>图像传输必须按照顺序：先握手，后数据</li>
+<li>在调用<code>getImage()</code>之前确保图像传输完成</li>
+<li>支持多种图像格式，但对于RAW格式需要特殊处理</li>
+</ul>
+<p>这个类的设计遵循了MAVLink图像传输协议规范</p>
+<ol>
+<li><strong>ImageProtocolManager的局限性</strong></li>
+</ol>
+<ul>
+<li>ImageProtocolManager只是一个接收和处理图像数据的工具</li>
+<li>它不能主动触发拍照操作</li>
+<li>它只负责接收和处理MAVLink传输的图像数据</li>
+</ul>
+<ol>
+<li><strong>正确的拍照流程</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PhotoCapture</span> : <span class="keyword">public</span> QObject &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">PhotoCapture</span>(Vehicle* vehicle) &#123;</span><br><span class="line">        <span class="comment">// 1. 创建相机控制器（用于触发拍照）</span></span><br><span class="line">        _cameraControl = vehicle-&gt;<span class="built_in">cameraManager</span>()-&gt;<span class="built_in">currentCameraInstance</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 创建图像接收器（用于接收图像数据）</span></span><br><span class="line">        _imageManager = <span class="keyword">new</span> <span class="built_in">ImageProtocolManager</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3. 连接vehicle的消息到图像管理器</span></span><br><span class="line">        <span class="built_in">connect</span>(vehicle, &amp;Vehicle::mavlinkMessageReceived,</span><br><span class="line">                _imageManager, &amp;ImageProtocolManager::mavlinkMessageReceived);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 4. 处理接收到的图像</span></span><br><span class="line">        <span class="built_in">connect</span>(_imageManager, &amp;ImageProtocolManager::imageReady,</span><br><span class="line">                <span class="keyword">this</span>, &amp;PhotoCapture::handleImageReceived);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">capturePhoto</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (_cameraControl) &#123;</span><br><span class="line">            _cameraControl-&gt;<span class="built_in">takePhoto</span>();  <span class="comment">// 触发拍照</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">handleImageReceived</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        QImage image = _imageManager-&gt;<span class="built_in">getImage</span>();</span><br><span class="line">        <span class="keyword">if</span> (!image.<span class="built_in">isNull</span>()) &#123;</span><br><span class="line">            QString filename = <span class="built_in">QString</span>(<span class="string">&quot;photo_%1.jpg&quot;</span>)</span><br><span class="line">                .<span class="built_in">arg</span>(QDateTime::<span class="built_in">currentDateTime</span>().<span class="built_in">toString</span>(<span class="string">&quot;yyyyMMdd_hhmmss&quot;</span>));</span><br><span class="line">            image.<span class="built_in">save</span>(filename);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    QGCCameraControl* _cameraControl;</span><br><span class="line">    ImageProtocolManager* _imageManager;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>为什么需要相机控制</strong></li>
+</ol>
+<ul>
+<li>相机需要接收拍照命令才会开始拍照</li>
+<li>相机控制器处理相机的状态和参数设置</li>
+<li>相机控制器提供拍照反馈和状态更新</li>
+</ul>
+<ol>
+<li><strong>完整的最小实现</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 最简单的拍照实现</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MinimalPhotoCapture</span> : <span class="keyword">public</span> QObject &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MinimalPhotoCapture</span>(Vehicle* vehicle) : _vehicle(vehicle) &#123;</span><br><span class="line">        <span class="comment">// 设置图像接收器</span></span><br><span class="line">        _imageManager = <span class="keyword">new</span> <span class="built_in">ImageProtocolManager</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 连接必要的信号</span></span><br><span class="line">        <span class="built_in">connect</span>(_vehicle, &amp;Vehicle::mavlinkMessageReceived,</span><br><span class="line">                _imageManager, &amp;ImageProtocolManager::mavlinkMessageReceived);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">connect</span>(_imageManager, &amp;ImageProtocolManager::imageReady,</span><br><span class="line">                <span class="keyword">this</span>, &amp;MinimalPhotoCapture::onImageReady);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">takePhoto</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 必须通过相机控制发送拍照命令</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">auto</span> camera = _vehicle-&gt;<span class="built_in">cameraManager</span>()-&gt;<span class="built_in">currentCameraInstance</span>()) &#123;</span><br><span class="line">            camera-&gt;<span class="built_in">takePhoto</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">onImageReady</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 保存接收到的图像</span></span><br><span class="line">        QImage image = _imageManager-&gt;<span class="built_in">getImage</span>();</span><br><span class="line">        <span class="keyword">if</span> (!image.<span class="built_in">isNull</span>()) &#123;</span><br><span class="line">            image.<span class="built_in">save</span>(<span class="string">&quot;captured_photo.jpg&quot;</span>);</span><br><span class="line">            <span class="built_in">qDebug</span>() &lt;&lt; <span class="string">&quot;Photo saved successfully&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Vehicle* _vehicle;</span><br><span class="line">    ImageProtocolManager* _imageManager;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>使用示例</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用方法</span></span><br><span class="line">Vehicle* vehicle = ...;  <span class="comment">// 获取vehicle实例</span></span><br><span class="line">MinimalPhotoCapture* photoCapture = <span class="keyword">new</span> <span class="built_in">MinimalPhotoCapture</span>(vehicle);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拍照</span></span><br><span class="line">photoCapture-&gt;<span class="built_in">takePhoto</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>所以总结来说：</p>
+<ul>
+<li>不能只使用ImageProtocolManager来完成拍照</li>
+<li>需要通过相机控制器发送拍照命令</li>
+<li>ImageProtocolManager负责接收和处理图像数据</li>
+<li>两者配合才能完成完整的拍照流程</li>
+</ul>
+<p>建议：</p>
+<ol>
+<li>如果只需要简单拍照功能，可以使用上面的MinimalPhotoCapture实现</li>
+<li>如果需要更多相机控制功能（如设置参数、模式等），则使用完整的相机控制系统</li>
+<li>始终需要同时使用相机控制和ImageProtocolManager</li>
+</ol>
+<h1 id="多智能体">多智能体</h1>
+<p>MultiVehicleManager是一个核心管理类，负责管理和协调多个车辆(Vehicle)。</p>
+<h3 id="1-核心功能">1. 核心功能</h3>
+<ol>
+<li><strong>车辆管理</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultiVehicleManager</span> : <span class="keyword">public</span> QGCTool &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    QList&lt;Vehicle*&gt;    _vehicles;           <span class="comment">// 管理所有车辆</span></span><br><span class="line">    Vehicle*           _activeVehicle;      <span class="comment">// 当前活动车辆</span></span><br><span class="line">    <span class="type">bool</span>              _activeVehicleAvailable;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>通信管理</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> MultiVehicleManager::_sendGCSHeartbeat(<span class="type">void</span>) &#123;</span><br><span class="line">    <span class="comment">// 向所有连接的车辆发送心跳包</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;sharedLinks.<span class="built_in">count</span>(); i++) &#123;</span><br><span class="line">        LinkInterface* link = sharedLinks[i].<span class="built_in">get</span>();</span><br><span class="line">        <span class="keyword">if</span> (link-&gt;<span class="built_in">isConnected</span>()) &#123;</span><br><span class="line">            <span class="type">mavlink_message_t</span> message;</span><br><span class="line">            <span class="built_in">mavlink_msg_heartbeat_pack_chan</span>(...);</span><br><span class="line">            link-&gt;<span class="built_in">writeBytesThreadSafe</span>((<span class="type">const</span> <span class="type">char</span>*)buffer, len);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>编队控制协调</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> MultiVehicleManager::_mainWork(<span class="type">void</span>) &#123;</span><br><span class="line">    <span class="comment">// 处理不同编队模式</span></span><br><span class="line">    <span class="keyword">switch</span>(bs_multi_model) &#123;</span><br><span class="line">        <span class="keyword">case</span> Single:</span><br><span class="line">            <span class="comment">// 单船模式</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Multi8:</span><br><span class="line">            <span class="comment">// 多船编队模式</span></span><br><span class="line">            <span class="keyword">if</span>(multi_start_flag) &#123;</span><br><span class="line">                <span class="comment">// 收集所有船只信息</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt;_vehicles.<span class="built_in">count</span>(); i++) &#123;</span><br><span class="line">                    Vehicle *v = <span class="built_in">qobject_cast</span>&lt;Vehicle*&gt;(_vehicles[i]);</span><br><span class="line">                    LBAgent agent;</span><br><span class="line">                    agent.id = v-&gt;<span class="built_in">id</span>();</span><br><span class="line">                    agent.lat = v-&gt;lat;</span><br><span class="line">                    agent.lon = v-&gt;lon;</span><br><span class="line">                    <span class="comment">// ... 其他参数</span></span><br><span class="line">                    _allagent.<span class="built_in">push_back</span>(agent);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 执行编队控制</span></span><br><span class="line">                vector&lt;LBActor&gt; all_actor =</span><br><span class="line">                    _multiAgentController.<span class="built_in">FaultFormationControl2</span>(_allagent, formation_gap);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 分发控制指令</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt;_vehicles.<span class="built_in">count</span>(); i++) &#123;</span><br><span class="line">                    Vehicle *v = <span class="built_in">qobject_cast</span>&lt;Vehicle*&gt;(_vehicles[i]);</span><br><span class="line">                    v-&gt;<span class="built_in">receiveMultiParameters</span>(control_data);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2-关键职责">2. 关键职责</h3>
+<ol>
+<li><strong>状态管理</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 管理各种控制模式标志</span></span><br><span class="line"><span class="type">bool</span> _manipulate_connect_flag;  <span class="comment">// 操控模式</span></span><br><span class="line"><span class="type">bool</span> _logic_connect_flag;       <span class="comment">// 逻辑模式</span></span><br><span class="line"><span class="type">bool</span> _virtual_connect_flag;     <span class="comment">// 虚拟模式</span></span><br><span class="line"><span class="type">bool</span> multi_start_flag;          <span class="comment">// 编队启动标志</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>任务协调</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">MultiVehicleManager::setMissionItems</span><span class="params">(<span class="type">const</span> QList&lt;MissionItem*&gt;&amp; items)</span> </span>&#123;</span><br><span class="line">    _allMissionItems = items;</span><br><span class="line">    set_mission_flag = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知编队控制器</span></span><br><span class="line">    vector&lt;LBMission&gt; missions;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt;_allMissionItems.<span class="built_in">count</span>(); i++) &#123;</span><br><span class="line">        MissionItem* item = _allMissionItems[i];</span><br><span class="line">        LBMission mis;</span><br><span class="line">        mis.lat = item-&gt;<span class="built_in">param5</span>();</span><br><span class="line">        mis.lon = item-&gt;<span class="built_in">param6</span>();</span><br><span class="line">        missions.<span class="built_in">push_back</span>(mis);</span><br><span class="line">    &#125;</span><br><span class="line">    _multiAgentController.<span class="built_in">MissionGet</span>(missions);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>模式切换管理</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">MultiVehicleManager::switchControlMode</span><span class="params">(ControlMode mode)</span> </span>&#123;</span><br><span class="line">    bs_control_model = mode;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开其他模式连接</span></span><br><span class="line">    <span class="keyword">if</span>(_manipulate_connect_flag) <span class="built_in">manipulateDisconnect</span>();</span><br><span class="line">    <span class="keyword">if</span>(_logic_connect_flag) <span class="built_in">logicDisconnect</span>();</span><br><span class="line">    <span class="keyword">if</span>(_virtual_connect_flag) <span class="built_in">virtualDisconnect</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建立新模式连接</span></span><br><span class="line">    <span class="keyword">switch</span>(mode) &#123;</span><br><span class="line">        <span class="keyword">case</span> Manipulate:</span><br><span class="line">            <span class="built_in">manipulateConnect</span>();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Logic:</span><br><span class="line">            <span class="built_in">logicConnect</span>();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Virtual:</span><br><span class="line">            <span class="built_in">virtualConnect</span>();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-使用示例">3. 使用示例</h3>
+<ol>
+<li><strong>初始化多船系统</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建管理器</span></span><br><span class="line">MultiVehicleManager* manager = <span class="keyword">new</span> <span class="built_in">MultiVehicleManager</span>(app, toolbox);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置编队模式</span></span><br><span class="line">manager-&gt;<span class="built_in">setMultiModel</span>(Multi8);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置控制模式</span></span><br><span class="line">manager-&gt;<span class="built_in">setControlModel</span>(Manipulate);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>执行编队任务</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置任务点</span></span><br><span class="line">QList&lt;MissionItem*&gt; missionItems;</span><br><span class="line"><span class="comment">// ... 添加任务点</span></span><br><span class="line">manager-&gt;<span class="built_in">setMissionItems</span>(missionItems);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动编队</span></span><br><span class="line">manager-&gt;<span class="built_in">startMultiFormation</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="4-重要接口">4. 重要接口</h3>
+<ol>
+<li><strong>车辆管理接口</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vehicle* <span class="title">getVehicleById</span><span class="params">(<span class="type">int</span> vehicleId)</span></span>;</span><br><span class="line"><span class="function">Vehicle* <span class="title">activeVehicle</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">QList&lt;Vehicle*&gt; <span class="title">vehicles</span><span class="params">()</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>控制接口</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">setMultiModel</span><span class="params">(MultiModel model)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setControlModel</span><span class="params">(ControlModel model)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">startMultiFormation</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">stopMultiFormation</span><span class="params">()</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>状态监控接口</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isMultiFormationActive</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isVehicleAvailable</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">vehicleAdded</span><span class="params">(Vehicle* vehicle)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">vehicleRemoved</span><span class="params">(Vehicle* vehicle)</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="5-注意事项">5. 注意事项</h3>
+<ol>
+<li>确保所有车辆都已正确连接和初始化</li>
+<li>在切换模式前检查当前状态</li>
+<li>处理通信延迟和丢失情况</li>
+<li>保持心跳包的定期发送</li>
+<li>正确处理异常情况和错误恢复</li>
+</ol>
+<p>MultiVehicleManager是整个多车辆系统的中枢，它协调各个子系统的工作，确保整个系统的正常运行。在进行编队控制时，它扮演着&quot;指挥官&quot;的角色，负责协调各个车辆的行动。</p>
+<h1 id="编队控制">编队控制</h1>
+<h3 id="1-核心类的功能">1. 核心类的功能</h3>
+<ol>
+<li><strong>MultiAgentFormation</strong></li>
+</ol>
+<ul>
+<li>作为编队控制的主要接口类</li>
+<li>管理不同类型的编队控制器</li>
+<li>提供多种编队模式的切换功能</li>
+</ul>
+<ol>
+<li><strong>VSFormationControl</strong></li>
+</ol>
+<ul>
+<li>实现基础的编队控制算法</li>
+<li>支持多种编队形状（方形、C字型、纵排、三角形等）</li>
+<li>处理目标点计算和速度控制</li>
+</ul>
+<h3 id="2-编队模式">2. 编队模式</h3>
+<p>从代码中可以看到多种编队模式：</p>
+<ol>
+<li><strong>基础编队模式</strong> (VSFormationControl::VSFormationCalculate)</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(formationModel) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>: <span class="comment">// 方形编队</span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>: <span class="comment">// C字型编队</span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>: <span class="comment">// 纵排编队</span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>: <span class="comment">// 三角形编队</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>特殊编队模式</strong></li>
+</ol>
+<ul>
+<li>HUSTMoveFormation: 移动编队</li>
+<li>HUSTSearchFormation: 搜索编队</li>
+<li>HUSTExpelFormation: 驱离编队</li>
+<li>FaultFormation: 容错编队</li>
+</ul>
+<h3 id="3-编队切换方法">3. 编队切换方法</h3>
+<p>要完成编队切换，需要：</p>
+<ol>
+<li><strong>设置编队模式</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在MultiVehicleManager中</span></span><br><span class="line"><span class="keyword">if</span>(bs_multi_model == Multi3) &#123;  <span class="comment">// 选择编队模式</span></span><br><span class="line">    <span class="comment">// 设置编队参数</span></span><br><span class="line">    control_data.work_model = Mission;</span><br><span class="line">    control_data.formation_flag = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用对应的编队控制器</span></span><br><span class="line">    all_missions = _multiAgentController.<span class="built_in">HUSTMoveFormationControl</span>(_allagent, formation_gap);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>切换步骤</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 创建编队控制器</span></span><br><span class="line">MultiAgentFormation _multiAgentController;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 设置任务点</span></span><br><span class="line">vector&lt;LBMission&gt; missions;</span><br><span class="line"><span class="comment">// 添加任务点...</span></span><br><span class="line">_multiAgentController.<span class="built_in">MissionGet</span>(missions);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 选择编队模式并执行</span></span><br><span class="line"><span class="comment">// 例如切换到移动编队:</span></span><br><span class="line">vector&lt;vector&lt;LBMission&gt;&gt; all_missions = _multiAgentController.<span class="built_in">HUSTMoveFormationControl</span>(_allagent, formation_gap);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或切换到搜索编队:</span></span><br><span class="line">all_missions = _multiAgentController.<span class="built_in">HUSTSearchFormationControl</span>(_allagent, formation_gap);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="4-编队切换的关键参数">4. 编队切换的关键参数</h3>
+<ol>
+<li><strong>控制标志</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">control_data.work_model    <span class="comment">// 工作模式</span></span><br><span class="line">control_data.work_state   <span class="comment">// 工作状态</span></span><br><span class="line">control_data.formation_flag <span class="comment">// 编队标志</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>编队参数</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">formation_gap  <span class="comment">// 编队间距</span></span><br><span class="line">refreshFlag    <span class="comment">// 刷新标志</span></span><br><span class="line">multi_start_flag <span class="comment">// 编队启动标志</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="5-实际使用示例">5. 实际使用示例</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 切换到移动编队</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">switchToMoveFormation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 1. 设置控制参数</span></span><br><span class="line">    control_data.work_model = Mission;</span><br><span class="line">    control_data.work_state = USVRun;</span><br><span class="line">    control_data.formation_flag = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 设置任务点</span></span><br><span class="line">    <span class="keyword">if</span>(set_mission_flag) &#123;</span><br><span class="line">        vector&lt;LBMission&gt; missions;</span><br><span class="line">        <span class="comment">// 添加任务点...</span></span><br><span class="line">        _multiAgentController.<span class="built_in">MissionGet</span>(missions);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 执行编队控制</span></span><br><span class="line">    vector&lt;vector&lt;LBMission&gt;&gt; all_missions =</span><br><span class="line">        _multiAgentController.<span class="built_in">HUSTMoveFormationControl</span>(_allagent, formation_gap);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 为每个船只分配任务</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; _vehicles.<span class="built_in">count</span>(); i++) &#123;</span><br><span class="line">        Vehicle *v = <span class="built_in">qobject_cast</span>&lt;Vehicle*&gt;(_vehicles[i]);</span><br><span class="line">        <span class="keyword">if</span>(all_missions.<span class="built_in">size</span>() &gt; i) &#123;</span><br><span class="line">            v-&gt;<span class="built_in">MissionGet</span>(<span class="built_in">convertToMissionItems</span>(all_missions[i]));</span><br><span class="line">        &#125;</span><br><span class="line">        v-&gt;<span class="built_in">receiveMultiParameters</span>(control_data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="直接通过grabimage-方法实现">直接通过grabImage()方法实现</h1>
+<p>可以直接使用VideoManager的grabImage()方法来获取图片。这个方法相对简单,不需要直接操作摄像头控制。</p>
+<h3 id="1-grabimage-方法分析">1. grabImage() 方法分析</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">VideoManager::grabImage</span><span class="params">(<span class="type">const</span> QString&amp; imageFile)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1. 检查视频接收器是否可用</span></span><br><span class="line">    <span class="keyword">if</span> (!_videoReceiver[<span class="number">0</span>] &amp;&amp; !_videoReceiver[<span class="number">2</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 设置保存路径</span></span><br><span class="line">    <span class="keyword">if</span> (imageFile.<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">        <span class="comment">// 使用默认路径和文件名</span></span><br><span class="line">        _imageFile = <span class="built_in">qgcApp</span>()-&gt;<span class="built_in">toolbox</span>()-&gt;<span class="built_in">settingsManager</span>()-&gt;<span class="built_in">appSettings</span>()-&gt;<span class="built_in">photoSavePath</span>();</span><br><span class="line">        _imageFile += <span class="string">&quot;/&quot;</span> + QDateTime::<span class="built_in">currentDateTime</span>().<span class="built_in">toString</span>(<span class="string">&quot;yyyy-MM-dd_hh.mm.ss.zzz&quot;</span>) + <span class="string">&quot;.jpg&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        _imageFile = imageFile;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">emit <span class="title">imageFileChanged</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 捕获图像</span></span><br><span class="line">    _videoReceiver[<span class="number">0</span>]-&gt;<span class="built_in">takeScreenshot</span>(_imageFile);</span><br><span class="line">    _videoReceiver[<span class="number">2</span>]-&gt;<span class="built_in">takeScreenshot</span>(_imageFile);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2-使用示例">2. 使用示例</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在MultiVehicleManager中添加拍照方法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MultiVehicleManager::captureImage</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    VideoManager* videoManager = <span class="built_in">qgcApp</span>()-&gt;<span class="built_in">toolbox</span>()-&gt;<span class="built_in">videoManager</span>();</span><br><span class="line">    <span class="keyword">if</span> (videoManager) &#123;</span><br><span class="line">        <span class="comment">// 方式1: 使用默认路径</span></span><br><span class="line">        videoManager-&gt;<span class="built_in">grabImage</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 方式2: 指定保存路径</span></span><br><span class="line">        QString customPath = <span class="string">&quot;path/to/your/photo.jpg&quot;</span>;</span><br><span class="line">        videoManager-&gt;<span class="built_in">grabImage</span>(customPath);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="4-使用注意事项">4. 使用注意事项</h3>
+<ol>
+<li><strong>确保视频流已启动</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!videoManager-&gt;<span class="built_in">streaming</span>()) &#123;</span><br><span class="line">    videoManager-&gt;<span class="built_in">startVideo</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>检查保存路径</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QString photoPath = <span class="built_in">qgcApp</span>()-&gt;<span class="built_in">toolbox</span>()-&gt;<span class="built_in">settingsManager</span>()-&gt;<span class="built_in">appSettings</span>()-&gt;<span class="built_in">photoSavePath</span>();</span><br><span class="line"><span class="function">QDir <span class="title">dir</span><span class="params">(photoPath)</span></span>;</span><br><span class="line"><span class="keyword">if</span> (!dir.<span class="built_in">exists</span>()) &#123;</span><br><span class="line">    dir.<span class="built_in">mkpath</span>(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>处理错误情况</strong></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">connect</span>(videoManager, &amp;VideoManager::imageFileChanged, <span class="keyword">this</span>, [=]() &#123;</span><br><span class="line">    QString imageFile = videoManager-&gt;<span class="built_in">imageFile</span>();</span><br><span class="line">    <span class="keyword">if</span> (QFile::<span class="built_in">exists</span>(imageFile)) &#123;</span><br><span class="line">        <span class="built_in">qDebug</span>() &lt;&lt; <span class="string">&quot;Image saved successfully:&quot;</span> &lt;&lt; imageFile;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">qWarning</span>() &lt;&lt; <span class="string">&quot;Failed to save image&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="5-建议的完整实现">5. 建议的完整实现</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PhotoCapture</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">PhotoCapture</span>() &#123;</span><br><span class="line">        _videoManager = <span class="built_in">qgcApp</span>()-&gt;<span class="built_in">toolbox</span>()-&gt;<span class="built_in">videoManager</span>();</span><br><span class="line">        <span class="built_in">connect</span>(_videoManager, &amp;VideoManager::imageFileChanged,</span><br><span class="line">                <span class="keyword">this</span>, &amp;PhotoCapture::_handleImageCaptured);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">capturePhoto</span><span class="params">(<span class="type">const</span> QString&amp; customPath = QString())</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!_videoManager) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 确保视频流已启动</span></span><br><span class="line">        <span class="keyword">if</span> (!_videoManager-&gt;<span class="built_in">streaming</span>()) &#123;</span><br><span class="line">            _videoManager-&gt;<span class="built_in">startVideo</span>();</span><br><span class="line">            <span class="comment">// 等待视频流启动</span></span><br><span class="line">            QTimer::<span class="built_in">singleShot</span>(<span class="number">1000</span>, <span class="keyword">this</span>, [=]() &#123;</span><br><span class="line">                _videoManager-&gt;<span class="built_in">grabImage</span>(customPath);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            _videoManager-&gt;<span class="built_in">grabImage</span>(customPath);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">void</span> _handleImageCaptured() &#123;</span><br><span class="line">        QString imageFile = _videoManager-&gt;<span class="built_in">imageFile</span>();</span><br><span class="line">        <span class="keyword">if</span> (QFile::<span class="built_in">exists</span>(imageFile)) &#123;</span><br><span class="line">            <span class="function">emit <span class="title">photoCaptured</span><span class="params">(imageFile)</span></span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            emit <span class="built_in">photoCaptureFailed</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    VideoManager* _videoManager;</span><br><span class="line"></span><br><span class="line">signals:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">photoCaptured</span><span class="params">(<span class="type">const</span> QString&amp; path)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">photoCaptureFailed</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这种方式比直接控制相机要简单得多,适合只需要获取当前视频画面的场景。如果您需要更多的相机控制功能(如调整曝光、焦距等),那么可能还是需要使用相机控制接口。</p>
+<hr>
+<aside>
+<img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/be8acdfb-cfd7-4e1c-b948-49d6460a6dcd/c0096a68-4fde-441f-a7ba-51b66943c29b/profile-circle.png" alt="https://prod-files-secure.s3.us-west-2.amazonaws.com/be8acdfb-cfd7-4e1c-b948-49d6460a6dcd/c0096a68-4fde-441f-a7ba-51b66943c29b/profile-circle.png" width="40px" /> **👋 hello****
+</aside>
+<p>Table of Contents</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fanfer.fun">fanfer🇨🇳</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fanfer.fun/2024/12/04/Fine-Turn-BLIP2%20copy/">http://fanfer.fun/2024/12/04/Fine-Turn-BLIP2%20copy/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fanfer.fun" target="_blank">fanfer 🥰</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C++</a></div><div class="post_share"><div class="social-share" data-image="https://picture.fanfer.top/Test_pics/IMG_5022.JPG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/11/25/LangGraph0/" title="LangGraph 核心概念"><img class="cover" src="https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/667b080e4b3ca12dc5d5d439_Langgraph%20UI-2.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">LangGraph 核心概念</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/head.jpeg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fanfer🇨🇳</div><div class="author-info__description">Future is now 🍭🍭🍭</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fanfer"><i></i><span>🛴Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fanfer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:yifanhu@whu.edu.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center><b>--- 主域名 ---<br><a target="_blank" rel="noopener" href="https://www.fanfer.top" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fanfer.top</font></a>&nbsp;|&nbsp;<a target="_blank" rel="noopener" href="https://www.fanfer.fun" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fomal.fun</font></a><br>--- 不用翻墙的GPT ---<br><a target="_blank" rel="noopener" href="https://chat.fanfer.fun" title="不用翻墙的GPT" class="anno_content"><font color="#5ea6e5">ChatBot</font></a><br>--- 没有冷气的空调 ---<br><a href="https://fanfer.fun/air-conditioner" title=“没有冷气的空调” class="anno_content"><font color="#5ea6e5">Air Conditioner</font></a></div></div><!--!=partial('includes/widget/card_wx',{},{cache: false})--><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#documentation"><span class="toc-number">1.</span> <span class="toc-text">Documentation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E7%9B%B8%E5%85%B3"><span class="toc-number">2.</span> <span class="toc-text">图像相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90"><span class="toc-number">2.0.1.</span> <span class="toc-text">1. 基本组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9B%BE%E5%83%8F%E6%8E%A5%E6%94%B6%E6%B5%81%E7%A8%8B"><span class="toc-number">2.0.2.</span> <span class="toc-text">2. 图像接收流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.0.3.</span> <span class="toc-text">3. 使用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">2.0.4.</span> <span class="toc-text">4. 错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.0.5.</span> <span class="toc-text">5. 注意事项</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93"><span class="toc-number">3.</span> <span class="toc-text">多智能体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="toc-number">3.0.1.</span> <span class="toc-text">1. 核心功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%B3%E9%94%AE%E8%81%8C%E8%B4%A3"><span class="toc-number">3.0.2.</span> <span class="toc-text">2. 关键职责</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.0.3.</span> <span class="toc-text">3. 使用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%87%8D%E8%A6%81%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.0.4.</span> <span class="toc-text">4. 重要接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.0.5.</span> <span class="toc-text">5. 注意事项</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E9%98%9F%E6%8E%A7%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text">编队控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E7%B1%BB%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">4.0.1.</span> <span class="toc-text">1. 核心类的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E9%98%9F%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.0.2.</span> <span class="toc-text">2. 编队模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E9%98%9F%E5%88%87%E6%8D%A2%E6%96%B9%E6%B3%95"><span class="toc-number">4.0.3.</span> <span class="toc-text">3. 编队切换方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E9%98%9F%E5%88%87%E6%8D%A2%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0"><span class="toc-number">4.0.4.</span> <span class="toc-text">4. 编队切换的关键参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.0.5.</span> <span class="toc-text">5. 实际使用示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E9%80%9A%E8%BF%87grabimage-%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">直接通过grabImage()方法实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-grabimage-%E6%96%B9%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">5.0.1.</span> <span class="toc-text">1. grabImage() 方法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.0.2.</span> <span class="toc-text">2. 使用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">5.0.3.</span> <span class="toc-text">4. 使用注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BB%BA%E8%AE%AE%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.0.4.</span> <span class="toc-text">5. 建议的完整实现</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/assets/background.JPG')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By fanfer🇨🇳</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikko.fanfer.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikko.fanfer.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/cat.js"></script><script src="/js/footer.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
