@@ -74,9 +74,34 @@
             
             <tag> 笔记 </tag>
             
+            <tag> LLM </tag>
+            
             <tag> LangGraph </tag>
             
-            <tag> LLM </tag>
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>推荐系统学习笔记1</title>
+      <link href="/2024/08/12/RecSys1/"/>
+      <url>/2024/08/12/RecSys1/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://picture.fanfer.top/recsys/recsys1.png" alt="image.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 推荐系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 推荐系统 </tag>
             
         </tags>
       
