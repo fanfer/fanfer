@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>搜索的链路</title>
+      <link href="/2025/01/11/%E6%90%9C%E7%B4%A2%E7%9A%84%E9%93%BE%E8%B7%AF/"/>
+      <url>/2025/01/11/%E6%90%9C%E7%B4%A2%E7%9A%84%E9%93%BE%E8%B7%AF/</url>
+      
+        <content type="html"><![CDATA[<h2 id="搜索的评价">搜索的评价</h2><p><img src="https://picture.fanfer.top/img/sousuo1.png" alt="截屏2025-01-07 16.22.44.png"></p><p>曝光和点击</p><ul><li>曝光： 用户在搜索结果页看到文档，计算曝光</li><li>文档点击：在曝光之后，用户点击文档，进入文档的详情页</li><li>文档点击率：文档点击总次数/文档曝光总次数</li></ul><p>查询词点击率（有点比）</p><ul><li>查询词点击：用户点击搜索结果页上任意一篇文档，就算&quot;查询词点击&quot;</li><li>查询词点击率（有点比）：查询词点击总次数 / 搜索总次数</li><li>查询词首屏点击：用户点击搜索结果页首屏的任意一篇文档，就算&quot;查询词首屏点击&quot;</li><li>查询词首屏点击率（首屏有点比）：查询词首屏点击总次数 / 搜索总次数</li></ul><aside>💡<p>各点击率数据：</p><ul><li>文档点击率：10% 左右</li><li>查询词点击率（有点比）：70% 左右</li><li>查询词首屏点击率（首屏有点比）：60% 左右</li><li>有点比重要性高于文档点击率</li></ul></aside><p>基础知识：用户满意度、评价指标、搜索链路。</p><p>相关性：定义与分档、评价指标、文本匹配、语义匹配。</p><p>查询词处理：分词、NER、词权重、类目、意图、改写。</p><p>召回：文本召回、向量召回、离线召回。</p><p>排序：排序模型、训练。</p><p>查询词推荐：推词场景、推词召回、推词排序。</p><p>相关性是查询词q和文档d两者的关系。</p><p>相关性是客观标准，不取决于用户u。 相关行是语义上的，不是字面上的。查询可能具有多个意图，只要命中主要意图就可以。</p><h2 id="搜索的链路">搜索的链路</h2><p><img src="https://picture.fanfer.top/img/sousuo2.png" alt="截屏2025-01-10 11.09.12.png"></p><h2 id="查询">查询</h2><p><img src="https://picture.fanfer.top/img/sousuo3.png" alt="截屏2025-01-10 11.11.37.png"></p><aside>💡<p>意图识别</p><ul><li>时效性意图：查询词对文档&quot;新&quot;的需求，召回和排序时需要考虑文档的年龄。</li><li>地域性意图：召回和排序需要结合用户定位地点、查询词提及的地点和文档定位的地点。</li><li>用户名意图：用户想要查找平台中的某位用户，应该检索用户名库而不是文档库。</li><li>求购意图：用户可能想要购买商品，需要同时在文档库和商品库中进行检索。</li></ul></aside><aside>💡<p>查询词改写</p><ul><li>用户输入查询词q，算法将其改写成多个查询词q’1,…,q’k。<br>（独立用q, q’1,…,q’k做召回，对召回的文档取并集。）</li><li>查询词改写有什么用？</li><li>第一，解决语义匹配、但文本不匹配的问题。</li><li>第二，解决召回文档数量过少的问题。<ul><li>q不规范表达、或q过长，导致召回结果很少。</li><li>例：老谋子拍的电影 ⇒ 张艺谋的电影</li><li>例：身高160体重120年龄20女穿搭推荐 ⇒ 微胖女大学生穿搭</li></ul></li></ul></aside><h2 id="召回">召回</h2><ul><li>文本召回：借助倒排索引，匹配q中的词和d中的词</li><li>向量召回：将q和d分别表征为向量xq和zd。给定xq，查找相似度高的zd</li><li>KV召回：对于高频查询q，离线建立q → List(d)这样的key-value索引。线上直接读取索引，获取q相关的文档</li></ul><p>给定查询词q，从文档库（数亿篇文档）中快速检索数万篇可能与q相关的文档{d}</p><p><img src="https://picture.fanfer.top/img/sousuo4.png" alt="截屏2025-01-11 14.06.08.png"></p><p><img src="https://picture.fanfer.top/img/sousuo5.png" alt="截屏2025-01-11 14.07.26.png"></p><p><img src="https://picture.fanfer.top/img/sousuo6.png" alt="截屏2025-01-11 14.08.10.png"></p><h2 id="排序">排序</h2><p><img src="https://picture.fanfer.top/img/sousuo7.png" alt="截屏2025-01-11 14.11.00.png"></p><p><img src="https://picture.fanfer.top/img/sousuo9.png" alt="截屏2025-01-11 14.11.43.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> LLM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LLM </tag>
+            
+            <tag> RAG </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文本检索技术</title>
       <link href="/2025/01/07/RAG-2/"/>
       <url>/2025/01/07/RAG-2/</url>
