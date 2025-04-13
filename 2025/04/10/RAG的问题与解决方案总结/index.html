@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RAG的问题与解决 | fanfer 🥰</title><meta name="author" content="fanfer🇨🇳"><meta name="copyright" content="fanfer🇨🇳"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RAG系统关键问题与挑战 (12个) 以下是RAG系统在工程实践中遇到的主要问题和挑战，整合自文章引用的论文和补充内容： 内容缺失 (Missing Content): 当答案不在知识库中时，系统倾向于生成看似合理但错误的答案，而非承认未知。 错过排名靠后的文档 (Missed Top Ranked): 正确答案可能存在于检索结果排名较低（超出Top-K范围）的文档中，因上下文长度限制而被忽略。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG的问题与解决">
+<meta property="og:url" content="http://fanfer.top/2025/04/10/RAG%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="fanfer 🥰">
+<meta property="og:description" content="RAG系统关键问题与挑战 (12个) 以下是RAG系统在工程实践中遇到的主要问题和挑战，整合自文章引用的论文和补充内容： 内容缺失 (Missing Content): 当答案不在知识库中时，系统倾向于生成看似合理但错误的答案，而非承认未知。 错过排名靠后的文档 (Missed Top Ranked): 正确答案可能存在于检索结果排名较低（超出Top-K范围）的文档中，因上下文长度限制而被忽略。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picture.fanfer.top/img/0_Gr_JqzdpHu7enWG9.png">
+<meta property="article:published_time" content="2025-04-10T03:48:16.000Z">
+<meta property="article:modified_time" content="2025-04-13T08:02:26.899Z">
+<meta property="article:author" content="fanfer🇨🇳">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="RAG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picture.fanfer.top/img/0_Gr_JqzdpHu7enWG9.png"><link rel="shortcut icon" href="/assets/milk2.svg"><link rel="canonical" href="http://fanfer.top/2025/04/10/RAG%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RAG的问题与解决',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-04-13 16:02:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/cat.css"><link rel="stylesheet" href="/css/custom.css"><div id="myscoll"></div><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/head.jpeg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/assets/background.JPG')"><nav id="nav"><span id="blog-info"><a href="/" title="fanfer 🥰"><span class="site-name">fanfer 🥰</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RAG的问题与解决</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-10T03:48:16.000Z" title="发表于 2025-04-10 11:48:16">2025-04-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-13T08:02:26.899Z" title="更新于 2025-04-13 16:02:26">2025-04-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LLM/">LLM</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RAG的问题与解决"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="rag系统关键问题与挑战-12个">RAG系统关键问题与挑战 (12个)</h3>
+<p>以下是RAG系统在工程实践中遇到的主要问题和挑战，整合自文章引用的论文和补充内容：<br>
+内容缺失 (Missing Content): 当答案不在知识库中时，系统倾向于生成看似合理但错误的答案，而非承认未知。</p>
+<p>错过排名靠后的文档 (Missed Top Ranked): 正确答案可能存在于检索结果排名较低（超出Top-K范围）的文档中，因上下文长度限制而被忽略。</p>
+<p>脱离上下文/整合限制 (Not In Context): 相关文档被检索到，但在最终传递给大模型的上下文中被遗漏，导致答案生成时未使用该信息。</p>
+<p>未能提取答案 (Not Extracted): 相关文档在上下文中，但由于信息干扰、矛盾或文档过长，大模型未能从中提取正确答案。</p>
+<p>格式错误 (Wrong Format): 输出格式（如表格、列表）与用户要求不符。</p>
+<p>具体性不正确 (Incorrect Specificity): 回答过于泛化或过于具体，不满足用户需求。</p>
+<p>回答不完整 (Incomplete Answers): 对于需要整合多个来源信息的问题，回答只覆盖了部分内容。</p>
+<p>数据摄取扩展性 (Data Ingestion Scalability): 处理大规模数据时，数据管道出现瓶颈，影响效率和系统稳定性。</p>
+<p>结构化数据问答 (Structured Data QA): 难以准确检索结构化数据，尤其在查询模糊或需要复杂转换（如Text-to-SQL）时。</p>
+<p>复杂PDF数据提取 (Data Extraction from Complex PDFs): 传统方法难以处理PDF中的表格、图片等嵌入式内容。</p>
+<p>备用模型需求 (Fallback Model(s)): 单一模型可能因访问限制或其他问题失败，需要备用方案。</p>
+<p>大模型安全性 (LLM Security): 面临恶意输入、输出安全、敏感信息泄露等风险。</p>
+<h3 id="rag系统优化策略-12个">RAG系统优化策略 (12个)</h3>
+<p>文章围绕RAG工作流程的5个环节，提出了12个优化策略：<br>
+数据清洗 (Clean your data):<br>
+文本清理：规范化、去重、纠错。<br>
+实体解析：消除歧义。<br>
+文档划分、数据增强、用户反馈、时间敏感数据处理。</p>
+<p>分块处理 (Chunking):<br>
+核心目标：优化文本单元粒度，平衡语义完整性与向量表征效率。<br>
+方法：内容分块、递归分块、从小到大分块、特殊结构分块（Markdown, LaTeX, Code）。<br>
+大小选择：依赖嵌入模型、查询类型，需实验确定（如128、256、512）。</p>
+<p>嵌入模型 (Embedding Model):<br>
+选择：考虑模型性能（如MTEB排行榜）、是否支持中文、动态/静态词向量（如BERT优于Word2Vec）。<br>
+微调：一般不推荐，成本高、效果不确定。</p>
+<p>元数据利用 (Metadata+):<br>
+联合存储：将元数据（时间戳、类别、来源等）与向量结合。<br>
+应用：实现基于属性的过滤、排序（如时间衰减、按学科筛选）。</p>
+<p>多级索引 (Multi-level Indexing):<br>
+目的：处理多样化上下文场景。<br>
+实现：构建面向不同信息维度（摘要、事实、时间等）的专门索引，配合智能路由层。<br>
+注意：层级不宜过多（&lt;4层），可探索动态剪枝、联邦索引。</p>
+<p>索引/查询算法 (Indexing/Query Algorithm):<br>
+常用框架：近似最近邻搜索（ANNS）平衡精度与效率。<br>
+注意：知识密集型领域（法律、医疗）需谨慎使用模糊匹配，可能需要更高精度或混合方法。</p>
+<p>查询转换 (Query Transformation):<br>
+目的：优化用户查询以提升召回率。<br>
+方法：结合历史对话重述、假设文档嵌入(HyDE)、退后提示(Step Back Prompting)、多查询检索(Multi Query Retrieval)。</p>
+<p>检索参数优化 (Retrieval Parameters):<br>
+混合搜索：结合稀疏（关键字，如BM25）和稠密（向量）搜索，设置权重。<br>
+结果数量(TopK)：根据查询复杂度调整，平衡覆盖率与噪声。<br>
+相似度度量：常用余弦相似度，需注意模型支持。</p>
+<p>高级检索策略 (Advanced Retrieval Strategies):<br>
+上下文压缩：用LLM压缩或过滤检索到的内容。<br>
+句子窗口搜索：检索小块，但提供周围更大窗口的上下文。<br>
+父文档搜索：检索子文档，但返回其所属的父文档。<br>
+自动合并：基于层级分块，智能合并子块结果返回父块。<br>
+多向量检索：用多个向量（不同粒度、摘要、问答对等）表示同一文档，提升复杂查询效果。<br>
+多代理检索 (Multi-agent Retrieval): (见下文详述)<br>
+Self-RAG: 通过自我反思（是否需检索、内容相关性、生成质量）来优化流程。</p>
+<p>重排模型 (Re-ranking):<br>
+目的：解决向量相似度高但实际用意不符的问题。<br>
+实现：使用第二阶段模型（如Cross-Encoder）对初步召回结果进行更精细的意图排序。</p>
+<p>提示词工程 (Prompting):<br>
+作用：指导LLM生成，控制输出质量和风格。<br>
+方法：明确指令、角色扮演、限定知识来源、少量样本学习(Few-shot)。</p>
+<p>大语言模型 (LLM):<br>
+作用：整合检索信息，生成最终答案。<br>
+优化：选择合适的模型，利用框架（LangChain, LlamaIndex）集成，结合重排序或领域微调提升性能。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fanfer.top">fanfer🇨🇳</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fanfer.top/2025/04/10/RAG%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93/">http://fanfer.top/2025/04/10/RAG%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fanfer.top" target="_blank">fanfer 🥰</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LLM/">LLM</a><a class="post-meta__tags" href="/tags/RAG/">RAG</a></div><div class="post_share"><div class="social-share" data-image="https://picture.fanfer.top/img/0_Gr_JqzdpHu7enWG9.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/04/13/financial/" title="LLM-Agent场景题：贷款审批"><img class="cover" src="https://picture.fanfer.top/img/huggingfacepipeline.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">LLM-Agent场景题：贷款审批</div></div></a></div><div class="next-post pull-right"><a href="/2025/01/11/%E6%90%9C%E7%B4%A2%E7%9A%84%E9%93%BE%E8%B7%AF/" title="搜索的链路"><img class="cover" src="https://picture.fanfer.top/img/sousuo2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">搜索的链路</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2025/01/07/RAG-2/" title="文本检索技术"><img class="cover" src="https://cdn-images-1.readmedium.com/v2/resize:fit:800/1*IfSn7ytBnj6UGsxsQNkPeQ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-07</div><div class="title">文本检索技术</div></div></a></div><div><a href="/2024/12/12/RAG/" title="RAG"><img class="cover" src="https://cdn-images-1.readmedium.com/v2/resize:fit:800/1*yhNrCt2gRVXYfk1YXKoVkg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-12</div><div class="title">RAG</div></div></a></div><div><a href="/2025/04/13/financial/" title="LLM-Agent场景题：贷款审批"><img class="cover" src="https://picture.fanfer.top/img/huggingfacepipeline.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-13</div><div class="title">LLM-Agent场景题：贷款审批</div></div></a></div><div><a href="/2024/06/19/rag_from_scratch_10_and_11/" title="RAG从零开始构建教程10-11"><img class="cover" src="https://picture.fanfer.top/img/c02ab9b5-38f9-451a-b202-62b54ab9c87a.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-19</div><div class="title">RAG从零开始构建教程10-11</div></div></a></div><div><a href="/2024/07/21/rag_from_scratch_15_to_18/" title="RAG从零开始构建教程15-18"><img class="cover" src="https://picture.fanfer.top/img/c6ee3569-ca87-49b5-8f2c-21193230f8d4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-21</div><div class="title">RAG从零开始构建教程15-18</div></div></a></div><div><a href="/2024/06/18/rag_from_scratch_5_to_9/" title="RAG从零开始构建教程5-9"><img class="cover" src="https://picture.fanfer.top/img/d9d5305c-e5bb-4934-b91d-5988c87fd767.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-18</div><div class="title">RAG从零开始构建教程5-9</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/head.jpeg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fanfer🇨🇳</div><div class="author-info__description">Future is now 🍭🍭🍭</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fanfer"><i></i><span>🛴Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fanfer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:yifanhu@whu.edu.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center><b>--- 主域名 ---<br><a target="_blank" rel="noopener" href="https://www.fanfer.top" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fanfer.top</font></a>&nbsp;|&nbsp;<a target="_blank" rel="noopener" href="https://www.fanfer.fun" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fomal.fun</font></a><br>--- 不用翻墙的GPT ---<br><a target="_blank" rel="noopener" href="https://chat.fanfer.fun" title="不用翻墙的GPT" class="anno_content"><font color="#5ea6e5">ChatBot</font></a><br>--- 没有冷气的空调 ---<br><a target="_blank" rel="noopener" href="https://fanfer.fun/air-conditioner" title=“没有冷气的空调” class="anno_content"><font color="#5ea6e5">Air Conditioner</font></a></div></div><!--!=partial('includes/widget/card_wx',{},{cache: false})--><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#rag%E7%B3%BB%E7%BB%9F%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8C%91%E6%88%98-12%E4%B8%AA"><span class="toc-number">1.</span> <span class="toc-text">RAG系统关键问题与挑战 (12个)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rag%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5-12%E4%B8%AA"><span class="toc-number">2.</span> <span class="toc-text">RAG系统优化策略 (12个)</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/assets/background.JPG')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2025 By fanfer🇨🇳</div><div class="framework-info"> </div><img src="https://haiyong.site/img/icp.png">
+<a href="https://beian.miit.gov.cn/#/Integrated/index"  style="color:white" target="_blank">鄂ICP备2025090971号</a><div class="footer_custom_text"><imgsrc="https://haiyong.site/img/icp.png"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikko.fanfer.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikko.fanfer.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/cat.js"></script><script src="/js/footer.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
