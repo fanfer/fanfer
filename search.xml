@@ -606,9 +606,9 @@
       
         <tags>
             
-            <tag> 论文 </tag>
-            
             <tag> 笔记 </tag>
+            
+            <tag> 论文 </tag>
             
         </tags>
       
@@ -868,9 +868,9 @@
       
         <tags>
             
-            <tag> 论文 </tag>
-            
             <tag> 笔记 </tag>
+            
+            <tag> 论文 </tag>
             
             <tag> iccv </tag>
             
@@ -897,11 +897,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> 论文 </tag>
             
             <tag> cvpr </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
@@ -926,11 +926,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> 论文 </tag>
             
             <tag> cvpr </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
@@ -955,9 +955,9 @@
       
         <tags>
             
-            <tag> 笔记 </tag>
-            
             <tag> 相机 </tag>
+            
+            <tag> 笔记 </tag>
             
             <tag> 图像 </tag>
             
@@ -984,11 +984,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> 论文 </tag>
             
             <tag> cvpr </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
@@ -1013,11 +1013,11 @@
       
         <tags>
             
-            <tag> 笔记 </tag>
-            
             <tag> 相机 </tag>
             
             <tag> 激光雷达 </tag>
+            
+            <tag> 笔记 </tag>
             
         </tags>
       
