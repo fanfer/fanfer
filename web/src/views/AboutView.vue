@@ -1,9 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 
 const content = ref('')
 
+const ssrData = inject('__ssrData', null)
+if (ssrData?.content) {
+  content.value = ssrData.content
+}
+
 onMounted(async () => {
+  if (content.value) return
   if (window.__SSR_DATA__?.content) {
     content.value = window.__SSR_DATA__.content
     delete window.__SSR_DATA__

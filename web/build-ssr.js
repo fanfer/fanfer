@@ -17,7 +17,8 @@ async function render(routePath, ssrData = {}) {
   await router.push(routePath)
   await router.isReady()
 
-  app.config.globalProperties.$ssrData = ssrData
+  // Provide SSR data via provide/inject
+  app.provide('__ssrData', ssrData)
 
   const html = await renderToString(app)
   const fullHtml = template

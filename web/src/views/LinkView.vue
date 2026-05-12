@@ -1,10 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import FriendLinks from '../components/FriendLinks.vue'
 
 const links = ref({})
 
+const ssrData = inject('__ssrData', null)
+if (ssrData?.links) {
+  links.value = ssrData.links
+}
+
 onMounted(async () => {
+  if (Object.keys(links.value).length) return
   if (window.__SSR_DATA__?.links) {
     links.value = window.__SSR_DATA__.links
     delete window.__SSR_DATA__

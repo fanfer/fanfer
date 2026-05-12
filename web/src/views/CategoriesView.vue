@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import PostCard from '../components/PostCard.vue'
 
@@ -7,7 +7,13 @@ const route = useRoute()
 const categories = ref({})
 const posts = ref([])
 
+const ssrData = inject('__ssrData', null)
+if (ssrData?.categories) {
+  categories.value = ssrData.categories
+}
+
 onMounted(async () => {
+  if (Object.keys(categories.value).length) return
   if (window.__SSR_DATA__?.categories) {
     categories.value = window.__SSR_DATA__.categories
     delete window.__SSR_DATA__

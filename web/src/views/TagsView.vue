@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import TagCloud from '../components/TagCloud.vue'
 import PostCard from '../components/PostCard.vue'
@@ -8,7 +8,13 @@ const route = useRoute()
 const tags = ref({})
 const posts = ref([])
 
+const ssrData = inject('__ssrData', null)
+if (ssrData?.tags) {
+  tags.value = ssrData.tags
+}
+
 onMounted(async () => {
+  if (Object.keys(tags.value).length) return
   if (window.__SSR_DATA__?.tags) {
     tags.value = window.__SSR_DATA__.tags
     delete window.__SSR_DATA__

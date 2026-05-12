@@ -1,22 +1,25 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import PostCard from '../components/PostCard.vue'
 
 const posts = ref([])
-const page = ref(1)
-const total = ref(0)
 
+// SSR: read data from provide/inject
+const ssrData = inject('__ssrData', null)
+if (ssrData?.posts) {
+  posts.value = ssrData.posts
+}
+
+// Client: hydrate from window.__SSR_DATA__ or fetch
 onMounted(async () => {
-  if (window.__SSR_DATA__) {
-    posts.value = window.__SSR_DATA__.posts || []
-    total.value = window.__SSR_DATA__.total || 0
-    page.value = window.__SSR_DATA__.page || 1
+  if (posts.value.length) return
+  if (window.__SSR_DATA__?.posts) {
+    posts.value = window.__SSR_DATA__.posts
     delete window.__SSR_DATA__
   } else {
     const res = await fetch('/data.json')
     const data = await res.json()
     posts.value = (data.posts || []).slice(0, 10)
-    total.value = data.posts?.length || 0
   }
 })
 </script>

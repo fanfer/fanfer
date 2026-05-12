@@ -1,11 +1,21 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const post = ref(null)
 
+// SSR: read data from provide/inject
+const ssrData = inject('__ssrData', null)
+if (ssrData?.post) {
+  post.value = ssrData.post
+}
+
 onMounted(async () => {
+  if (post.value) {
+    loadTwikoo()
+    return
+  }
   if (window.__SSR_DATA__?.post) {
     post.value = window.__SSR_DATA__.post
     delete window.__SSR_DATA__
@@ -20,7 +30,6 @@ onMounted(async () => {
   }
 
   if (post.value) {
-    await nextTick()
     loadTwikoo()
   }
 })
