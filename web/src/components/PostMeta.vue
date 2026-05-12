@@ -1,20 +1,32 @@
 <script setup>
-import { computed } from 'vue'
+import site from '../data/site.js'
 
 const props = defineProps({
   post: { type: Object, required: true },
 })
 
-const dateStr = computed(() => {
-  if (!props.post.date) return ''
-  const d = new Date(props.post.date)
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-})
+function formatDate(date) {
+  if (!date) return ''
+  const d = new Date(date)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+}
 </script>
 
 <template>
-  <div class="post-card-meta">
-    <span v-if="dateStr">{{ dateStr }}</span>
-    <span v-if="post.readTime" class="post-read-time">{{ post.readTime }} min read</span>
+  <div class="post-meta">
+    <img :src="site.avatar" :alt="site.author" class="avatar-md" />
+    <div class="post-meta-info">
+      <span class="author-name">{{ site.author }}</span>
+      <div class="meta-detail">
+        <span>{{ formatDate(post.date) }}</span>
+        <span class="meta-dot">·</span>
+        <span>{{ post.readTime }} min read</span>
+        <template v-if="post.categories?.length">
+          <span class="meta-dot">·</span>
+          <span>{{ post.categories[0] }}</span>
+        </template>
+      </div>
+    </div>
   </div>
 </template>

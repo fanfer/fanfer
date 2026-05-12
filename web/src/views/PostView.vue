@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
+import PostMeta from '../components/PostMeta.vue'
+import ReadingProgress from '../components/ReadingProgress.vue'
 
 const route = useRoute()
 const post = ref(null)
 
-// SSR: read data from provide/inject
 const ssrData = inject('__ssrData', null)
 if (ssrData?.post) {
   post.value = ssrData.post
@@ -50,16 +51,16 @@ function loadTwikoo() {
 </script>
 
 <template>
+  <ReadingProgress />
   <article v-if="post" class="container content-narrow">
     <header class="post-header">
       <h1 class="post-title">{{ post.title }}</h1>
-      <img v-if="post.cover || post.top_img" :src="post.cover?.startsWith('http') ? post.cover : `/assets/${post.cover || post.top_img}`" alt="" class="post-cover" />
-      <div class="post-meta">
-        <span v-if="post.date">{{ new Date(post.date).toISOString().slice(0, 10) }}</span>
-        <span v-if="post.readTime" class="post-read-time">{{ post.readTime }} min read</span>
-        <span v-if="post.categories?.length"> · {{ post.categories[0] }}</span>
-      </div>
+      <PostMeta :post="post" />
     </header>
+
+    <img v-if="post.cover || post.top_img"
+         :src="post.cover?.startsWith('http') ? post.cover : `/assets/${post.cover || post.top_img}`"
+         alt="" class="post-cover" />
 
     <div class="post-content" v-html="post.content"></div>
 
@@ -72,7 +73,7 @@ function loadTwikoo() {
       <div id="tcomment"></div>
     </div>
   </article>
-  <div v-else class="container content-narrow" style="text-align:center;padding:48px 0;">
-    <p style="color:#999;">Post not found.</p>
+  <div v-else class="container content-narrow" style="text-align:center;padding:80px 0;">
+    <p style="color:var(--text-tertiary);font-size:16px;">Post not found.</p>
   </div>
 </template>
