@@ -1,0 +1,15 @@
+{
+  "name": "fanfer-admin",
+  "version": "1.0.0",
+  "description": "Hexo blog admin panel for fanfer.top",
+  "private": true,
+  "scripts": {
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.0"
+  }
+}

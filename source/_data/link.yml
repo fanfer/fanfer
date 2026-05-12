@@ -1,0 +1,35 @@
+- class_name: 友情链接
+  class_desc: 那些人，那些事
+  link_list:
+    - name: 唐志远の博客
+      link: https://fe32.top/
+      avatar: https://bu.dusays.com/2022/01/14/cd5ffd485f867.jpg
+      descr: 古今之成大事者，不惟有超世之才，亦必有坚忍不拔之志。
+    - name: 安知鱼`Blog
+      link: https://anheyu.com/
+      avatar: https://npm.elemecdn.com/anzhiyu-blog-static@1.0.4/img/avatar.jpg
+      descr: 生活明朗，万物可爱
+      siteshot: https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/anzhiy.cn.jpg
+    - name: formalHaut
+      link: https://www.fomal.cc/
+      avatar: https://sourcebucket.s3.ladydaily.com/img/avatar.webp
+      descr: future is now!
+    - name: butterfly 美化教程
+      link: https://butterfly.zhheo.com/docs/friendlink.html
+      avatar: https://butterfly.zhheo.com/img/logo.png
+      descr: 一个教程
+    - name: 代码随想录
+      link: https://www.programmercarl.com/
+      avatar: https://code-thinking-1253855093.file.myqcloud.com/pics/20210614201246512.png
+      descr: 算法
+- class_name: 网站
+  class_desc: 值得推荐的网站
+  link_list:
+    - name: Twitter
+      link: https://twitter.com/
+      avatar: https://i.loli.net/2020/05/14/5VyHPQqR6LWF39a.png
+      descr: 社交分享平台
+    - name: Accelerate
+      link: https://www.huaxiaozhuan.com/#huggingface_transformer
+      acatar: https://butterfly.zhheo.com/img/logo.png
+      descr: Accelerate中文教程
