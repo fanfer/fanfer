@@ -21,7 +21,7 @@ async function loadDrafts() {
 async function handlePublish(filename) {
   await ElMessageBox.confirm('确定要发布这篇草稿吗？', '确认发布')
   try {
-    await api.post(`/api/drafts/${filename}/publish`)
+    await api.post('/api/drafts/publish', { filename })
     ElMessage.success('发布成功')
     loadDrafts()
   } catch (err) {

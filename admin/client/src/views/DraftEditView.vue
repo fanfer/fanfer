@@ -65,7 +65,7 @@ async function handleSave() {
 async function handlePublish() {
   if (isNew.value) { ElMessage.warning('请先保存草稿'); return }
   try {
-    await api.post(`/api/drafts/${props.filename}/publish`)
+    await api.post('/api/drafts/publish', { filename: props.filename })
     ElMessage.success('发布成功')
     router.push('/posts')
   } catch (err) {
