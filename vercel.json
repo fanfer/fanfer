@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
-  "installCommand": "npm install && cd admin/client && npm install",
-  "outputDirectory": "public",
+  "buildCommand": "cd admin/client && npm run build && cd ../../web && npm run build",
+  "installCommand": "cd admin/client && npm install && cd ../../web && npm install",
+  "outputDirectory": "web/dist",
   "rewrites": [
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/(.*)", "destination": "/admin/index.html" }

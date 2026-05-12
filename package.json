@@ -1,37 +1,16 @@
 {
-  "name": "hexo-site",
-  "version": "0.0.0",
+  "name": "fanfer",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "hexo generate && cd admin/client && npm run build",
-    "build:admin": "cd admin/client && npm run build",
-    "clean": "hexo clean",
-    "deploy": "hexo deploy",
-    "server": "hexo server"
-  },
-  "hexo": {
-    "version": "6.3.0"
+    "build": "cd admin/client && npm run build && cd ../../web && npm run build",
+    "dev:admin": "cd admin/client && npm run dev",
+    "dev:web": "cd web && npm run dev"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
-    "jsonwebtoken": "^9.0.0",
-    "hexo": "^6.3.0",
-    "hexo-butterfly-categories-card": "^1.0.0",
-    "hexo-butterfly-clock-anzhiyu": "^1.1.8",
-    "hexo-deployer-git": "^4.0.0",
-    "hexo-generator-archive": "^2.0.0",
-    "hexo-generator-category": "^2.0.0",
-    "hexo-generator-index": "^3.0.0",
-    "hexo-generator-search": "^2.4.3",
-    "hexo-generator-tag": "^2.0.0",
-    "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-markdown-it-katex": "^3.4.4",
-    "hexo-renderer-pug": "^3.0.0",
-    "hexo-renderer-stylus": "^2.1.0",
-    "hexo-server": "^3.0.0",
-    "hexo-theme-butterfly": "^4.8.1",
-    "hexo-theme-landscape": "^0.0.3"
+    "jsonwebtoken": "^9.0.0"
   }
 }

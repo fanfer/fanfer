@@ -1,0 +1,22 @@
+export default {
+  title: 'fanfer',
+  subtitle: 'Future is now',
+  description: 'fanfer 的个人博客',
+  author: 'fanfer',
+  url: 'https://fanfer.top',
+  since: 2021,
+  avatar: '/assets/head.jpeg',
+  favicon: '/assets/milk2.svg',
+  github: 'https://github.com/fanfer',
+  email: 'mailto:yifanhu@whu.edu.com',
+  icp: '鄂ICP备2025090971号',
+  twikooEnvId: 'https://twikko.fanfer.top',
+  nav: [
+    { name: '首页', path: '/' },
+    { name: '归档', path: '/archives/' },
+    { name: '标签', path: '/tags/' },
+    { name: '分类', path: '/categories/' },
+    { name: '友链', path: '/link/' },
+    { name: '关于', path: '/about/' },
+  ],
+}

@@ -5,8 +5,12 @@ db.json
 node_modules/
 public/
 .deploy*/
+_dist/
 _multiconfig.yml
 admin/node_modules/
 admin/.env
 admin/client/node_modules/
 admin/client/dist/
+web/node_modules/
+web/dist/
+web/dist-ssr/
