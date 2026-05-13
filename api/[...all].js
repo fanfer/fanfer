@@ -335,6 +335,11 @@ const routes = [
 
 module.exports = async (req, res) => {
   try {
+    // Debug: return the raw req.url to understand Vercel's behavior
+    if (req.query && req.query._debug) {
+      return res.json({ url: req.url, method: req.method, query: req.query, headers: { host: req.headers.host } });
+    }
+
     const url = new URL(req.url, `http://${req.headers.host}`);
     const path = url.pathname.replace(/^\/api\/?/, '');
 
