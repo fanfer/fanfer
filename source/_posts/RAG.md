@@ -1,13 +1,15 @@
 ---
 title: RAG
-tags: 
-    - LLM
-    - RAG
+date: '2026-2-04T10:38:16.000Z'
+tags:
+  - LLM
+  - RAG
 categories:
-    - LLM
-description:
+  - LLM
+description: ''
 top_img: /assets/background.JPG
-cover: https://cdn-images-1.readmedium.com/v2/resize:fit:800/1*yhNrCt2gRVXYfk1YXKoVkg.png
+cover: >-
+  https://cdn-images-1.readmedium.com/v2/resize:fit:800/1*yhNrCt2gRVXYfk1YXKoVkg.png
 ---
 RAG（检索增强生成）通过提供对知识来源的访问来减少幻觉，这些知识来源为用户查询提供了额外的上下文，即LLM（如 Claude3.5、 GPT-4o）。它还旨在克服语言模型的上下文限制。
 
