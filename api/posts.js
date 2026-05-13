@@ -1,5 +1,5 @@
 const { requireAuth } = require('../admin/lib/auth');
-const { listDir, getFile, putFile } = require('../admin/lib/github');
+const { listDir, getFile, putFile, deleteFile } = require('../admin/lib/github');
 const { parseFrontmatter, stringifyFrontmatter } = require('../admin/lib/yaml-utils');
 
 function sanitize(name) {
@@ -8,8 +8,13 @@ function sanitize(name) {
 
 module.exports = requireAuth(async (req, res) => {
   try {
+    // Extract filename from URL: /api/posts or /api/posts/:filename
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const parts = url.pathname.replace(/^\/api\/posts\/?/, '').split('/').filter(Boolean);
+    const filename = parts[0] || null;
+
     // GET /api/posts — list
-    if (req.method === 'GET') {
+    if (req.method === 'GET' && !filename) {
       const entries = await listDir('source/_posts');
       const mdFiles = entries.filter(e => e.name.endsWith('.md'));
       const posts = await Promise.all(mdFiles.map(async f => {
@@ -29,7 +34,7 @@ module.exports = requireAuth(async (req, res) => {
     }
 
     // POST /api/posts — create
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && !filename) {
       const { content, ...frontmatter } = req.body;
       if (!frontmatter.title) return res.status(400).json({ error: 'Title required' });
       if (!frontmatter.date) frontmatter.date = new Date().toISOString().replace('T', ' ').slice(0, 19);
@@ -37,6 +42,28 @@ module.exports = requireAuth(async (req, res) => {
       try { while (true) { await getFile(path); path = `source/_posts/${fname}-${counter++}.md`; } } catch {}
       await putFile(path, stringifyFrontmatter(frontmatter, content), null, `admin: create post "${frontmatter.title}"`);
       return res.status(201).json({ filename: path.split('/').pop().replace('.md', '') });
+    }
+
+    // GET /api/posts/:filename
+    if (req.method === 'GET' && filename) {
+      const { content, sha } = await getFile(`source/_posts/${filename}.md`);
+      const { data, content: body } = parseFrontmatter(content);
+      return res.json({ filename, frontmatter: data, content: body, sha });
+    }
+
+    // PUT /api/posts/:filename
+    if (req.method === 'PUT' && filename) {
+      const { content, sha: _, ...frontmatter } = req.body;
+      const { sha } = await getFile(`source/_posts/${filename}.md`);
+      await putFile(`source/_posts/${filename}.md`, stringifyFrontmatter(frontmatter, content), sha, `admin: update post "${frontmatter.title || filename}"`);
+      return res.json({ success: true });
+    }
+
+    // DELETE /api/posts/:filename
+    if (req.method === 'DELETE' && filename) {
+      const { sha } = await getFile(`source/_posts/${filename}.md`);
+      await deleteFile(`source/_posts/${filename}.md`, sha, `admin: delete post "${filename}"`);
+      return res.json({ success: true });
     }
 
     res.status(405).json({ error: 'Method not allowed' });
