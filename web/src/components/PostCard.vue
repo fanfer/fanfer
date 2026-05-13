@@ -22,10 +22,10 @@ const dateStr = computed(() => {
 </script>
 
 <template>
-  <!-- Featured: cover as background with text overlay -->
+  <!-- Featured: cover as <img> background with text overlay -->
   <article v-if="featured && coverSrc" class="post-card post-featured">
     <a :href="post.permalink" class="post-featured-link">
-      <div class="post-featured-bg" :style="{ backgroundImage: `url(${coverSrc})` }"></div>
+      <img :src="coverSrc" :alt="post.title" class="post-featured-img" />
       <div class="post-featured-overlay">
         <div class="post-card-meta">
           <img :src="site.avatar" :alt="site.author" class="avatar-sm" />
@@ -45,7 +45,7 @@ const dateStr = computed(() => {
     </a>
   </article>
 
-  <!-- Featured without cover: simple layout -->
+  <!-- Featured without cover -->
   <article v-else-if="featured" class="post-card post-featured post-featured-nocover">
     <div class="post-card-body">
       <div class="post-card-meta">

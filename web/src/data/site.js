@@ -10,7 +10,7 @@ export default {
   github: 'https://github.com/fanfer',
   email: 'mailto:yifanhu@whu.edu.com',
   icp: '鄂ICP备2025090971号',
-  twikooEnvId: 'https://twikoo.loveadgai.workers.dev/',
+  twikooEnvId: 'https://twikko.fanfer.top',
   nav: [
     { name: '首页', path: '/' },
     { name: '归档', path: '/archives/' },
