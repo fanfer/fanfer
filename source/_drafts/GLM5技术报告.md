@@ -17,7 +17,7 @@ cover: ''
 
 #### 结果。
 
-图 [1]()展示了 GLM-5、GLM-4.7、Claude Opus 4.5、Gemini 3 Pro 和 GPT-5.2 (xhigh) 在 8 个智能体、推理和编码基准上的表现：人类最后的考试 ([Phan et al.]{.nocase} 2025)、SWE-bench Verified (Jimenez et al. 2023)、SWE-bench 多语言版 (J. Yang et al. 2025)、Terminal-Bench 2.0 (Team 2025)、BrowseComp (Wei et al. 2025)、MCP-Atlas ([Bandi et al.]{.nocase} 2026)、$\tau^2$ -Bench (Yao et al. 2024; Barres et al. 2025)、Vending Bench 2 (Backlund and Petersson 2025)。平均而言，GLM-5 相较于我们上一版本 GLM-4.7 提升了约 20%，与 Claude Opus 4.5 和 GPT-5.2 (xhigh) 相当，优于 Gemini 3 Pro。
+图 [1](https://fanfer.top/assets/latex-1778656731631-aa.PNG)展示了 GLM-5、GLM-4.7、Claude Opus 4.5、Gemini 3 Pro 和 GPT-5.2 (xhigh) 在 8 个智能体、推理和编码基准上的表现：人类最后的考试 ([Phan et al.]{.nocase} 2025)、SWE-bench Verified (Jimenez et al. 2023)、SWE-bench 多语言版 (J. Yang et al. 2025)、Terminal-Bench 2.0 (Team 2025)、BrowseComp (Wei et al. 2025)、MCP-Atlas ([Bandi et al.]{.nocase} 2026)、$\tau^2$ -Bench (Yao et al. 2024; Barres et al. 2025)、Vending Bench 2 (Backlund and Petersson 2025)。平均而言，GLM-5 相较于我们上一版本 GLM-4.7 提升了约 20%，与 Claude Opus 4.5 和 GPT-5.2 (xhigh) 相当，优于 Gemini 3 Pro。
 
 GLM-5 在 Intelligence Index v4.0 上得分为 50，成为新的开源权重领导者（参见图 [2](#fig:aa){reference-type="ref" reference="fig:aa"}），相较于 GLM-4.7 的 42 分提升了 8 分，这一提升主要得益于智能体性能以及知识/幻觉方面的改进。这是首个在 Artificial Analysis Intelligence Index v4.0 上取得 50 分的开源权重模型。
 
