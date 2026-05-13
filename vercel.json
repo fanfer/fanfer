@@ -4,11 +4,6 @@
   "outputDirectory": "web/dist",
   "rewrites": [
     { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/admin/(.*)", "destination": "/admin/index.html" },
-    { "source": "/api/posts", "destination": "/api/posts-list" },
-    { "source": "/api/pages", "destination": "/api/page-list" },
-    { "source": "/api/drafts", "destination": "/api/draft-list" },
-    { "source": "/api/comments", "destination": "/api/comment-list" },
-    { "source": "/api/upload", "destination": "/api/upload-list" }
+    { "source": "/admin/(.*)", "destination": "/admin/index.html" }
   ]
 }
