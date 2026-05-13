@@ -29,20 +29,9 @@ async function twikooCall(payload) {
 
 module.exports = requireAuth(async (req, res) => {
   try {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const parts = url.pathname.replace(/^\/api\/comments\/?/, '').split('/').filter(Boolean);
-    const commentId = parts[0] || null;
-
-    // GET /api/comments — list
-    if (req.method === 'GET' && !commentId) {
+    if (req.method === 'GET') {
       const { page = 1, limit = 20 } = req.query;
       const data = await twikooCall({ event: 'GET_COMMENT', url: '', page: parseInt(page), pageSize: parseInt(limit) });
-      return res.json(data);
-    }
-
-    // DELETE /api/comments/:id
-    if (req.method === 'DELETE' && commentId) {
-      const data = await twikooCall({ event: 'DELETE_COMMENT', id: commentId });
       return res.json(data);
     }
 
