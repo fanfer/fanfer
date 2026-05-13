@@ -27,19 +27,17 @@ async function handleUpload() {
   progress.value = 10
 
   try {
-    const reader = new FileReader()
-    const base64 = await new Promise((resolve, reject) => {
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = reject
-      reader.readAsDataURL(selectedFile.value)
-    })
-
+    const arrayBuf = await selectedFile.value.arrayBuffer()
     progress.value = 40
 
-    const { data } = await api.post('/api/drafts/pdf', {
-      filename: selectedFile.value.name,
-      data: base64,
-      title: title.value || undefined,
+    const params = new URLSearchParams()
+    if (title.value) params.set('title', title.value)
+    params.set('filename', selectedFile.value.name)
+
+    const { data } = await api.post(`/api/drafts/pdf?${params}`, arrayBuf, {
+      headers: { 'Content-Type': 'application/octet-stream' },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
     })
 
     progress.value = 100

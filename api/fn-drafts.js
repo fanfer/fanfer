@@ -243,10 +243,18 @@ module.exports = requireAuth(async (req, res) => {
 
     // PDF upload
     if (action === 'pdf' && req.method === 'POST') {
-      const { filename: pdfName, data: base64Data, title: customTitle } = req.body;
-      if (!base64Data) return res.status(400).json({ error: 'No PDF data' });
+      const customTitle = req.query.title;
+      const pdfName = req.query.filename;
 
-      const pdfBuf = Buffer.from(base64Data.replace(/^data:application\/pdf;base64,/, ''), 'base64');
+      // Support both raw binary (application/octet-stream) and base64 JSON
+      let pdfBuf;
+      if (Buffer.isBuffer(req.body)) {
+        pdfBuf = req.body;
+      } else if (req.body?.data) {
+        pdfBuf = Buffer.from(req.body.data.replace(/^data:application\/pdf;base64,/, ''), 'base64');
+      } else {
+        return res.status(400).json({ error: 'No PDF data' });
+      }
       const parsed = await pdf(pdfBuf, {
         pagerender: pageData => pageData.getTextContent().then(tc => {
           const lines = [];
@@ -272,10 +280,18 @@ module.exports = requireAuth(async (req, res) => {
 
     // LaTeX zip upload
     if (action === 'latex' && req.method === 'POST') {
-      const { filename: zipName, data: base64Data, title: customTitle } = req.body;
-      if (!base64Data) return res.status(400).json({ error: 'No zip data' });
+      const customTitle = req.query.title;
+      const zipName = req.query.filename;
 
-      const zipBuf = Buffer.from(base64Data.replace(/^data:[^;]+;base64,/, ''), 'base64');
+      // Support both raw binary (application/octet-stream) and base64 JSON
+      let zipBuf;
+      if (Buffer.isBuffer(req.body)) {
+        zipBuf = req.body;
+      } else if (req.body?.data) {
+        zipBuf = Buffer.from(req.body.data.replace(/^data:[^;]+;base64,/, ''), 'base64');
+      } else {
+        return res.status(400).json({ error: 'No zip data' });
+      }
       const zip = await JSZip.loadAsync(zipBuf);
 
       // Find main .tex file

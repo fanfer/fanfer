@@ -2,6 +2,11 @@
   "buildCommand": "cd admin/client && npm run build && cd ../../web && npm run build",
   "installCommand": "npm install && cd admin/client && npm install && cd ../../web && npm install",
   "outputDirectory": "web/dist",
+  "api": {
+    "bodyParser": {
+      "sizeLimit": "10mb"
+    }
+  },
   "rewrites": [
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/(.*)", "destination": "/admin/index.html" },
