@@ -1,6 +1,6 @@
 ---
 title: RAG
-date: '2026-2-04T10:38:16.000Z'
+date: '2026-02-04'
 tags:
   - LLM
   - RAG
