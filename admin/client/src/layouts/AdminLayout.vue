@@ -17,6 +17,7 @@ const menuItems = [
   { path: '/posts', icon: 'Document', label: '文章管理' },
   { path: '/drafts', icon: 'EditPen', label: '草稿管理' },
   { path: '/pdf-upload', icon: 'DocumentCopy', label: 'PDF 导入' },
+  { path: '/latex-upload', icon: 'Notebook', label: 'LaTeX 导入' },
   { path: '/pages', icon: 'Notebook', label: '页面管理' },
   { path: '/categories-tags', icon: 'PriceTag', label: '分类/标签' },
   { path: '/links', icon: 'Link', label: '友链管理' },

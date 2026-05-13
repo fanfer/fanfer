@@ -21,6 +21,7 @@ const routes = [
       { path: 'drafts/new', name: 'DraftNew', component: () => import('../views/DraftEditView.vue') },
       { path: 'drafts/:filename', name: 'DraftEdit', component: () => import('../views/DraftEditView.vue'), props: true },
       { path: 'pdf-upload', name: 'PdfUpload', component: () => import('../views/PdfUploadView.vue') },
+      { path: 'latex-upload', name: 'LatexUpload', component: () => import('../views/LatexUploadView.vue') },
       { path: 'pages', name: 'Pages', component: () => import('../views/PageListView.vue') },
       { path: 'pages/:slug', name: 'PageEdit', component: () => import('../views/PageEditView.vue'), props: true },
       { path: 'categories-tags', name: 'CategoryTag', component: () => import('../views/CategoryTagView.vue') },
