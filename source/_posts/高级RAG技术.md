@@ -1,13 +1,14 @@
 ---
 title: 高级RAG
-tags: 
-    - LLM
-    - RAG
+date: '2026-3-04T12:38:16.000Z'
+tags:
+  - LLM
+  - RAG
 categories:
-    - LLM
-description:
+  - LLM
+description: ''
 top_img: /assets/background.JPG
-cover: https://picture.fanfer.top/img/0_Gr_JqzdpHu7enWG9.png
+cover: 'https://picture.fanfer.top/img/0_Gr_JqzdpHu7enWG9.png'
 ---
 # 高级 RAG 技术：图解概览
 
