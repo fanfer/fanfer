@@ -1,10 +1,9 @@
-const { requireAuth } = require('../../admin/lib/auth');
-const { listDir, getFile } = require('../../admin/lib/github');
-const { parseFrontmatter } = require('../../admin/lib/yaml-utils');
+const { requireAuth } = require('../admin/lib/auth');
+const { listDir, getFile } = require('../admin/lib/github');
+const { parseFrontmatter } = require('../admin/lib/yaml-utils');
 
 module.exports = requireAuth(async (req, res) => {
   try {
-    // GET /api/pages — list
     if (req.method === 'GET') {
       const entries = await listDir('source');
       const pages = [];

@@ -1,6 +1,6 @@
-const { requireAuth } = require('../../admin/lib/auth');
-const { listDir, getFile, putFile } = require('../../admin/lib/github');
-const { parseFrontmatter, stringifyFrontmatter } = require('../../admin/lib/yaml-utils');
+const { requireAuth } = require('../admin/lib/auth');
+const { listDir, getFile, putFile } = require('../admin/lib/github');
+const { parseFrontmatter, stringifyFrontmatter } = require('../admin/lib/yaml-utils');
 
 function sanitize(name) {
   return name.replace(/[<>:"/\\|?*\x00-\x1f]/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, '');

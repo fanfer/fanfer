@@ -1,5 +1,5 @@
 const { requireAuth } = require('../admin/lib/auth');
-const { getFile, putFile, deleteFile, listDir } = require('../admin/lib/github');
+const { getFile, putFile, listDir } = require('../admin/lib/github');
 
 module.exports = requireAuth(async (req, res) => {
   try {
@@ -33,7 +33,6 @@ module.exports = requireAuth(async (req, res) => {
       let sha;
       try { ({ sha } = await getFile(path)); } catch { /* new file */ }
 
-      // Strip data URL prefix if present: data:image/png;base64,...
       const base64 = data.replace(/^data:[^;]+;base64,/, '');
       await putFile(path, base64, sha, `admin: upload image ${safeName}`, true);
 

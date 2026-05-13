@@ -1,4 +1,4 @@
-const { requireAuth } = require('../../admin/lib/auth');
+const { requireAuth } = require('../admin/lib/auth');
 
 const TWIKOO_URL = process.env.TWIKOO_API_URL || '';
 const TWIKOO_PASSWORD = process.env.TWIKOO_ADMIN_PASSWORD || '';
@@ -29,7 +29,6 @@ async function twikooCall(payload) {
 
 module.exports = requireAuth(async (req, res) => {
   try {
-    // GET /api/comments — list
     if (req.method === 'GET') {
       const { page = 1, limit = 20 } = req.query;
       const data = await twikooCall({ event: 'GET_COMMENT', url: '', page: parseInt(page), pageSize: parseInt(limit) });
