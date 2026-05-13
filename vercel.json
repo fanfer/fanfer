@@ -11,6 +11,7 @@
     { "source": "/api/posts", "destination": "/api/fn-posts" },
     { "source": "/api/pages/:slug", "destination": "/api/fn-pages?slug=:slug" },
     { "source": "/api/pages", "destination": "/api/fn-pages" },
+    { "source": "/api/drafts/pdf", "destination": "/api/fn-drafts?action=pdf" },
     { "source": "/api/drafts/:filename/publish", "destination": "/api/fn-drafts?filename=:filename&action=publish" },
     { "source": "/api/drafts/:filename", "destination": "/api/fn-drafts?filename=:filename" },
     { "source": "/api/drafts", "destination": "/api/fn-drafts" },

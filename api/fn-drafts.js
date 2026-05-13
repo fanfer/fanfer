@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const matter = require('gray-matter');
+const pdf = require('pdf-parse');
 
 const GITHUB_API = 'https://api.github.com';
 const REPO = process.env.GITHUB_REPO || 'fanfer/fanfer';
@@ -19,10 +20,101 @@ function verifyToken(req) { const h = req.headers.authorization; if (!h || !h.st
 function requireAuth(handler) { return async (req, res) => { const user = verifyToken(req); if (!user) return res.status(401).json({ error: 'Unauthorized' }); req.user = user; return handler(req, res); }; }
 function sanitize(name) { return name.replace(/[<>:"/\\|?*\x00-\x1f]/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, ''); }
 
+function pdfTextToMarkdown(text, title) {
+  const lines = text.split('\n');
+  const result = [];
+  let inCode = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Skip empty lines (paragraph break)
+    if (!trimmed) {
+      if (inCode) { result.push('```'); inCode = false; }
+      result.push('');
+      continue;
+    }
+
+    // Detect headings: short lines in Title Case or ALL CAPS, not ending with punctuation
+    const isShort = trimmed.length < 80;
+    const isTitleCase = /^[A-Z一-鿿]/.test(trimmed) && trimmed === trimmed.replace(/([a-z])([A-Z])/g, '$1 $2');
+    const isAllCaps = trimmed === trimmed.toUpperCase() && /[A-Z]/.test(trimmed);
+    const endsWithPunct = /[.,;:!?。，；：！？]$/.test(trimmed);
+    const nextLineBlank = i + 1 < lines.length && !lines[i + 1].trim();
+
+    if (isShort && (isAllCaps || (isTitleCase && nextLineBlank)) && !endsWithPunct && trimmed.length > 3) {
+      if (inCode) { result.push('```'); inCode = false; }
+      result.push(`## ${trimmed}`);
+      result.push('');
+      continue;
+    }
+
+    // Detect list items
+    if (/^[•\-\*•‣◦]\s/.test(trimmed) || /^\d+[\.\)]\s/.test(trimmed)) {
+      if (inCode) { result.push('```'); inCode = false; }
+      const bullet = trimmed.replace(/^[•\-\*•‣◦]\s*/, '- ').replace(/^\d+[\.\)]\s*/, '- ');
+      result.push(bullet);
+      continue;
+    }
+
+    // Detect code-like content (indented, or contains programming keywords)
+    const isIndented = line.startsWith('    ') || line.startsWith('\t');
+    const hasCodePattern = /[{}\[\]();=]/.test(trimmed) && !/[，。！？]/.test(trimmed);
+    if (isIndented && hasCodePattern && !inCode) {
+      result.push('```');
+      inCode = true;
+    }
+
+    result.push(trimmed);
+  }
+
+  if (inCode) result.push('```');
+
+  const content = result.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  const date = new Date().toISOString().replace('T', ' ').slice(0, 19);
+
+  return matter.stringify(content, {
+    title,
+    date,
+    categories: [],
+    tags: [],
+  });
+}
+
 module.exports = requireAuth(async (req, res) => {
   try {
     const filename = req.query.filename;
     const action = req.query.action;
+
+    // PDF upload
+    if (action === 'pdf' && req.method === 'POST') {
+      const { filename: pdfName, data: base64Data, title: customTitle } = req.body;
+      if (!base64Data) return res.status(400).json({ error: 'No PDF data' });
+
+      const pdfBuf = Buffer.from(base64Data.replace(/^data:application\/pdf;base64,/, ''), 'base64');
+      const parsed = await pdf(pdfBuf, {
+        pagerender: pageData => pageData.getTextContent().then(tc => {
+          const lines = [];
+          let lastY = null;
+          for (const item of tc.items) {
+            const y = Math.round(item.transform[5]);
+            if (lastY !== null && Math.abs(y - lastY) > 2) lines.push('\n');
+            lines.push(item.str);
+            lastY = y;
+          }
+          return lines.join('');
+        }),
+      });
+
+      const title = customTitle || parsed.info?.Title || (pdfName || 'untitled').replace(/\.pdf$/i, '');
+      const markdown = pdfTextToMarkdown(parsed.text, title);
+
+      let fname = sanitize(title), fpath = `source/_drafts/${fname}.md`, counter = 1;
+      try { while (true) { await getFile(fpath); fpath = `source/_drafts/${fname}-${counter++}.md`; } } catch {}
+      await putFile(fpath, markdown, null, `admin: import PDF "${title}"`);
+      return res.status(201).json({ filename: fpath.split('/').pop().replace('.md', '') });
+    }
 
     // Publish draft
     if (action === 'publish' && filename && req.method === 'POST') {
