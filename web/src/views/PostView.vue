@@ -1,11 +1,13 @@
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, onMounted, inject, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import PostMeta from '../components/PostMeta.vue'
 import ReadingProgress from '../components/ReadingProgress.vue'
+import site from '../data/site.js'
 
 const route = useRoute()
 const post = ref(null)
+const commentsLoaded = ref(false)
 
 const ssrData = inject('__ssrData', null)
 if (ssrData?.post) {
@@ -13,40 +15,57 @@ if (ssrData?.post) {
 }
 
 onMounted(async () => {
-  if (post.value) {
-    loadTwikoo()
-    return
-  }
-  if (window.__SSR_DATA__?.post) {
-    post.value = window.__SSR_DATA__.post
-    delete window.__SSR_DATA__
-  } else {
-    const res = await fetch('/data.json')
-    const data = await res.json()
-    const posts = data.posts || []
-    post.value = posts.find(p => p.permalink === route.path) || posts.find(p => {
-      const parts = route.path.split('/').filter(Boolean)
-      return parts.length >= 4 && p.slug === parts[3]
-    })
+  if (!post.value) {
+    if (window.__SSR_DATA__?.post) {
+      post.value = window.__SSR_DATA__.post
+      delete window.__SSR_DATA__
+    } else {
+      const res = await fetch('/data.json')
+      const data = await res.json()
+      const posts = data.posts || []
+      post.value = posts.find(p => p.permalink === route.path) || posts.find(p => {
+        const parts = route.path.split('/').filter(Boolean)
+        return parts.length >= 4 && p.slug === parts[3]
+      })
+    }
   }
 
   if (post.value) {
+    await nextTick()
     loadTwikoo()
   }
 })
 
 function loadTwikoo() {
-  if (document.getElementById('twikoo-script')) return
+  if (commentsLoaded.value) return
+  commentsLoaded.value = true
+
+  const envId = site.twikooEnvId || 'https://twikoo.loveadgai.workers.dev/'
+
+  if (window.twikoo) {
+    initTwikoo(envId)
+    return
+  }
+
   const s = document.createElement('script')
-  s.id = 'twikoo-script'
   s.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js'
-  s.onload = () => {
-    window.twikoo?.init({
-      envId: 'https://twikoo.loveadgai.workers.dev/',
-      el: '#tcomment',
-    })
+  s.onload = () => initTwikoo(envId)
+  s.onerror = () => {
+    const el = document.getElementById('tcomment')
+    if (el) el.innerHTML = '<p style="color:#999;text-align:center;">Comments failed to load.</p>'
   }
   document.head.appendChild(s)
+}
+
+function initTwikoo(envId) {
+  try {
+    window.twikoo.init({
+      envId: envId,
+      el: '#tcomment',
+    })
+  } catch (e) {
+    console.error('Twikoo init error:', e)
+  }
 }
 </script>
 
