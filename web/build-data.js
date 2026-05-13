@@ -5,7 +5,7 @@ import matter from 'gray-matter'
 import yaml from 'js-yaml'
 import { Marked } from 'marked'
 import hljs from 'highlight.js'
-import markedKatex from 'marked-katex-extension'
+import katex from 'katex'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -30,10 +30,29 @@ const marked = new Marked({
   renderer,
 })
 
-marked.use(markedKatex({
-  throwOnError: false,
-  output: 'html',
-}))
+function renderMath(content) {
+  const store = []
+  // Extract display math $$...$$ first (non-greedy, multiline)
+  let result = content.replace(/\$\$([\s\S]+?)\$\$/g, (_, tex) => {
+    const i = store.length
+    store.push(katex.renderToString(tex.trim(), { displayMode: true, throwOnError: false, output: 'html' }))
+    return `%%MATH${i}%%`
+  })
+  // Extract inline math $...$ (single line, not preceded/followed by $)
+  result = result.replace(/(?<!\$)\$(?!\$)(.+?)(?<!\$)\$(?!\$)/g, (_, tex) => {
+    const i = store.length
+    store.push(katex.renderToString(tex.trim(), { displayMode: false, throwOnError: false, output: 'html' }))
+    return `%%MATH${i}%%`
+  })
+  return { result, store }
+}
+
+function restoreMath(html, store) {
+  for (let i = 0; i < store.length; i++) {
+    html = html.replace(`%%MATH${i}%%`, store[i])
+  }
+  return html
+}
 
 function calcReadTime(content) {
   const text = content.replace(/[#*`>\-\[\]()!]/g, '').replace(/\s+/g, '')
@@ -55,7 +74,8 @@ const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'))
 const posts = files.map(file => {
   const raw = fs.readFileSync(path.join(postsDir, file), 'utf8')
   const { data, content } = matter(raw)
-  const html = marked.parse(content)
+  const { result: preprocessed, store: mathStore } = renderMath(content)
+  const html = restoreMath(marked.parse(preprocessed), mathStore)
   const readTime = calcReadTime(content)
   const slug = slugify(data.title || file.replace(/\.md$/, ''))
 
