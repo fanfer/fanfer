@@ -49,12 +49,6 @@ console.log('  /tags/')
 await render('/categories/', { categories: data.categories })
 console.log('  /categories/')
 
-await render('/link/', { links: data.links })
-console.log('  /link/')
-
-await render('/about/', { content: data.about })
-console.log('  /about/')
-
 // Render each post
 const postsWithContent = data.posts.map(meta => {
   try {
