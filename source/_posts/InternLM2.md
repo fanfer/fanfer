@@ -1,13 +1,14 @@
 ---
 title: 书生·浦语大模型实战营（一）：书生·浦语大模型全链路开源体系
-tags: 
-    - InternLM2
-    - 笔记
+date: '2025-02-01'
+tags:
+  - InternLM2
+  - 笔记
 categories:
-    - 笔记
+  - 笔记
 description: Hello world this is fanfer's Blog!
 top_img: /assets/background.JPG
-cover: https://picture.fanfer.top/img/InternLM2.webp
+cover: 'https://picture.fanfer.top/img/InternLM2.webp'
 ---
 # **书生·浦语大模型实战营（一）：书生·浦语大模型全链路开源体系**
 
