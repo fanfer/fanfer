@@ -4,6 +4,22 @@
   "outputDirectory": "web/dist",
   "rewrites": [
     { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/admin/(.*)", "destination": "/admin/index.html" }
+    { "source": "/admin/(.*)", "destination": "/admin/index.html" },
+    { "source": "/api/auth/login", "destination": "/api/__auth?action=login" },
+    { "source": "/api/auth/verify", "destination": "/api/__auth?action=verify" },
+    { "source": "/api/posts/:filename", "destination": "/api/__posts?filename=:filename" },
+    { "source": "/api/posts", "destination": "/api/__posts" },
+    { "source": "/api/pages/:slug", "destination": "/api/__pages?slug=:slug" },
+    { "source": "/api/pages", "destination": "/api/__pages" },
+    { "source": "/api/drafts/:filename/publish", "destination": "/api/__drafts?filename=:filename&action=publish" },
+    { "source": "/api/drafts/:filename", "destination": "/api/__drafts?filename=:filename" },
+    { "source": "/api/drafts", "destination": "/api/__drafts" },
+    { "source": "/api/comments/:id", "destination": "/api/__comments?id=:id" },
+    { "source": "/api/comments", "destination": "/api/__comments" },
+    { "source": "/api/upload/:filename", "destination": "/api/__upload?filename=:filename" },
+    { "source": "/api/upload", "destination": "/api/__upload" },
+    { "source": "/api/dashboard/stats", "destination": "/api/__dashboard" },
+    { "source": "/api/config/:type", "destination": "/api/__config?type=:type&resource=config" },
+    { "source": "/api/data/:type", "destination": "/api/__config?type=:type&resource=data" }
   ]
 }
