@@ -5,6 +5,7 @@ import matter from 'gray-matter'
 import yaml from 'js-yaml'
 import { Marked } from 'marked'
 import hljs from 'highlight.js'
+import markedKatex from 'marked-katex-extension'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -28,6 +29,11 @@ const marked = new Marked({
   gfm: true,
   renderer,
 })
+
+marked.use(markedKatex({
+  throwOnError: false,
+  output: 'html',
+}))
 
 function calcReadTime(content) {
   const text = content.replace(/[#*`>\-\[\]()!]/g, '').replace(/\s+/g, '')
@@ -84,10 +90,7 @@ posts.forEach(p => {
 console.log(`  ${posts.length} posts loaded`)
 
 // --- Read data files ---
-const linkData = yaml.load(fs.readFileSync(path.join(SRC, '_data', 'link.yml'), 'utf8'))
 const creativityData = yaml.load(fs.readFileSync(path.join(SRC, '_data', 'creativity.yml'), 'utf8'))
-const aboutRaw = fs.readFileSync(path.join(SRC, 'about', 'index.md'), 'utf8')
-const aboutContent = marked.parse(matter(aboutRaw).content)
 
 // --- Aggregate tags and categories ---
 const tagMap = {}
@@ -102,9 +105,7 @@ const dataOutput = {
   posts: posts.map(({ content, ...meta }) => meta),
   tags: tagMap,
   categories: categoryMap,
-  links: linkData,
   creativity: creativityData,
-  about: aboutContent,
 }
 
 fs.mkdirSync(DIST, { recursive: true })

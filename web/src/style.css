@@ -349,6 +349,12 @@ ul, ol { list-style: none; }
 }
 .post-content th { background: var(--bg-secondary); font-weight: 600; }
 .post-content hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+.post-content .katex-display {
+  margin: 1.6em 0; overflow-x: auto; overflow-y: hidden; padding: 8px 0;
+  text-align: center;
+}
+.post-content .katex-display > .katex { white-space: nowrap; }
+.post-content .katex { font-size: 1.1em; }
 
 /* === Code Blocks === */
 .code-block {
@@ -452,51 +458,6 @@ ul, ol { list-style: none; }
   font-size: 14px; color: var(--text-tertiary);
 }
 
-/* === Friend Links === */
-.link-group { margin-bottom: 40px; }
-.link-group-title {
-  font-family: charter, Georgia, serif;
-  font-size: 22px; font-weight: 700; margin-bottom: 4px;
-}
-.link-group-desc {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px; color: var(--text-tertiary); margin-bottom: 20px;
-}
-.link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-.link-card {
-  display: flex; align-items: center; gap: 14px;
-  padding: 18px; border: 1px solid var(--border-light); border-radius: var(--radius-md);
-  transition: all var(--transition);
-  background: var(--bg);
-}
-.link-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-.link-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-.link-info { min-width: 0; }
-.link-name {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 600; font-size: 15px; margin-bottom: 2px;
-}
-.link-desc {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px; color: var(--text-tertiary);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-
-/* === About Page === */
-.about-content {
-  font-family: charter, Georgia, 'Noto Serif SC', serif;
-  font-size: 20px; line-height: 1.8;
-}
-.about-content h1, .about-content h2, .about-content h3 {
-  font-family: charter, Georgia, serif;
-  font-weight: 700; margin: 1.5em 0 0.6em;
-}
-.about-content p { margin-bottom: 1.2em; }
-
 /* === Twikoo Comments === */
 .comments-section {
   margin-top: 48px; padding-top: 32px;
@@ -571,7 +532,6 @@ ul, ol { list-style: none; }
   .post-featured-overlay .post-card-title { font-size: 22px; }
   .post-title { font-size: 30px; }
   .post-content { font-size: 17px; }
-  .link-grid { grid-template-columns: 1fr; }
   .page-title { font-size: 28px; }
   .container { padding: 0 16px; }
 }

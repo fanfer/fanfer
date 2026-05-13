@@ -16,7 +16,5 @@ export default {
     { name: '归档', path: '/archives/' },
     { name: '标签', path: '/tags/' },
     { name: '分类', path: '/categories/' },
-    { name: '友链', path: '/link/' },
-    { name: '关于', path: '/about/' },
   ],
 }
