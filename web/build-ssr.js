@@ -10,7 +10,7 @@ const { createApp } = await import('./dist-ssr/main-ssr.js')
 const { renderToString } = await import('@vue/server-renderer')
 
 const data = JSON.parse(fs.readFileSync(path.join(DIST, 'data.json'), 'utf8'))
-const template = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8')
+const template = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
 
 async function render(routePath, ssrData = {}) {
   const { app, router } = createApp()
