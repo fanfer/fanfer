@@ -1,6 +1,6 @@
 ---
 title: 高级RAG
-date: '2026-3-04T12:38:16.000Z'
+date: '2026-03-04'
 tags:
   - LLM
   - RAG
