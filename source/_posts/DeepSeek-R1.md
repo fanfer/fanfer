@@ -1,6 +1,6 @@
 ---
 title: DeepSeek-R1
-date: '2025-01-20'
+date: '2026-01-22'
 tags:
   - LLM
 categories:
@@ -11,13 +11,12 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** DeepSeek-R1是DeepSeek推出的推理模型系列，包括DeepSeek-R1-Zero和DeepSeek-R1两个版本。DeepSeek-R1-Zero探索了在无任何监督数据的条件下，通过纯强化学习（GRPO算法）提升语言模型推理能力的方法，模型在训练过程中自发涌现出反思、重新评估等复杂行为，并展现出"aha moment"。为解决R1-Zero的可读性差和多语言混合问题，DeepSeek-R1引入了少量高质量冷启动数据进行SFT，再进行推理导向的RL训练，并经过Rejection Sampling与SFT、全场景RL等阶段。本文还证明了将大模型推理模式蒸馏到小模型的有效性，蒸馏后的14B模型超越了QwQ-32B-Preview，32B和70B模型则突破了同规模模型的记录。
 
-原文链接: https://zhuanlan.zhihu.com/p/23561930738
 
 ---
 
 论文DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via
 
-Reinforcement Learning，原文[https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf](http://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf)。
+Reinforcement Learning
 
 本文介绍了DeepSeek的LLM reasoning模型DeepSeek-R1-Zero和DeepSeek-R1。DeepSeek-R1-Zero通过纯粹的强化学习来提升语言模型的推理能力，在没有任何监督数据的情况下，通过强化学习过程自我演化，以提高推理能力。
 

@@ -1,6 +1,6 @@
 ---
 title: Seed-Thinking-v1.5
-date: '2025-03-01'
+date: '2026-02-01'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** Seed-Thinking-v1.5是字节跳动推出的推理模型，采用MoE架构，具有20B激活参数和200B总参数。该模型在STEM和编程领域展现了卓越的推理能力，同时在非推理任务上也具备良好的泛化能力。训练数据分为可验证问题（STEM、代码、逻辑推理）和不可验证问题（创意写作、翻译等），并开发了Seed-Verifier和Seed-Thinking-Verifier两种渐进式奖励建模方案。算法层面融合了VC-PPO、DAPO、VAPO等技术，采用Online Data Distribution Adaptation解决不同数据领域间的干扰问题。此外，本文还构建了BeyondAIME和Codeforces两个新benchmark，用于更全面地评估推理能力。
 
-原文链接: https://zhuanlan.zhihu.com/p/1901269311118640868
 
 ---
 
-论文Seed-Thinking-v1.5: Advancing Superb Reasoning Models with Reinforcement Learning，原文[https://github.com/ByteDance-Seed/Seed-Thinking-v1.5/blob/main/seed-thinking-v1.5.pdf](http://link.zhihu.com/?target=https%3A//github.com/ByteDance-Seed/Seed-Thinking-v1.5/blob/main/seed-thinking-v1.5.pdf)。
+论文Seed-Thinking-v1.5: Advancing Superb Reasoning Models with Reinforcement Learning
 
 本文介绍了字节的Seed-Thinking-v1.5模型，该模型为推理模型，在STEM和编程领域的卓越推理能力，用时在非推理任务上也展现出了显著的泛化能力。Seed-Thinking-v1.5是MoE模型，具有20B激活参数和200B总参数，规模较小，但仍能发挥出较高水平。同时，本文还开发了BeyondAIME和Codeforces两个benchmark。
 
@@ -55,7 +54,7 @@ Seed-Thinking-Verifier显著缓解了与Seed-Verifier相关的三个主要问题
 
 **不可验证问题：**对于不可验证问题，为强化学习训练一个奖励模型。奖励模型的训练数据与Doubao 1.5 Pro中使用的人类偏好数据一致，主要包括创意写作和总结等类别。
 
-为了提高奖励模型的有效性，本文采用了A Unified Pairwise Framework for [RLHF](https://zhida.zhihu.com/search?content_id=256924379&content_type=Article&match_order=1&q=RLHF&zhida_source=entity): Bridging Generative Reward Modeling and Policy Optimization中提到的成对生成奖励模型，该模型评估两个响应的优劣，并使用"YES"或"NO"的概率作为最终奖励分数（参考[https://zhuanlan.zhihu.com/p/1898841404463097341](https://zhuanlan.zhihu.com/p/1898841404463097341)）。这种方法使模型在评分时能够直接比较response之间的差异，从而避免过度关注无关细节。实验结果表明，这种奖励建模方法通过最小化两种不同奖励建模范式之间的冲突，提高了强化学习训练的稳定性，特别是在涉及不可验证和可验证问题的混合训练场景中。这种改进可能归因于pair-wise生成奖励模型在缓解异常分数生成方面的固有优势，从而避免了验证器在分数分布上的显著差异。### 算法
+为了提高奖励模型的有效性，本文采用了A Unified Pairwise Framework for RLHF: Bridging Generative Reward Modeling and Policy Optimization中提到的成对生成奖励模型，该模型评估两个响应的优劣，并使用"YES"或"NO"的概率作为最终奖励分数（参考）。这种方法使模型在评分时能够直接比较response之间的差异，从而避免过度关注无关细节。实验结果表明，这种奖励建模方法通过最小化两种不同奖励建模范式之间的冲突，提高了强化学习训练的稳定性，特别是在涉及不可验证和可验证问题的混合训练场景中。这种改进可能归因于pair-wise生成奖励模型在缓解异常分数生成方面的固有优势，从而避免了验证器在分数分布上的显著差异。### 算法
 
 **SFT：**使用包含40万个问题的SFT数据集，其中包括30万个可验证问题和10万个不可验证问题。可验证问题是从Doubao-Pro 1.5的SFT数据中随机抽样的，涵盖了创意写作、知识问答、安全性和函数调用等领域。
 
@@ -67,11 +66,11 @@ Seed-Thinking-Verifier显著缓解了与Seed-Verifier相关的三个主要问题
 
 RLHF训练过程，会使用VC-PPO，DAPO，VAPO的一些tricks：![image](/assets/art12_524e6b378b90.jpg)
 
-参考本专栏之前的文章，VC-PPO： [https://zhuanlan.zhihu.com/p/1889394650344846851](https://zhuanlan.zhihu.com/p/1889394650344846851)，
+参考本专栏之前的文章，VC-PPO：，
 
-DAPO：[https://zhuanlan.zhihu.com/p/1891116737048594100](https://zhuanlan.zhihu.com/p/1891116737048594100)，
+DAPO：，
 
-VAPO：[https://zhuanlan.zhihu.com/p/1897662021366968967](https://zhuanlan.zhihu.com/p/1897662021366968967)。
+VAPO：。
 
 在合并来自不同领域的数据并整合多样化的评分机制时，面临着不同数据领域之间干扰的挑战。这种干扰可能源于难度水平的差异、reward hacking的风险以及其他潜在因素。为了应对这一问题，本文使用入了Online Data Distribution Adaptation的方式，将在强化学习过程中将固定的prompt分布转换为自适应分布，以更好地满足模型在训练过程中的需求，确保在不同能力上实现更平衡的提升。### RL基建
 

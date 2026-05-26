@@ -1,6 +1,6 @@
 ---
 title: DeepSeek-V3
-date: '2025-01-01'
+date: '2026-01-12'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** DeepSeek-V3的技术报告重点关注其后训练（Post-Training）部分。SFT阶段构建了150万条指令微调数据集，其中推理数据通过训练融合了DeepSeek-R1和普通模型的领域专家模型生成，确保数据兼具R1的高准确性和普通模型的简洁性。强化学习阶段采用GRPO算法，结合Rule-Based RM和Model-Based RM两种奖励模型，其中Model-Based RM在偏好数据中引入了chain-of-thought以减少reward hacking。评估结果显示，DeepSeek-V3在多项基准上与Claude-Sonnet-3.5、GPT-4o等模型表现相当。此外，文章还讨论了R1蒸馏数据的消融实验和Self-Rewarding机制。
 
-原文链接: https://zhuanlan.zhihu.com/p/20502832374
 
 ---
 
-DeepSeek-V3 Technical Report，原文[https://arxiv.org/abs/2412.19437](http://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.19437)。
+DeepSeek-V3 Technical Report
 
 DeepSeek-V3的技术报告主要分为Architecture，Infrastructures，Pre-Training，Post-Training等几个部分，本文重点关注Post-Training的部分。### Supervised Fine-Tuning
 

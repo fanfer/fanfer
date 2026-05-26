@@ -1,6 +1,6 @@
 ---
 title: Qwen3
-date: '2025-04-01'
+date: '2026-02-11'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** Qwen3是阿里通义千问推出的新一代大模型系列，涵盖dense和MoE两种架构，参数规模从0.6B到235B不等。其核心创新是将思考模式和非思考模式集成到统一框架中，支持通过chat template动态切换，并引入思考预算机制让用户在推理时动态分配计算资源。预训练阶段使用36T token、覆盖119种语言，采用三阶段训练策略（通用、推理、长上下文）。后训练采用四阶段流程，包括Long-CoT冷启动、推理RL、思考模式融合和通用RL，旗舰模型Qwen3-235B-A22B在开源模型中展现了顶尖性能，可与OpenAI o1、Gemini 2.5 Pro等闭源模型竞争。
 
-原文链接: https://zhuanlan.zhihu.com/p/1907098454011942106
 
 ---
 
-Qwen3 Technical Report，原文[https://github.com/QwenLM/Qwen3/blob/main/Qwen3_Technical_Report.pdf](https://link.zhihu.com/?target=https%3A//github.com/QwenLM/Qwen3/blob/main/Qwen3_Technical_Report.pdf)。
+Qwen3 Technical Report
 
 本文介绍了Qwen3，Qwen3系列包括dense和MoE架构的模型，参数规模从0.6B到235B不等。Qwen3的一个关键创新是将思考模式和非思考集成到一个统一的框架中，并能够根据用户query或chat template进行动态切换。同时，Qwen3引入了思考预算机制，允许用户在推理过程中动态分配计算资源，从而平衡延迟和性能。
 

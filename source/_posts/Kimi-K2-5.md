@@ -1,6 +1,6 @@
 ---
 title: Kimi K2.5
-date: '2026-03-20'
+date: '2026-05-12'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** Kimi K2.5是月之暗面推出的开源多模态智能体模型，基于万亿参数MoE架构（1.04T总参数、32B激活参数），通过约15T混合视觉与文本token的大规模联合预训练完成迭代。核心技术包括原生多模态预训练（早期融合视觉与文本）、Zero-Vision SFT（仅用文本数据激活视觉智能体能力）、联合多模态强化学习等。此外，K2.5提出了Agent Swarm框架与PARL（并行智能体强化学习），通过动态任务拆解与并行子智能体调度，将推理延迟最高降低4.5倍，在代码生成、视觉理解、智能体任务等多领域取得SOTA表现。
 
-原文链接: https://zhuanlan.zhihu.com/p/2011049995713926336
 
 ---
 
-论文Kimi K2.5: Visual Agentic Intelligence，原文[https://arxiv.org/abs/2602.02276](http://link.zhihu.com/?target=https%3A//arxiv.org/abs/2602.02276)。
+论文Kimi K2.5: Visual Agentic Intelligence
 
 本文提出Kimi K2.5，一款开源多模态智能体模型。K2.5聚焦文本与视觉模态的联合优化，实现双模态能力的相互增强，核心技术涵盖文本-视觉联合预训练、零视觉SFT、文本-视觉联合强化学习等一系列方案。同时，K2.5提出了**Agent Swarm，**一套自主式并行智能体编排框架，能够将复杂任务动态拆解为多个异构子问题并并行执行。
 

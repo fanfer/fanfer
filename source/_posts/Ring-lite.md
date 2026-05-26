@@ -1,6 +1,6 @@
 ---
 title: Ring-lite
-date: '2025-07-01'
+date: '2026-03-13'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** Ring-lite是基于Ling-lite模型的MoE架构推理模型，拥有16.8B总参数和2.75B激活参数，在AIME、LiveCodeBench、GPQA-Diamond上达到同规模模型的SOTA水平。论文提出C3PO（Constrained Contextual Computation Policy Optimization）算法，以token-level粒度对response进行截断，解决了GRPO算法中response长度波动导致的训练不稳定问题。论文还发现SFT训练更多epoch后RL训练更容易出现entropy崩塌，因此建议基于entropy损失而非验证指标选择蒸馏检查点。训练采用两阶段范式（先数学后代码），避免混合数据集训练时的领域冲突。
 
-原文链接: https://zhuanlan.zhihu.com/p/1931095297452405988
 
 ---
 
-Ring-lite: Scalable Reasoning via C3PO-Stabilized Reinforcement Learning for LLMs，原文[https://arxiv.org/abs/2506.14731v2](http://link.zhihu.com/?target=https%3A//arxiv.org/abs/2506.14731v2)。
+Ring-lite: Scalable Reasoning via C3PO-Stabilized Reinforcement Learning for LLMs
 
 本文提出Ring-lite，一个MoE的大型语言模型，基于Ling-lite模型（16.8B参数、激活参数2.75B），在AIME、LiveCodeBench、GPQA-Diamond上，性能可以达到小模型的SOTA。本文C3PO（Constrained Contextual Computation Policy Optimization）算法，能够提高训练稳定性并提升计算吞吐量。其次，本文通过实验证明，在强化学习训练中基于熵损失而非验证指标选择蒸馏检查点，在后续的强化学习训练中能带来更优的性能-效率平衡。最后，本文使用两阶段的训练范式，以协调多领域数据的集成，避免使用混合数据集训练时出现不同领域的冲突。
 

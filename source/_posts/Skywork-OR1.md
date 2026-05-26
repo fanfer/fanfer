@@ -1,6 +1,6 @@
 ---
 title: Skywork-OR1
-date: '2025-06-01'
+date: '2026-03-03'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** Skywork-OR1是基于DeepSeek-R1-Distill模型系列进行强化学习优化的推理模型，在AIME24和AIME25基准上超越了DeepSeek-R1和Qwen-32B。论文提出MAGIC（Multi-stage Adaptive entropy scheduling for GRPO In Convergence）训练方法，从数据收集、训练策略和损失函数三个方面改进GRPO算法。核心贡献包括多阶段训练、自适应entropy控制、高温采样等策略，以及深入分析了entropy崩塌现象。论文通过详尽的消融实验证明，避免过早的entropy崩塌对提升模型性能至关重要。
 
-原文链接: https://zhuanlan.zhihu.com/p/1926308451660830010
 
 ---
 
-Skywork Open Reasoner 1 Technical Report，原文[https://arxiv.org/pdf/2505.22312](http://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2505.22312)。
+Skywork Open Reasoner 1 Technical Report
 
 本文提出了Skywork-OR1，基于DeepSeek-R1-Distill模型系列，进行了显著的性能提升，在AIME24和AIME25基准测试中超过了DeepSeek-R1和Qwen-32B，同时在LiveCodeBench上取得了很好的效果。本文对训练流程的核心部分进行了全面的消融研究，以验证其有效性，此外还深入研究了熵崩塌现象，确定了影响熵变化的关键因素，并表明避免过早的熵崩塌对于提升模型性能至关重要。
 

@@ -1,6 +1,6 @@
 ---
 title: DeepSeek-V3.2
-date: '2025-11-20'
+date: '2026-04-22'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** DeepSeek-V3.2提出了三大核心技术突破：(1) DeepSeek Sparse Attention（DSA），一种高效的注意力机制，在长上下文场景中大幅降低计算复杂度同时保持模型性能；(2) 可扩展的强化学习框架，后训练预算超过预训练成本的10%，使DeepSeek-V3.2性能与GPT-5相当，高计算量变体DeepSeek-V3.2-Speciale超越GPT-5，在2025 IMO和IOI中均取得金牌级表现；(3) 大规模智能体任务合成管线，生成超过1800个不同环境和85000个复杂prompt，显著提升了模型在工具调用场景中的泛化能力和指令遵循能力。
 
-原文链接: https://zhuanlan.zhihu.com/p/1979678585833952663
 
 ---
 
-论文DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models，原文[https://huggingface.co/deepseek-ai/DeepSeek-V3.2/resolve/main/assets/paper.pdf](http://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V3.2/resolve/main/assets/paper.pdf)﻿。
+论文DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models。
 
 本文提出DeepSeek-V3.2，其关键技术突破如下：(1) **DeepSeek Sparse Attention (DSA):**提出DSA，一种高效的注意力机制，在长上下文场景中，能在保持模型性能的同时大幅降低计算复杂度。(2) **Scalable Reinforcement Learning Framework：**通过实施稳健的强化学习，并扩展后训练计算规模，DeepSeek-V3.2性能可与GPT-5相当，高计算量变体DeepSeek-V3.2-Speciale超越了GPT-5，推理能力与 Gemini-3.0-Pro 持平，在2025 IMO和IOI中均取得金牌级表现。(3) **Large-Scale Agentic Task Synthesis Pipeline：**为将推理融入工具调用场景，开发了一种新颖的合成 pipeline，可系统性地大规模生成训练数据。这种方法有助于可扩展的agentic后训练，在复杂、交互式环境中，显著提升模型的泛化能力和遵循指令能力。![image](/assets/art04_130e5a1a317d.jpg)
 

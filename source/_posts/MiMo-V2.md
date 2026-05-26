@@ -1,6 +1,6 @@
 ---
 title: MiMo-V2
-date: '2025-12-20'
+date: '2026-05-02'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** MiMo-V2-Flash是小米推出的MoE模型（309B总参数、15B激活参数），采用混合注意力架构将滑动窗口注意力与全局注意力以5:1比例交错，并集成MTP（Multi-Token Prediction）在27T token上进行预训练。后训练阶段提出Multi-Teacher On-Policy Distillation（MOPD）范式，通过领域专精的教师模型提供token级密集奖励。推理时MTP可作为speculative decoding的draft model，使用3个MTP层实现最高2.6倍解码加速。模型在智能体强化学习方面进行了大规模扩展，构建了涵盖代码调试、终端操作、网页开发等多样化训练环境。
 
-原文链接: https://zhuanlan.zhihu.com/p/1986409348570837032
 
 ---
 
-论文MiMo-V2-Flash Technical Report，原文[https://github.com/XiaomiMiMo/MiMo-V2-Flash/blob/main/paper.pdf](http://link.zhihu.com/?target=https%3A//github.com/XiaomiMiMo/MiMo-V2-Flash/blob/main/paper.pdf)。
+论文MiMo-V2-Flash Technical Report
 
 本文提出了MiMo-V2-Flash，是MoE模型，总参数为309B，激活参数为15B，旨在实现快速、强大的reasoning和agent能力。MiMo-V2-Flash采用混合注意力架构，将Sliding Window Attention (SWA)与全局注意力交错，在 5:1 的混合比例下，滑动窗口为128个token。该模型使用MTP在 27T个token上进行预训练，原生上下文长度为32k，随后扩展到 256k。为了高效scaling post-training，MiMo-V2-Flash 引入了Multi-Teacher On-Policy Distillation (MOPD)范式。在该框架中，领域专精的teacher模型（通过大规模强化学习训练）提供密集的、token-level的奖励，使student模型能够掌握teacher的专业知识。在推理过程中，通过将MTP重新用作speculative decoding的draft model，MiMo-V2-Flash使用三个MTP层时，可实现高达3.6的接受长度和2.6倍的解码加速。![image](/assets/art03_cc53559c1e2a.jpg)
 

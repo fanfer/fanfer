@@ -1,6 +1,6 @@
 ---
 title: MiMO
-date: '2025-05-01'
+date: '2026-02-21'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** MiMo-7B是小米推出的推理模型，通过三阶段预训练数据混合策略和强化学习后训练实现了卓越的推理能力。预训练阶段采用25T token，结合MTP（多token预测）提升性能与推理速度；后训练阶段使用13万可验证的数学和编程问题进行强化学习，并创新性地引入test-difficulty-driven代码奖励机制缓解奖励稀疏问题。MiMo-7B-Base在推理能力上已超越32B等更大规模模型，最终模型MiMo-7B-RL在数学、代码和通用推理任务上超越了OpenAI o1-mini。此外，本文还开发了Seamless Rollout Engine，实现了异步奖励计算和动态数据填充，显著提升了RL训练效率。
 
-原文链接: https://zhuanlan.zhihu.com/p/1910110570595742846
 
 ---
 
-MiMo: Unlocking the Reasoning Potential of Language Model–From Pretraining to Posttraining，原文[https://arxiv.org/pdf/2505.07608](http://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2505.07608)。
+MiMo: Unlocking the Reasoning Potential of Language Model–From Pretraining to Posttraining
 
 本文介绍了推理模型MiMo-7B。在预训练期间，MiMo采用了三阶段数据混合策略，以增强基础模型的推理能力。MiMo-7B-Base在25T个token上进行了预训练，并采用了MTP来提高性能并加速推理速度。在后训练期间，MiMo使用一个包含13万个可验证的数学和编程问题的数据集，用于强化学习，并整合了test-difficulty–driven 代码奖励机制，以缓解奖励稀疏问题，并采用数据重采样来稳定训练。评估表明，MiMo-7B-Base具有出色的推理能力，甚至超越了规模大得多的32B模型。经过强化学习微调的最终模型MiMo-7B-RL在数学、代码和通用推理任务上表现优异，超越了OpenAI的o1-mini的性能。
 

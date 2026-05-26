@@ -1,6 +1,6 @@
 ---
 title: GLM-4.5
-date: '2025-09-01'
+date: '2026-04-02'
 tags:
   - LLM
 categories:
@@ -11,13 +11,12 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** GLM-4.5是智谱推出的MoE架构大语言模型，拥有355B总参数和32B激活参数，使用23T token进行多阶段训练。模型最大特色是采用混合推理方法，同时支持思考模式和非思考模式，重点聚焦Agentic、Reasoning和Coding三大方向。后训练阶段采用专家训练与统一训练两阶段范式，利用自蒸馏技术整合多个专家模型能力。GLM-4.5在TAU-Bench上得分70.1%、AIME 24上91.0%、SWE-bench Verified上64.2%，与DeepSeek-R1和Qwen3-235B等强模型相当或更优。
 
-原文链接: https://zhuanlan.zhihu.com/p/1955721176954443417
 
 ---
 
 论文GLM-4.5: Agentic, Reasoning, and Coding (ARC)
 
-Foundation Models，原文[https://arxiv.org/abs/2508.06471](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2508.06471)。
+Foundation Models
 
 本文提出GLM-4.5模型，GLM-4.5使用MoE架构，总共有355B参数，激活32B参数。GLM-4.5采用了混合推理方法，支持思考模式和非思考模式，使用23T个token进行多阶段训练，并利用专家模型迭代和强化学习进行全面的后训练，GLM-4.5关注的重点是Agentic，Reasoning和Coding，在TAU-Bench上得分70.1%，在AIME 24上得分91.0%，在SWE-bench Verified上得分64.2%。同时，本文也发布了规模稍小的模型GLM-4.5-Air（106B参数）。![image](/assets/art06_680215969983.jpg)![image](/assets/art06_6d00acbc2398.jpg)
 

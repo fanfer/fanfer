@@ -1,6 +1,6 @@
 ---
 title: Composer 2
-date: '2026-05-20'
+date: '2026-05-26'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** Composer 2是Cursor推出的专门面向agentic软件工程的模型，基于Kimi K2.5（1.04T总参数、32B激活参数的MoE模型）进行持续预训练和大规模异步强化学习。该模型提出Self-Summarization技术以处理长时程任务，并通过非线性长度惩罚激励模型在简单任务上快速响应、复杂任务上深度思考。文章还提出了CursorBench真实世界评估基准，揭示了公开benchmark与真实开发者使用场景之间的结构性错位，并详细介绍了涵盖MoE并行化、NVFP4低精度训练、Anyrun计算平台等在内的完整训练基础设施。
 
-原文链接: https://zhuanlan.zhihu.com/p/2040095682686612050
 
 ---
 
-论文Composer 2 Technical Report，原文[https://cursor.com/resources/Composer2.pdf](http://link.zhihu.com/?target=https%3A//cursor.com/resources/Composer2.pdf)。
+论文Composer 2 Technical Report
 
 Composer 2是一个专门面向agentic软件工程的模型。该模型在保持能够高效解决交互式使用场景中问题的同时，展现出很强的长期规划能力和编码智能。在CursorBench上表现突出。同时，该模型在公开软件工程基准上也达到前沿水平。
 

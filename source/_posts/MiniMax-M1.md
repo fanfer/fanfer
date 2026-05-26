@@ -1,6 +1,6 @@
 ---
 title: MiniMax-M1
-date: '2025-08-01'
+date: '2026-03-23'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** MiniMax-M1是基于Lightning Attention的MoE架构大模型，拥有456B总参数和45.9B激活参数，在MiniMax-Text-01基础上通过大规模强化学习训练而成。论文提出CISPO算法，通过对重要性采样权重进行裁剪而非token梯度更新裁剪，实现了2倍以上的训练加速。模型支持从40K到80K的分阶段长度扩展，并针对长上下文训练中的梯度爆炸和训练崩溃问题提出了早期截断等解决方案。MiniMax-M1与DeepSeek-R1和Qwen3-235B等强模型性能相当或更优，在复杂软件工程、工具利用和长上下文任务上具有特别优势。
 
-原文链接: https://zhuanlan.zhihu.com/p/1933221119311222470
 
 ---
 
-论文MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention，原文[https://arxiv.org/abs/2506.13585](http://link.zhihu.com/?target=https%3A//arxiv.org/abs/2506.13585)。
+论文MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention
 
 本文提出MiniMax-M1，MiniMax-M1使用MoE与lightning attention架构，在MiniMax-Text-01模型的基础上训练出来的，该模型总共有456B参数，激活45.9B参数。MiniMax-M1是在数学推理，软件工程等各种任务上，使用大规模强化学习进行训练的。除了lightning attention在RL训练中固有的效率优势外，本文还提出了CISPO，CISPO对重要性采样权重进行裁剪而非token梯度更新进行裁剪，可进一步提高RL效率。实验表明，MiniMax-M1与原始DeepSeek-R1和Qwen3-235B等强大的开源模型相当或更优，在复杂软件工程、工具利用和长上下文任务方面具有特别优势，同时FLOPs消耗更少。
 

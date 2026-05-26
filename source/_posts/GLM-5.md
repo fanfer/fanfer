@@ -1,6 +1,6 @@
 ---
 title: GLM-5
-date: '2026-04-20'
+date: '2026-05-19'
 tags:
   - LLM
 categories:
@@ -11,11 +11,10 @@ top_img: /assets/background.JPG
 
 > **快速摘要：** GLM-5是智谱推出的下一代基础模型（744B总参数、40B激活参数），采用DSA（Deep Sparse Attention）架构在保持长上下文保真度的同时显著降低训练与推理成本。模型提出Muon Split优化MLA训练、参数共享的MTP提升推测解码效率，并构建了全异步解耦RL框架支持大规模智能体强化学习。GLM-5在主流公开benchmark上取得SOTA性能，特别是在真实世界代码任务和端到端软件工程挑战中展现出前所未有的能力，同时完成了七大国产芯片平台的全栈适配。
 
-原文链接: https://zhuanlan.zhihu.com/p/2014797935813075269
 
 ---
 
-论文GLM-5: from Vibe Coding to Agentic Engineering，原文[https://www.arxiv.org/pdf/2602.15763](https://link.zhihu.com/?target=https%3A//www.arxiv.org/pdf/2602.15763)。
+论文GLM-5: from Vibe Coding to Agentic Engineering
 
 本文提出GLM-5，将范式从vibe coding转向agentic engineering 的下一代基础模型。在其前代模型的智能体能力、推理能力与代码能力基础上，GLM-5采用了**DSA**架构，在保持长上下文保真度的同时，显著降低了训练与推理成本。为了提升模型的对齐水平与自主能力，构建了一套全新的异步强化学习基建，通过将生成过程与训练过程解耦，大幅提升了后训练阶段的效率。此外，本文还提出了异步智能体强化学习算法，进一步提升了强化学习的质量，使模型能够更有效地从复杂长文本的交互中学习。
 
