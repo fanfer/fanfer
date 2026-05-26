@@ -27,9 +27,9 @@ const closeMenu = () => { menuOpen.value = false }
             {{ item.name }}
           </a>
         </nav>
-        <a :href="site.avatar" class="nav-avatar-wrap" :title="site.author">
+        <span class="nav-avatar-wrap" :title="site.author">
           <img :src="site.avatar" :alt="site.author" class="nav-avatar" />
-        </a>
+        </span>
         <button class="nav-hamburger" :class="{ open: menuOpen }" @click="toggleMenu" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
