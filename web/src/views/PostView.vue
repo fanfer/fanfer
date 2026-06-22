@@ -49,7 +49,7 @@ function loadTwikoo() {
   }
 
   const s = document.createElement('script')
-  s.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js'
+  s.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.7.13/dist/twikoo.all.min.js'
   s.onload = () => initTwikoo(envId)
   s.onerror = () => {
     const el = document.getElementById('tcomment')

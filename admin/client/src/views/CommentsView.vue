@@ -7,6 +7,7 @@ const comments = ref([])
 const loading = ref(true)
 const currentPage = ref(1)
 const total = ref(0)
+const readonly = ref(false)
 
 async function loadComments() {
   loading.value = true
@@ -14,8 +15,11 @@ async function loadComments() {
     const { data } = await api.get('/api/comments', { params: { page: currentPage.value, limit: 20 } })
     comments.value = data.result?.data || data.data || []
     total.value = data.result?.count || data.count || 0
+    readonly.value = Boolean(data.result?.readonly)
   } catch (err) {
-    ElMessage.error('加载评论失败，请检查 Twikoo 配置')
+    comments.value = []
+    total.value = 0
+    ElMessage.error(err.response?.data?.error || '加载评论失败，请检查 Twikoo 配置')
   } finally {
     loading.value = false
   }
@@ -47,7 +51,20 @@ onMounted(loadComments)
 
 <template>
   <div>
-    <h2>评论管理</h2>
+    <div class="page-header">
+      <div>
+        <h2>评论管理</h2>
+        <p class="page-subtitle">共 {{ total }} 条评论</p>
+      </div>
+    </div>
+
+    <el-alert
+      v-if="readonly"
+      type="warning"
+      :closable="false"
+      title="当前未配置 TWIKOO_ADMIN_PASSWORD，仅显示最新评论，删除功能不可用。"
+      style="margin-bottom: 16px;"
+    />
 
     <el-card>
       <el-table :data="comments" v-loading="loading" stripe>
@@ -71,7 +88,7 @@ onMounted(loadComments)
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template #default="{ row }">
-            <el-button size="small" type="danger" text @click="handleDelete(row._id || row.id)">删除</el-button>
+            <el-button size="small" type="danger" text :disabled="readonly" @click="handleDelete(row._id || row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
