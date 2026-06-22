@@ -37,28 +37,42 @@ onMounted(async () => {
     <el-alert v-if="error" type="error" :closable="false" :title="error" />
 
     <el-row :gutter="20" v-if="stats">
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col :xs="24" :sm="12" :lg="4">
         <el-card class="metric-card" shadow="never">
           <el-statistic title="文章数" :value="stats.postCount || stats.posts || 0">
             <template #prefix><el-icon style="color: #409eff;"><Document /></el-icon></template>
           </el-statistic>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col :xs="24" :sm="12" :lg="4">
         <el-card class="metric-card" shadow="never">
           <el-statistic title="草稿数" :value="stats.draftCount || stats.drafts || 0">
             <template #prefix><el-icon style="color: #e6a23c;"><EditPen /></el-icon></template>
           </el-statistic>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col :xs="24" :sm="12" :lg="4">
+        <el-card class="metric-card" shadow="never">
+          <el-statistic title="页面数" :value="stats.pageCount || stats.pages || 0">
+            <template #prefix><el-icon style="color: #8b5cf6;"><Files /></el-icon></template>
+          </el-statistic>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :lg="4">
+        <el-card class="metric-card" shadow="never">
+          <el-statistic title="素材数" :value="stats.assetCount || stats.assets || 0">
+            <template #prefix><el-icon style="color: #0ea5e9;"><Picture /></el-icon></template>
+          </el-statistic>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :lg="4">
         <el-card class="metric-card" shadow="never">
           <el-statistic title="分类数" :value="stats.categories?.length || 0">
             <template #prefix><el-icon style="color: #67c23a;"><FolderOpened /></el-icon></template>
           </el-statistic>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col :xs="24" :sm="12" :lg="4">
         <el-card class="metric-card" shadow="never">
           <el-statistic title="标签数" :value="stats.tags?.length || 0">
             <template #prefix><el-icon style="color: #f56c6c;"><PriceTag /></el-icon></template>

@@ -267,6 +267,37 @@ ul, ol { list-style: none; }
   background: var(--bg-secondary);
 }
 
+.load-more-wrap {
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  padding: 10px 0 28px;
+}
+
+.load-more-button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  min-width: 132px;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.load-more-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.load-more-sentinel {
+  width: 1px;
+  height: 1px;
+}
+
 /* === Featured Post (First) === */
 .post-featured {
   padding: 0; border-bottom: 1px solid var(--border-light); margin-bottom: 8px;

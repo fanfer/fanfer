@@ -18,8 +18,12 @@ async function loadPosts() {
     const { data } = await api.get('/api/posts', {
       params: { page: currentPage.value, limit: pageSize.value, search: search.value },
     })
-    posts.value = data.items
-    total.value = data.total
+    posts.value = data.items || []
+    total.value = data.total || 0
+  } catch (err) {
+    posts.value = []
+    total.value = 0
+    ElMessage.error(err.response?.data?.error || '文章列表加载失败')
   } finally {
     loading.value = false
   }

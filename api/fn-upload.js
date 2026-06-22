@@ -1,16 +1,5 @@
 const { requireAuth } = require('./_auth');
-
-const GITHUB_API = 'https://api.github.com';
-const REPO = process.env.GITHUB_REPO || 'fanfer/fanfer';
-const BRANCH = process.env.GITHUB_BRANCH || 'main';
-const TOKEN = process.env.GITHUB_TOKEN;
-const ghHeaders = { Authorization: `Bearer ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
-
-async function ghFetch(url, opts = {}) { const res = await fetch(url, { ...opts, headers: { ...ghHeaders, ...opts.headers } }); if (!res.ok) throw new Error(`GitHub API ${res.status}: ${await res.text()}`); return res; }
-async function getFile(path) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(path)}?ref=${BRANCH}`); const data = await res.json(); return { content: Buffer.from(data.content, 'base64').toString('utf8'), sha: data.sha }; }
-async function putFile(path, content, sha, message, isBase64 = false) { const body = { message: message || `admin: update ${path}`, content: isBase64 ? content : Buffer.from(content, 'utf8').toString('base64'), branch: BRANCH }; if (sha) body.sha = sha; const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(path)}`, { method: 'PUT', body: JSON.stringify(body) }); return res.json(); }
-async function deleteFile(path, sha, message) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(path)}`, { method: 'DELETE', body: JSON.stringify({ message: message || `admin: delete ${path}`, sha, branch: BRANCH }) }); return res.json(); }
-async function listDir(dirPath) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(dirPath)}?ref=${BRANCH}`); return res.json(); }
+const { deleteFile, getFile, listDir, putFile, sendGitHubError } = require('./_github');
 
 module.exports = requireAuth(async (req, res) => {
   try {
@@ -49,7 +38,7 @@ module.exports = requireAuth(async (req, res) => {
 
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
-    if (err.message.includes('404')) return res.status(404).json({ error: 'File not found' });
+    if (sendGitHubError(res, err, 'File not found')) return;
     res.status(500).json({ error: err.message });
   }
 });

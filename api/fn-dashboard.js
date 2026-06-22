@@ -1,15 +1,6 @@
 const matter = require('gray-matter');
 const { requireAuth } = require('./_auth');
-
-const GITHUB_API = 'https://api.github.com';
-const REPO = process.env.GITHUB_REPO || 'fanfer/fanfer';
-const BRANCH = process.env.GITHUB_BRANCH || 'main';
-const TOKEN = process.env.GITHUB_TOKEN;
-const ghHeaders = { Authorization: `Bearer ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
-
-async function ghFetch(url, opts = {}) { const res = await fetch(url, { ...opts, headers: { ...ghHeaders, ...opts.headers } }); if (!res.ok) throw new Error(`GitHub API ${res.status}: ${await res.text()}`); return res; }
-async function listDir(dirPath) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(dirPath)}?ref=${BRANCH}`); return res.json(); }
-async function getFile(path) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(path)}?ref=${BRANCH}`); const data = await res.json(); return Buffer.from(data.content, 'base64').toString('utf8'); }
+const { getFile, listDir, sendGitHubError } = require('./_github');
 
 function asArray(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -24,7 +15,7 @@ function toCountList(map) {
 
 async function readPostMeta(entry) {
   try {
-    const content = await getFile(entry.path);
+    const { content } = await getFile(entry.path);
     const data = matter(content).data || {};
     return {
       filename: entry.name.replace(/\.md$/, ''),
@@ -38,10 +29,24 @@ async function readPostMeta(entry) {
   }
 }
 
+async function readPageSlug(entry) {
+  try {
+    await getFile(`source/${entry.name}/index.md`);
+    return entry.name;
+  } catch {
+    return null;
+  }
+}
+
 module.exports = requireAuth(async (req, res) => {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
   try {
-    const [posts, drafts, assets] = await Promise.all([listDir('source/_posts').catch(() => []), listDir('source/_drafts').catch(() => []), listDir('source/assets').catch(() => [])]);
+    const [posts, drafts, assets, pages] = await Promise.all([
+      listDir('source/_posts'),
+      listDir('source/_drafts').catch(() => []),
+      listDir('source/assets'),
+      listDir('source'),
+    ]);
     const postEntries = Array.isArray(posts) ? posts.filter(e => e.name.endsWith('.md')) : [];
     const postMetas = (await Promise.all(postEntries.map(readPostMeta)))
       .filter(Boolean)
@@ -57,19 +62,24 @@ module.exports = requireAuth(async (req, res) => {
     const postCount = postEntries.length;
     const draftCount = Array.isArray(drafts) ? drafts.filter(e => e.name.endsWith('.md')).length : 0;
     const assetCount = Array.isArray(assets) ? assets.filter(e => e.type === 'file').length : 0;
+    const pageDirs = Array.isArray(pages) ? pages.filter(e => e.type === 'dir' && !e.name.startsWith('_')) : [];
+    const pageCount = (await Promise.all(pageDirs.map(readPageSlug))).filter(Boolean).length;
 
     res.json({
       postCount,
       draftCount,
       assetCount,
+      pageCount,
       posts: postCount,
       drafts: draftCount,
       assets: assetCount,
+      pages: pageCount,
       categories: toCountList(categoryCounts),
       tags: toCountList(tagCounts),
       recentPosts: postMetas.slice(0, 8),
     });
   } catch (err) {
+    if (sendGitHubError(res, err)) return;
     res.status(500).json({ error: err.message });
   }
 });

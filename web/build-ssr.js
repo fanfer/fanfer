@@ -37,7 +37,7 @@ async function render(routePath, ssrData = {}) {
 }
 
 // Render all pages
-await render('/', { posts: data.posts.slice(0, 10), page: 1, total: data.posts.length })
+await render('/', { posts: data.posts, page: 1, total: data.posts.length })
 console.log('  /')
 
 await render('/archives/', { posts: data.posts })

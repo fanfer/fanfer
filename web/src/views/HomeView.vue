@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted, onUnmounted, inject } from 'vue'
+import { computed, ref, onMounted, onUnmounted, inject, nextTick } from 'vue'
 import PostCard from '../components/PostCard.vue'
 import site from '../data/site.js'
 
@@ -15,8 +15,8 @@ if (ssrData?.posts) {
   totalPosts.value = ssrData.total || ssrData.posts.length
 }
 
-const visiblePosts = () => allPosts.value.slice(0, visibleCount.value)
-const hasMore = () => visibleCount.value < allPosts.value.length
+const visiblePosts = computed(() => allPosts.value.slice(0, visibleCount.value))
+const hasMore = computed(() => visibleCount.value < allPosts.value.length)
 const topicPreview = computed(() => {
   const topics = new Set()
   allPosts.value.forEach(post => {
@@ -28,21 +28,31 @@ const topicPreview = computed(() => {
 let observer = null
 
 function loadMore() {
-  if (!hasMore()) return
+  if (!hasMore.value) return
   visibleCount.value = Math.min(visibleCount.value + PAGE_SIZE, allPosts.value.length)
 }
 
-onMounted(async () => {
-  // Always fetch full post list on client for infinite scroll
-  const res = await fetch('/data.json')
-  const data = await res.json()
-  allPosts.value = data.posts || []
-  totalPosts.value = allPosts.value.length
+async function observeSentinel() {
+  await nextTick()
+  if (observer && sentinel.value) observer.observe(sentinel.value)
+}
 
+onMounted(async () => {
   observer = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) loadMore()
   }, { rootMargin: '200px' })
-  if (sentinel.value) observer.observe(sentinel.value)
+
+  observeSentinel()
+
+  try {
+    const res = await fetch('/data.json')
+    const data = await res.json()
+    allPosts.value = data.posts || allPosts.value
+    totalPosts.value = allPosts.value.length
+    observeSentinel()
+  } catch {
+    totalPosts.value = allPosts.value.length
+  }
 })
 
 onUnmounted(() => {
@@ -64,8 +74,11 @@ onUnmounted(() => {
 
     <div v-if="allPosts.length">
       <PostCard :post="allPosts[0]" :featured="true" />
-      <PostCard v-for="p in visiblePosts().slice(1)" :key="p.slug" :post="p" />
-      <div ref="sentinel" v-if="hasMore()" style="height:1px;"></div>
+      <PostCard v-for="p in visiblePosts.slice(1)" :key="p.slug" :post="p" />
+      <div v-if="hasMore" class="load-more-wrap">
+        <button class="load-more-button" type="button" @click="loadMore">加载更多</button>
+        <div ref="sentinel" class="load-more-sentinel"></div>
+      </div>
     </div>
     <div v-else style="text-align:center;padding:80px 0;">
       <p style="color:var(--text-tertiary);font-size:16px;">No posts yet.</p>
