@@ -27,10 +27,16 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <el-card style="width: 400px;" shadow="always">
+  <div class="admin-login-page">
+    <el-card class="admin-login-card" shadow="never">
       <template #header>
-        <h2 style="text-align: center; margin: 0;">Fanfer Blog Admin</h2>
+        <div class="login-brand">
+          <span class="login-mark">F</span>
+          <div>
+            <h1>Fanfer Admin</h1>
+            <p>Blog publishing console</p>
+          </div>
+        </div>
       </template>
       <el-form @submit.prevent="handleLogin">
         <el-form-item>
@@ -40,7 +46,7 @@ async function handleLogin() {
           <el-input v-model="form.password" type="password" placeholder="密码" prefix-icon="Lock" size="large" show-password @keyup.enter="handleLogin" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="loading" style="width: 100%;" size="large" @click="handleLogin">登录</el-button>
+          <el-button type="primary" :loading="loading" class="login-submit" size="large" @click="handleLogin">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>

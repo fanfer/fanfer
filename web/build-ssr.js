@@ -43,11 +43,21 @@ console.log('  /')
 await render('/archives/', { posts: data.posts })
 console.log('  /archives/')
 
-await render('/tags/', { tags: data.tags })
+await render('/tags/', { tags: data.tags, posts: data.posts })
 console.log('  /tags/')
 
-await render('/categories/', { categories: data.categories })
+await render('/categories/', { categories: data.categories, posts: data.posts })
 console.log('  /categories/')
+
+for (const tag of Object.keys(data.tags)) {
+  await render(`/tags/${tag}/`, { tags: data.tags, posts: data.posts })
+  console.log(`  /tags/${tag}/`)
+}
+
+for (const category of Object.keys(data.categories)) {
+  await render(`/categories/${category}/`, { categories: data.categories, posts: data.posts })
+  console.log(`  /categories/${category}/`)
+}
 
 // Render each post
 const postsWithContent = data.posts.map(meta => {

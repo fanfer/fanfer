@@ -11,18 +11,22 @@ const ssrData = inject('__ssrData', null)
 if (ssrData?.categories) {
   categories.value = ssrData.categories
 }
+if (ssrData?.posts) {
+  posts.value = ssrData.posts
+}
 
 onMounted(async () => {
-  if (Object.keys(categories.value).length) return
+  if (Object.keys(categories.value).length && (!currentCat.value || posts.value.length)) return
   if (window.__SSR_DATA__?.categories) {
     categories.value = window.__SSR_DATA__.categories
+    posts.value = window.__SSR_DATA__.posts || posts.value
     delete window.__SSR_DATA__
-  } else {
-    const res = await fetch('/data.json')
-    const data = await res.json()
-    categories.value = data.categories || {}
-    posts.value = data.posts || []
+    if (!currentCat.value || posts.value.length) return
   }
+  const res = await fetch('/data.json')
+  const data = await res.json()
+  categories.value = data.categories || categories.value
+  posts.value = data.posts || []
 })
 
 const currentCat = computed(() => route.params.category || null)

@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import site from '../data/site.js'
+import { assetUrl } from '../utils/assets.js'
 
 const props = defineProps({
   post: { type: Object, required: true },
@@ -8,9 +9,7 @@ const props = defineProps({
 })
 
 const coverSrc = computed(() => {
-  if (!props.post.cover) return null
-  if (props.post.cover.startsWith('http')) return props.post.cover
-  return `/assets/${props.post.cover}`
+  return assetUrl(props.post.cover)
 })
 
 const dateStr = computed(() => {

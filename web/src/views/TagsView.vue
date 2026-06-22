@@ -12,18 +12,22 @@ const ssrData = inject('__ssrData', null)
 if (ssrData?.tags) {
   tags.value = ssrData.tags
 }
+if (ssrData?.posts) {
+  posts.value = ssrData.posts
+}
 
 onMounted(async () => {
-  if (Object.keys(tags.value).length) return
+  if (Object.keys(tags.value).length && (!currentTag.value || posts.value.length)) return
   if (window.__SSR_DATA__?.tags) {
     tags.value = window.__SSR_DATA__.tags
+    posts.value = window.__SSR_DATA__.posts || posts.value
     delete window.__SSR_DATA__
-  } else {
-    const res = await fetch('/data.json')
-    const data = await res.json()
-    tags.value = data.tags || {}
-    posts.value = data.posts || []
+    if (!currentTag.value || posts.value.length) return
   }
+  const res = await fetch('/data.json')
+  const data = await res.json()
+  tags.value = data.tags || tags.value
+  posts.value = data.posts || []
 })
 
 const currentTag = computed(() => route.params.tag || null)

@@ -1,15 +1,8 @@
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { isJwtConfigured, signAdminToken, verifyToken } = require('./_auth');
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || '';
-const JWT_SECRET = process.env.JWT_SECRET || '';
-
-function verifyToken(req) {
-  const h = req.headers.authorization;
-  if (!h || !h.startsWith('Bearer ')) return null;
-  try { return jwt.verify(h.slice(7), JWT_SECRET); } catch { return null; }
-}
 
 module.exports = async (req, res) => {
   const action = req.query.action;
@@ -21,8 +14,9 @@ module.exports = async (req, res) => {
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     if (username !== ADMIN_USERNAME) return res.status(401).json({ error: 'Invalid credentials' });
     if (!ADMIN_PASSWORD_HASH) return res.status(500).json({ error: 'ADMIN_PASSWORD_HASH not configured' });
+    if (!isJwtConfigured()) return res.status(500).json({ error: 'JWT_SECRET not configured' });
     if (!bcrypt.compareSync(password, ADMIN_PASSWORD_HASH)) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+    const token = signAdminToken({ username, role: 'admin' }, { expiresIn: '24h' });
     return res.json({ token, username });
   }
 

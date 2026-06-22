@@ -1,11 +1,10 @@
-const jwt = require('jsonwebtoken');
 const matter = require('gray-matter');
+const { requireAuth } = require('./_auth');
 
 const GITHUB_API = 'https://api.github.com';
 const REPO = process.env.GITHUB_REPO || 'fanfer/fanfer';
 const BRANCH = process.env.GITHUB_BRANCH || 'main';
 const TOKEN = process.env.GITHUB_TOKEN;
-const JWT_SECRET = process.env.JWT_SECRET || '';
 const ghHeaders = { Authorization: `Bearer ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
 
 async function ghFetch(url, opts = {}) {
@@ -18,8 +17,6 @@ async function putFile(path, content, sha, message) { const body = { message: me
 async function listDir(dirPath) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(dirPath)}?ref=${BRANCH}`); return res.json(); }
 function parseFrontmatter(content) { const r = matter(content); return { data: r.data, content: r.content }; }
 function stringifyFrontmatter(data, content) { return matter.stringify(content || '', data); }
-function verifyToken(req) { const h = req.headers.authorization; if (!h || !h.startsWith('Bearer ')) return null; try { return jwt.verify(h.slice(7), JWT_SECRET); } catch { return null; } }
-function requireAuth(handler) { return async (req, res) => { const user = verifyToken(req); if (!user) return res.status(401).json({ error: 'Unauthorized' }); req.user = user; return handler(req, res); }; }
 
 module.exports = requireAuth(async (req, res) => {
   try {

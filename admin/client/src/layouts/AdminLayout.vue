@@ -30,9 +30,9 @@ const menuItems = [
 </script>
 
 <template>
-  <el-container style="height: 100vh">
-    <el-aside :width="isCollapse ? '64px' : '220px'" style="transition: width 0.3s; background: #001529">
-      <div style="height: 60px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; font-weight: bold;">
+  <el-container class="admin-shell">
+    <el-aside :width="isCollapse ? '64px' : '220px'" class="admin-aside">
+      <div class="admin-brand">
         <span v-if="!isCollapse">Fanfer Admin</span>
         <span v-else>FA</span>
       </div>
@@ -53,18 +53,18 @@ const menuItems = [
     </el-aside>
 
     <el-container>
-      <el-header style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; background: #fff;">
-        <el-icon style="cursor: pointer; font-size: 20px;" @click="isCollapse = !isCollapse">
+      <el-header class="admin-topbar">
+        <el-icon class="admin-collapse" @click="isCollapse = !isCollapse">
           <Fold v-if="!isCollapse" />
           <Expand v-else />
         </el-icon>
-        <div style="display: flex; align-items: center; gap: 16px;">
+        <div class="admin-userbar">
           <span>{{ auth.username }}</span>
           <el-button type="danger" text @click="handleLogout">退出</el-button>
         </div>
       </el-header>
 
-      <el-main style="background: #f5f5f5; padding: 20px;">
+      <el-main class="admin-main">
         <router-view />
       </el-main>
     </el-container>

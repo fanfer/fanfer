@@ -4,7 +4,8 @@
   "description": "Hexo blog admin panel for fanfer.top",
   "private": true,
   "scripts": {
-    "hash-password": "node scripts/hash-password.js"
+    "hash-password": "node scripts/hash-password.js",
+    "reset-password": "node scripts/reset-password.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

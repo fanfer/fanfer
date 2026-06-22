@@ -1,11 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || '';
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
+function isJwtConfigured() {
+  return Boolean(JWT_SECRET);
+}
+
 function verifyToken(req) {
-  if (!JWT_SECRET) return null;
+  if (!isJwtConfigured()) return null;
   const header = req.headers.authorization;
   if (!header || !header.startsWith('Bearer ')) return null;
   try {
@@ -15,9 +17,18 @@ function verifyToken(req) {
   }
 }
 
+function signAdminToken(payload, options) {
+  if (!isJwtConfigured()) {
+    throw new Error('JWT_SECRET not configured');
+  }
+  return jwt.sign(payload, JWT_SECRET, options);
+}
+
 function requireAuth(handler) {
   return async (req, res) => {
-    if (!JWT_SECRET) return res.status(500).json({ error: 'JWT_SECRET not configured' });
+    if (!isJwtConfigured()) {
+      return res.status(500).json({ error: 'JWT_SECRET not configured' });
+    }
     const user = verifyToken(req);
     if (!user) return res.status(401).json({ error: 'Unauthorized' });
     req.user = user;
@@ -25,4 +36,4 @@ function requireAuth(handler) {
   };
 }
 
-module.exports = { verifyToken, requireAuth, ADMIN_USERNAME, ADMIN_PASSWORD_HASH, JWT_SECRET };
+module.exports = { isJwtConfigured, requireAuth, signAdminToken, verifyToken };

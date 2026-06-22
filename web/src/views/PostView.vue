@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import PostMeta from '../components/PostMeta.vue'
 import ReadingProgress from '../components/ReadingProgress.vue'
 import site from '../data/site.js'
+import { assetUrl } from '../utils/assets.js'
 
 const route = useRoute()
 const post = ref(null)
@@ -78,7 +79,7 @@ function initTwikoo(envId) {
     </header>
 
     <img v-if="post.cover || post.top_img"
-         :src="post.cover?.startsWith('http') ? post.cover : `/assets/${post.cover || post.top_img}`"
+         :src="assetUrl(post.cover || post.top_img)"
          alt="" class="post-cover" />
 
     <div class="post-content" v-html="post.content"></div>

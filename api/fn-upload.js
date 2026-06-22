@@ -1,10 +1,9 @@
-const jwt = require('jsonwebtoken');
+const { requireAuth } = require('./_auth');
 
 const GITHUB_API = 'https://api.github.com';
 const REPO = process.env.GITHUB_REPO || 'fanfer/fanfer';
 const BRANCH = process.env.GITHUB_BRANCH || 'main';
 const TOKEN = process.env.GITHUB_TOKEN;
-const JWT_SECRET = process.env.JWT_SECRET || '';
 const ghHeaders = { Authorization: `Bearer ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
 
 async function ghFetch(url, opts = {}) { const res = await fetch(url, { ...opts, headers: { ...ghHeaders, ...opts.headers } }); if (!res.ok) throw new Error(`GitHub API ${res.status}: ${await res.text()}`); return res; }
@@ -12,8 +11,6 @@ async function getFile(path) { const res = await ghFetch(`${GITHUB_API}/repos/${
 async function putFile(path, content, sha, message, isBase64 = false) { const body = { message: message || `admin: update ${path}`, content: isBase64 ? content : Buffer.from(content, 'utf8').toString('base64'), branch: BRANCH }; if (sha) body.sha = sha; const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(path)}`, { method: 'PUT', body: JSON.stringify(body) }); return res.json(); }
 async function deleteFile(path, sha, message) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(path)}`, { method: 'DELETE', body: JSON.stringify({ message: message || `admin: delete ${path}`, sha, branch: BRANCH }) }); return res.json(); }
 async function listDir(dirPath) { const res = await ghFetch(`${GITHUB_API}/repos/${REPO}/contents/${encodeURIComponent(dirPath)}?ref=${BRANCH}`); return res.json(); }
-function verifyToken(req) { const h = req.headers.authorization; if (!h || !h.startsWith('Bearer ')) return null; try { return jwt.verify(h.slice(7), JWT_SECRET); } catch { return null; } }
-function requireAuth(handler) { return async (req, res) => { const user = verifyToken(req); if (!user) return res.status(401).json({ error: 'Unauthorized' }); req.user = user; return handler(req, res); }; }
 
 module.exports = requireAuth(async (req, res) => {
   try {

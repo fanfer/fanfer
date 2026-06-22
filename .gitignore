@@ -14,3 +14,4 @@ admin/client/dist/
 web/node_modules/
 web/dist/
 web/dist-ssr/
+.vercel

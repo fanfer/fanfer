@@ -1,12 +1,8 @@
-const jwt = require('jsonwebtoken');
+const { requireAuth } = require('./_auth');
 
-const JWT_SECRET = process.env.JWT_SECRET || '';
 const TWIKOO_URL = process.env.TWIKOO_API_URL || '';
 const TWIKOO_PASSWORD = process.env.TWIKOO_ADMIN_PASSWORD || '';
 let twikooToken = null;
-
-function verifyToken(req) { const h = req.headers.authorization; if (!h || !h.startsWith('Bearer ')) return null; try { return jwt.verify(h.slice(7), JWT_SECRET); } catch { return null; } }
-function requireAuth(handler) { return async (req, res) => { const user = verifyToken(req); if (!user) return res.status(401).json({ error: 'Unauthorized' }); req.user = user; return handler(req, res); }; }
 
 async function getTwikooToken() {
   if (twikooToken) return twikooToken;
