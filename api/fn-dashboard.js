@@ -1,4 +1,3 @@
-const matter = require('gray-matter');
 const { requireAuth } = require('./_auth');
 const { getFile, listDir, sendGitHubError } = require('./_github');
 
@@ -13,20 +12,12 @@ function toCountList(map) {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
-async function readPostMeta(entry) {
-  try {
-    const { content } = await getFile(entry.path);
-    const data = matter(content).data || {};
-    return {
-      filename: entry.name.replace(/\.md$/, ''),
-      title: data.title || entry.name.replace(/\.md$/, ''),
-      date: data.date || '',
-      categories: asArray(data.categories),
-      tags: asArray(data.tags),
-    };
-  } catch {
-    return null;
-  }
+async function readSiteData(req) {
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'fanfer.top';
+  const proto = req.headers['x-forwarded-proto'] || 'https';
+  const res = await fetch(`${proto}://${host}/data.json`);
+  if (!res.ok) throw new Error(`Failed to read site data: ${res.status}`);
+  return res.json();
 }
 
 async function readPageSlug(entry) {
@@ -41,14 +32,21 @@ async function readPageSlug(entry) {
 module.exports = requireAuth(async (req, res) => {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
   try {
-    const [posts, drafts, assets, pages] = await Promise.all([
-      listDir('source/_posts'),
+    const [siteData, drafts, assets, pages] = await Promise.all([
+      readSiteData(req),
       listDir('source/_drafts').catch(() => []),
       listDir('source/assets'),
       listDir('source'),
     ]);
-    const postEntries = Array.isArray(posts) ? posts.filter(e => e.name.endsWith('.md')) : [];
-    const postMetas = (await Promise.all(postEntries.map(readPostMeta)))
+    const sitePosts = Array.isArray(siteData.posts) ? siteData.posts : [];
+    const postMetas = sitePosts
+      .map(post => ({
+        filename: post.filename,
+        title: post.title || post.filename,
+        date: post.date || '',
+        categories: asArray(post.categories),
+        tags: asArray(post.tags),
+      }))
       .filter(Boolean)
       .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
@@ -59,7 +57,7 @@ module.exports = requireAuth(async (req, res) => {
       post.tags.forEach(tag => { tagCounts[tag] = (tagCounts[tag] || 0) + 1; });
     });
 
-    const postCount = postEntries.length;
+    const postCount = postMetas.length;
     const draftCount = Array.isArray(drafts) ? drafts.filter(e => e.name.endsWith('.md')).length : 0;
     const assetCount = Array.isArray(assets) ? assets.filter(e => e.type === 'file').length : 0;
     const pageDirs = Array.isArray(pages) ? pages.filter(e => e.type === 'dir' && !e.name.startsWith('_')) : [];
