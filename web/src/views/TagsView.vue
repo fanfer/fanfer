@@ -38,13 +38,16 @@ const filteredPosts = computed(() => {
 </script>
 
 <template>
-  <div class="container content-narrow">
+  <div class="container page-shell">
     <div class="page-header">
+      <p class="page-kicker">Topics</p>
       <h1 class="page-title">{{ currentTag || 'Tags' }}</h1>
-      <p v-if="currentTag" class="page-desc">{{ filteredPosts.length }} posts tagged</p>
+      <p class="page-desc">
+        {{ currentTag ? `${filteredPosts.length} 篇关于 ${currentTag} 的文章。` : '按主题浏览长期积累的技术笔记。' }}
+      </p>
     </div>
     <TagCloud v-if="!currentTag" :tags="tags" />
-    <div v-else>
+    <div v-else class="post-stream page-post-stream">
       <PostCard v-for="p in filteredPosts" :key="p.slug" :post="p" />
     </div>
   </div>

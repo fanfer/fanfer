@@ -37,9 +37,13 @@ const filteredPosts = computed(() => {
 </script>
 
 <template>
-  <div class="container content-narrow">
+  <div class="container page-shell">
     <div class="page-header">
+      <p class="page-kicker">Sections</p>
       <h1 class="page-title">{{ currentCat || 'Categories' }}</h1>
+      <p class="page-desc">
+        {{ currentCat ? `${filteredPosts.length} 篇收录在 ${currentCat}。` : '以栏目维度整理内容脉络。' }}
+      </p>
     </div>
     <ul v-if="!currentCat" class="category-list">
       <li v-for="(count, cat) in categories" :key="cat" class="category-item">
@@ -47,7 +51,7 @@ const filteredPosts = computed(() => {
         <span class="category-count">{{ count }} posts</span>
       </li>
     </ul>
-    <div v-else>
+    <div v-else class="post-stream page-post-stream">
       <PostCard v-for="p in filteredPosts" :key="p.slug" :post="p" />
     </div>
   </div>

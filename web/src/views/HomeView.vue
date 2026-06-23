@@ -15,14 +15,31 @@ if (ssrData?.posts) {
   totalPosts.value = ssrData.total || ssrData.posts.length
 }
 
-const visiblePosts = computed(() => allPosts.value.slice(0, visibleCount.value))
+const featuredPost = computed(() => allPosts.value[0] || null)
+const streamPosts = computed(() => allPosts.value.slice(1, visibleCount.value))
 const hasMore = computed(() => visibleCount.value < allPosts.value.length)
 const topicPreview = computed(() => {
   const topics = new Set()
   allPosts.value.forEach(post => {
     ;(post.tags || []).forEach(tag => topics.add(tag))
   })
-  return Array.from(topics).slice(0, 4)
+  return Array.from(topics).slice(0, 8)
+})
+const yearCount = computed(() => {
+  const years = new Set(allPosts.value.map(post => post.date ? new Date(post.date).getFullYear() : null).filter(Boolean))
+  return years.size
+})
+const sidePosts = computed(() => allPosts.value.slice(1, 5))
+const topicCounts = computed(() => {
+  const counts = {}
+  allPosts.value.forEach(post => {
+    ;(post.tags || []).forEach(tag => {
+      counts[tag] = (counts[tag] || 0) + 1
+    })
+  })
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
 })
 
 let observer = null
@@ -61,27 +78,62 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="container content-narrow">
-    <section class="home-intro">
-      <p class="home-kicker">{{ site.subtitle }}</p>
-      <h1 class="home-title">{{ site.title }}</h1>
-      <p class="home-desc">{{ site.description }}</p>
-      <div class="home-meta-row">
-        <span>{{ totalPosts || allPosts.length }} posts</span>
-        <span v-for="topic in topicPreview" :key="topic">{{ topic }}</span>
+  <div class="home-page">
+    <section class="container home-intro">
+      <div class="home-intro-copy">
+        <p class="home-kicker">{{ site.subtitle }}</p>
+        <h1 class="home-title">{{ site.title }}</h1>
+        <p class="home-desc">记录 AI 系统、工程实践、论文阅读与长期问题。</p>
+      </div>
+      <div class="home-masthead-meta" aria-label="Site statistics">
+        <span><strong>{{ totalPosts || allPosts.length }}</strong><small>posts</small></span>
+        <span><strong>{{ yearCount }}</strong><small>years</small></span>
+        <span><strong>{{ topicPreview.length }}</strong><small>topics</small></span>
       </div>
     </section>
 
-    <div v-if="allPosts.length">
-      <PostCard :post="allPosts[0]" :featured="true" />
-      <PostCard v-for="p in visiblePosts.slice(1)" :key="p.slug" :post="p" />
-      <div v-if="hasMore" class="load-more-wrap">
-        <button class="load-more-button" type="button" @click="loadMore">加载更多</button>
-        <div ref="sentinel" class="load-more-sentinel"></div>
+    <nav v-if="topicPreview.length" class="home-topic-rail" aria-label="Topics">
+      <div class="container home-topic-inner">
+        <a v-for="topic in topicPreview" :key="topic" :href="`/tags/${topic}/`">{{ topic }}</a>
       </div>
+    </nav>
+
+    <div v-if="allPosts.length" class="container home-layout">
+      <main class="home-feed">
+        <div class="section-label">
+          <span>Latest stories</span>
+        </div>
+        <PostCard v-if="featuredPost" :post="featuredPost" :featured="true" />
+        <div class="post-stream">
+          <PostCard v-for="p in streamPosts" :key="p.slug" :post="p" />
+        </div>
+        <div v-if="hasMore" class="load-more-wrap">
+          <button class="load-more-button" type="button" @click="loadMore">加载更多</button>
+          <div ref="sentinel" class="load-more-sentinel"></div>
+        </div>
+      </main>
+
+      <aside class="home-aside" aria-label="Recommended reading">
+        <section class="aside-section">
+          <h2>Editors picks</h2>
+          <a v-for="p in sidePosts" :key="p.slug" :href="p.permalink" class="aside-post">
+            <span>{{ p.title }}</span>
+            <small>{{ p.readTime }} min read</small>
+          </a>
+        </section>
+        <section class="aside-section">
+          <h2>Topics</h2>
+          <div class="aside-topic-list">
+            <a v-for="[topic, count] in topicCounts" :key="topic" :href="`/tags/${topic}/`">
+              <span>{{ topic }}</span>
+              <small>{{ count }}</small>
+            </a>
+          </div>
+        </section>
+      </aside>
     </div>
-    <div v-else style="text-align:center;padding:80px 0;">
-      <p style="color:var(--text-tertiary);font-size:16px;">No posts yet.</p>
+    <div v-else class="container empty-state">
+      <p>No posts yet.</p>
     </div>
   </div>
 </template>

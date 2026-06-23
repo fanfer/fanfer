@@ -88,6 +88,10 @@ function safeDecode(value) {
   }
 }
 
+function primaryTopic(candidate) {
+  return candidate?.tags?.[0] || candidate?.categories?.[0] || ''
+}
+
 function getTwikooPath() {
   return window.location.pathname || route.path
 }
@@ -171,9 +175,14 @@ async function initTwikoo(envId, commentPath) {
 
 <template>
   <ReadingProgress />
-  <article v-if="post" class="container content-narrow">
+  <article v-if="post" class="container article-shell">
     <header class="post-header">
+      <div class="post-kicker" v-if="primaryTopic(post)">
+        <a :href="`/tags/${primaryTopic(post)}/`">{{ primaryTopic(post) }}</a>
+        <span>{{ post.readTime }} min read</span>
+      </div>
       <h1 class="post-title">{{ post.title }}</h1>
+      <p v-if="post.description" class="post-summary">{{ post.description }}</p>
       <PostMeta :post="post" />
     </header>
 
