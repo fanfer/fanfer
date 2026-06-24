@@ -62,6 +62,30 @@ function calcReadTime(content) {
   return Math.max(1, mins)
 }
 
+function findFirstImage(tokens = []) {
+  for (const token of tokens) {
+    if (token.type === 'image' && token.href) return token.href
+
+    if (token.tokens) {
+      const nested = findFirstImage(token.tokens)
+      if (nested) return nested
+    }
+
+    if (token.items) {
+      for (const item of token.items) {
+        const nested = findFirstImage(item.tokens)
+        if (nested) return nested
+      }
+    }
+  }
+
+  return ''
+}
+
+function extractFirstImage(content) {
+  return findFirstImage(marked.lexer(content))
+}
+
 function slugify(title) {
   return title.replace(/[<>:"/\\|?*\x00-\x1f]/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, '')
 }
@@ -78,6 +102,7 @@ const posts = files.map(file => {
   const html = restoreMath(marked.parse(preprocessed), mathStore)
   const readTime = calcReadTime(content)
   const slug = slugify(data.title || file.replace(/\.md$/, ''))
+  const firstImage = extractFirstImage(content)
 
   return {
     filename: file.replace(/\.md$/, ''),
@@ -87,7 +112,7 @@ const posts = files.map(file => {
     tags: Array.isArray(data.tags) ? data.tags : (data.tags ? [data.tags] : []),
     categories: Array.isArray(data.categories) ? data.categories : (data.categories ? [data.categories] : []),
     description: data.description || '',
-    cover: data.cover || '',
+    cover: data.cover || firstImage || '',
     top_img: data.top_img || '',
     readTime,
     content: html,

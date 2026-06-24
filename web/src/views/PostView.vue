@@ -186,9 +186,10 @@ async function initTwikoo(envId, commentPath) {
       <PostMeta :post="post" />
     </header>
 
-    <img v-if="post.cover || post.top_img"
-         :src="assetUrl(post.cover || post.top_img)"
-         alt="" class="post-cover" />
+    <img v-if="post.cover"
+         :src="assetUrl(post.cover)"
+         :alt="post.title"
+         class="post-cover" />
 
     <div class="post-content" v-html="post.content"></div>
 
